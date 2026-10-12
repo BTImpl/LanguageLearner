@@ -1,5 +1,7 @@
 # LanguageLearner
 
+[![CI](https://github.com/BTImpl/LanguageLearner/actions/workflows/ci.yml/badge.svg)](https://github.com/BTImpl/LanguageLearner/actions/workflows/ci.yml)
+
 Mobile app for practising English vocabulary. The teacher enters the words in a
 Google Sheet, and each student sees the words from their own tab. Built with
 Flutter, currently iOS only; the Android port is tracked on the Trello card
@@ -22,7 +24,7 @@ flutter run
 ```
 flutter analyze
 flutter test
-dart format --set-exit-if-changed .
+dart format .
 ```
 
 ## Project structure
