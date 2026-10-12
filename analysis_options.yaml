@@ -6,7 +6,7 @@ analyzer:
     - ios/**
     - '**/*.g.dart'
     - '**/*.freezed.dart'
-    - lib/l10n/app_localizations*.dart
+    - lib/i18n/app_localizations*.dart
   language:
     strict-casts: true
     strict-inference: true

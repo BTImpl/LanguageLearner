@@ -55,7 +55,7 @@ To add a string:
 1. Add the key to `lib/i18n/app_en.arb` with an `@key` description (and
    placeholders if needed), then add the translation to `lib/i18n/app_hu.arb`.
 2. Run `flutter gen-l10n` (`flutter pub get` and `flutter run` do it too).
-3. Use it in a widget: `context.l10n.yourKey`.
+3. Use it in a widget: `context.i18n.yourKey`.
 
 Commit the generated `lib/i18n/app_localizations*.dart` files. A test fails if
 the two ARB files have different keys.
