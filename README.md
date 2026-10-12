@@ -24,7 +24,7 @@ flutter run
 ```
 flutter analyze
 flutter test
-dart format .
+tool/format.sh check   # or 'tool/format.sh fix' to format
 ```
 
 ## Project structure
@@ -61,3 +61,16 @@ To add a string:
 
 Commit the generated `lib/i18n/app_localizations*.dart` files. A test fails if
 the two ARB files have different keys.
+
+## Git hook
+
+A pre-commit hook runs the formatting check before every commit, the same
+check the CI runs. Enable it once per clone:
+
+```
+git config core.hooksPath .githooks
+```
+
+If it fails, run `tool/format.sh fix`, stage the changes and commit again.
+The hook is skipped (with a warning) when `dart` is not in the PATH, for
+example when committing from a GUI; the CI still catches it.

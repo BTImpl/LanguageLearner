@@ -37,13 +37,8 @@ jobs:
       - name: Install dependencies (also generates the localizations)
         run: flutter pub get
 
-      # The generated localization files are not formatted by us, so they are
-      # left out of the format check.
       - name: Check formatting
-        run: |
-          git ls-files '*.dart' \
-            | grep -v '^lib/i18n/app_localizations' \
-            | xargs dart format --output=none --set-exit-if-changed
+        run: tool/format.sh check
 
       - name: Analyze
         run: flutter analyze
