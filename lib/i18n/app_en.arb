@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "appTitle": "LanguageLearner",
+  "@appTitle": {
+    "description": "Brand name. Intentionally the same in every language."
+  },
+  "wordCount": "{count, plural, =0{No words} =1{1 word} other{{count} words}}",
+  "@wordCount": {
+    "description": "Number of words, e.g. in a deck.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

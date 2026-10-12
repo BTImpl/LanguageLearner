@@ -1,0 +1,5 @@
+{
+  "@@locale": "hu",
+  "appTitle": "LanguageLearner",
+  "wordCount": "{count, plural, =0{Nincs szó} =1{1 szó} other{{count} szó}}"
+}
