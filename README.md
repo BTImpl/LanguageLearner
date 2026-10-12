@@ -74,3 +74,5 @@ git config core.hooksPath .githooks
 If it fails, run `tool/format.sh fix`, stage the changes and commit again.
 The hook is skipped (with a warning) when `dart` is not in the PATH, for
 example when committing from a GUI; the CI still catches it.
+
+adf
