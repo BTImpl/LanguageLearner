@@ -1,5 +1,5 @@
 name: languagelearner
-description: Angol szókincs-gyakorló alkalmazás a tanár Google Táblázatából.
+description: English vocabulary practice app fed from a teacher's Google Sheet.
 publish_to: 'none'
 version: 1.0.0+1
 

@@ -1,14 +1,15 @@
 # LanguageLearner
 
-Mobilalkalmazás angol szókincs gyakorlásához. A szavakat a tanár egy Google
-Táblázatban adja meg, a diák a saját füléhez tartozó szavakat látja. Flutter,
-jelenleg csak iOS; az Android portolás a Trello LL-36 kártyáján van.
+Mobile app for practising English vocabulary. The teacher enters the words in a
+Google Sheet, and each student sees the words from their own tab. Built with
+Flutter, currently iOS only; the Android port is tracked on the Trello card
+LL-36.
 
-- Csomagazonosító: `eu.btimpl.languagelearner`
-- Állapotkezelés: `flutter_riverpod`
-- Lint: `flutter_lints` + szigorított `analysis_options.yaml`
+- Package identifier: `eu.btimpl.languagelearner`
+- State management: `flutter_riverpod`
+- Lints: `flutter_lints` plus a stricter `analysis_options.yaml`
 
-## Futtatás
+## Running
 
 ```
 flutter pub get
@@ -16,7 +17,7 @@ open -a Simulator
 flutter run
 ```
 
-## Tesztelés és ellenőrzés
+## Testing and checks
 
 ```
 flutter analyze
@@ -24,17 +25,17 @@ flutter test
 dart format --set-exit-if-changed .
 ```
 
-## Mappaszerkezet
+## Project structure
 
 ```
 lib/
-  main.dart            belépési pont (ProviderScope)
-  app/                 az app gyökere, router, téma
-  core/                közös widgetek és szolgáltatások
+  main.dart            entry point (ProviderScope)
+  app/                 app root, router, theme
+  core/                shared widgets and services
     widgets/
     services/
-  features/<funkció>/  home, flashcards, matching, quiz, typing, mix,
+  features/<feature>/  home, flashcards, matching, quiz, typing, mix,
                        stats, settings, auth
-test/                  widget- és unit tesztek, a lib/ szerkezetét követve
-ios/                   iOS platformprojekt
+test/                  widget and unit tests, mirroring the lib/ structure
+ios/                   iOS platform project
 ```

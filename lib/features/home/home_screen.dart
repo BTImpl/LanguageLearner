@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Üres kezdőképernyő; a valódi tartalmat az LL-10 kártya adja.
+/// Empty home screen placeholder; the real content comes with card LL-10.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
