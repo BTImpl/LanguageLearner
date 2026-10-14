@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:languagelearner/features/settings/settings_providers.dart';
 
-/// The language of the app UI.
+/// The language of the app UI, from the stored settings.
 ///
-/// `null` means "follow the device language". Card LL-08 binds this to the
-/// stored `appLanguage` setting.
-final appLocaleProvider = Provider<Locale?>((ref) => null);
+/// `null` means "follow the device language".
+final appLocaleProvider = Provider<Locale?>(
+  (ref) => ref.watch(settingsProvider.select((s) => s.appLanguage.locale)),
+);
 
 /// Picks the UI language when the app follows the device language.
 ///
