@@ -34,5 +34,41 @@
         "type": "String"
       }
     }
+  },
+  "navLearn": "Learn",
+  "@navLearn": {
+    "description": "Label of the Learn tab (home) in the bottom navigation."
+  },
+  "navStats": "Statistics",
+  "@navStats": {
+    "description": "Label of the Statistics tab in the bottom navigation."
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Label of the Settings tab in the bottom navigation."
+  },
+  "modeFlashcards": "Flashcards",
+  "@modeFlashcards": {
+    "description": "Name of the flashcards practice mode."
+  },
+  "modeMatching": "Matching",
+  "@modeMatching": {
+    "description": "Name of the matching practice mode."
+  },
+  "modeQuiz": "Quiz",
+  "@modeQuiz": {
+    "description": "Name of the multiple-choice quiz practice mode."
+  },
+  "modeTyping": "Exact match",
+  "@modeTyping": {
+    "description": "Name of the typing practice mode (the word must be typed exactly)."
+  },
+  "modeMix": "Mix",
+  "@modeMix": {
+    "description": "Name of the mixed practice mode."
+  },
+  "roundEnd": "Round complete",
+  "@roundEnd": {
+    "description": "Title of the screen shown when a practice round is finished."
   }
 }

@@ -36,4 +36,31 @@ class AppLocalizationsHu extends AppLocalizations {
   String choiceWrong(String label) {
     return '$label, hibás válasz';
   }
+
+  @override
+  String get navLearn => 'Tanulás';
+
+  @override
+  String get navStats => 'Statisztika';
+
+  @override
+  String get navSettings => 'Beállítások';
+
+  @override
+  String get modeFlashcards => 'Kártyák';
+
+  @override
+  String get modeMatching => 'Párosító';
+
+  @override
+  String get modeQuiz => 'Tanuló';
+
+  @override
+  String get modeTyping => 'Pontos egyezés';
+
+  @override
+  String get modeMix => 'Mix';
+
+  @override
+  String get roundEnd => 'Kör vége';
 }

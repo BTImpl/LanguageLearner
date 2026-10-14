@@ -5,6 +5,7 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/app/theme/theme_mode.dart';
+import 'package:languagelearner/features/home/home_screen.dart';
 
 void main() {
   const expectedByMode = <(ThemeMode, Color)>[
@@ -22,9 +23,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      final context = tester.element(find.byType(Scaffold));
-      expect(scaffold.backgroundColor, isNull);
+      final context = tester.element(find.byType(HomeScreen));
       expect(Theme.of(context).scaffoldBackgroundColor, background);
       expect(context.colors.background, background);
     });

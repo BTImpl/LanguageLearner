@@ -127,6 +127,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label}, wrong answer'**
   String choiceWrong(String label);
+
+  /// Label of the Learn tab (home) in the bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get navLearn;
+
+  /// Label of the Statistics tab in the bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get navStats;
+
+  /// Label of the Settings tab in the bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSettings;
+
+  /// Name of the flashcards practice mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards'**
+  String get modeFlashcards;
+
+  /// Name of the matching practice mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching'**
+  String get modeMatching;
+
+  /// Name of the multiple-choice quiz practice mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get modeQuiz;
+
+  /// Name of the typing practice mode (the word must be typed exactly).
+  ///
+  /// In en, this message translates to:
+  /// **'Exact match'**
+  String get modeTyping;
+
+  /// Name of the mixed practice mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Mix'**
+  String get modeMix;
+
+  /// Title of the screen shown when a practice round is finished.
+  ///
+  /// In en, this message translates to:
+  /// **'Round complete'**
+  String get roundEnd;
 }
 
 class _AppLocalizationsDelegate
