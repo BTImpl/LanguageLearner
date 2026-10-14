@@ -116,6 +116,9 @@ to the Hungarian canvas titles used on the Trello cards.
 | `15-sign-in.png` | Belépés | LL-27 |
 | `16-deck-picker.png` | Pakliválasztó | LL-11, LL-25 |
 
-Known gap: the Settings screen does not yet show the "App language" card
-(card LL-09). The screen texts in the designs are Hungarian; English
-translations come with the localization files (card LL-37).
+The settings screen design (`14-settings.png`) predates the "App language"
+card. It is built in card LL-09 in the style of the "Appearance" card: a title,
+a hint line ("The language of the menus and labels.") and a three-way toggle
+(System / English / Magyar). The language names are not translated. The screen
+texts in the designs are Hungarian; the English translations are in the
+localization files (card LL-37).

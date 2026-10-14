@@ -25,6 +25,9 @@ flutter:
   uses-material-design: true
   generate: true
 
+  assets:
+    - assets/branding/icon-512.png
+
   fonts:
     - family: BricolageGrotesque
       fonts:

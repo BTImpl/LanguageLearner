@@ -181,6 +181,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Round complete'**
   String get roundEnd;
+
+  /// Title of the settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Button that signs the student out.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// Title of the setting that picks the language the app asks in.
+  ///
+  /// In en, this message translates to:
+  /// **'Which language should it ask in?'**
+  String get promptLanguageTitle;
+
+  /// Option: the app asks in English.
+  ///
+  /// In en, this message translates to:
+  /// **'In English'**
+  String get promptLanguageEnglish;
+
+  /// Option: the app asks in Hungarian.
+  ///
+  /// In en, this message translates to:
+  /// **'In Hungarian'**
+  String get promptLanguageHungarian;
+
+  /// Explains the asking language: English.
+  ///
+  /// In en, this message translates to:
+  /// **'You see the English word, you need to know the Hungarian.'**
+  String get promptLanguageHintEnglish;
+
+  /// Explains the asking language: Hungarian.
+  ///
+  /// In en, this message translates to:
+  /// **'You see the Hungarian word, you need to know the English.'**
+  String get promptLanguageHintHungarian;
+
+  /// Title of the setting that picks the language of the app interface.
+  ///
+  /// In en, this message translates to:
+  /// **'App language'**
+  String get appLanguageTitle;
+
+  /// Explains the app language setting.
+  ///
+  /// In en, this message translates to:
+  /// **'The language of the menus and labels.'**
+  String get appLanguageHint;
+
+  /// Option: follow the device language.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get appLanguageSystem;
+
+  /// Title of the setting for the number of pairs on a page of the matching game.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairs per page'**
+  String get pairsPerPageTitle;
+
+  /// Explains the pairs per page setting.
+  ///
+  /// In en, this message translates to:
+  /// **'In matching, between {min} and {max}'**
+  String pairsPerPageHint(int min, int max);
+
+  /// Screen reader label of the minus button of the pairs per page setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer pairs'**
+  String get pairsFewer;
+
+  /// Screen reader label of the plus button of the pairs per page setting.
+  ///
+  /// In en, this message translates to:
+  /// **'More pairs'**
+  String get pairsMore;
+
+  /// Title of the dark/light theme setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// Option: dark theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// Option: light theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// Row that reads the word list again from the teacher's spreadsheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh word list'**
+  String get refreshWordsTitle;
+
+  /// Time of the last refresh, when it was today.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated today at {time}'**
+  String lastRefreshedToday(String time);
+
+  /// Time of the last refresh, when it was before today.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated {dateTime}'**
+  String lastRefreshedOn(String dateTime);
+
+  /// Shown when there is no word list yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not refreshed yet'**
+  String get lastRefreshedNever;
+
+  /// Message shown when refreshing the word list failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not refresh the word list.'**
+  String get refreshFailed;
 }
 
 class _AppLocalizationsDelegate

@@ -3,26 +3,31 @@ import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
 
 /// Built-in decks, so the app works without the backend.
+///
+/// [refresh] only moves the `updatedAt` time of the decks to now, so the
+/// "last updated" line of the settings screen can be tried out.
 class FakeWordRepository implements WordRepository {
-  const FakeWordRepository();
+  FakeWordRepository({DateTime Function()? now}) : _now = now ?? DateTime.now;
+
+  final DateTime Function() _now;
+  DateTime _updatedAt = DateTime.utc(2026, 10, 7, 7, 12);
 
   @override
-  Future<List<Deck>> getDecks() async => _decks;
+  Future<List<Deck>> getDecks() async => _buildDecks(_updatedAt);
 
-  /// The built-in data never changes, so there is nothing to read again.
   @override
-  Future<void> refresh() async {}
+  Future<void> refresh() async {
+    _updatedAt = _now().toUtc();
+  }
 }
-
-final DateTime _updatedAt = DateTime.utc(2026, 10, 7, 7, 12);
 
 // A few words have a second accepted Hungarian text or an example sentence,
 // to exercise those parts of the model.
-final List<Deck> _decks = [
+List<Deck> _buildDecks(DateTime updatedAt) => [
   Deck(
     id: 'travel',
     name: 'Utazás',
-    updatedAt: _updatedAt,
+    updatedAt: updatedAt,
     words: [
       WordPair.fromCells(
         id: 'travel-1',
@@ -82,7 +87,7 @@ final List<Deck> _decks = [
   Deck(
     id: 'restaurant',
     name: 'Étterem',
-    updatedAt: _updatedAt,
+    updatedAt: updatedAt,
     words: [
       WordPair.fromCells(
         id: 'restaurant-1',
