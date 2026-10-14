@@ -45,9 +45,26 @@ screen are in [`screens/`](screens/).
 | highlight | `#4353E0` |
 | primary tile | `#4FC3F7` |
 
-The remaining light-mode tokens (success, error, raised surface, bottom nav)
-are not specified in the design yet; derive them in card LL-04 and record them
-here.
+The remaining light-mode tokens were not in the design; they are derived in
+`lib/app/theme/app_colors.dart` (card LL-04) and recorded here. `primary`,
+`on primary`, `indigo`, the brand gradient and `on brand gradient` are the same
+as in dark mode.
+
+| Token | Value | Derived from |
+| --- | --- | --- |
+| surface raised | `#E6EAFA` | slightly darker than the page background |
+| bottom nav background | `#FFFFFF` | same as surface |
+| highlight (icons, selection) | `#4353E0` | the design's light-mode highlight |
+| success background | `#DDF6E9` | pale tint of the dark-mode green |
+| success border | `#1FA971` | dark-mode green, darkened for contrast |
+| success text | `#0B4A33` | dark green on the pale background |
+| success number | `#12794F` | |
+| error background | `#FDE3E6` | pale tint of the dark-mode red |
+| error border | `#E5484D` | dark-mode red, darkened for contrast |
+| error text | `#6B1520` | dark red on the pale background |
+| error number | `#C4293A` | |
+
+In the dark theme `highlight` is `indigo light` (`#8C99FF`).
 
 ## Typography
 
