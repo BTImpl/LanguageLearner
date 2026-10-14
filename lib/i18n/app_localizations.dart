@@ -109,6 +109,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No words} =1{1 word} other{{count} words}}'**
   String wordCount(int count);
+
+  /// Label of the back button (screen reader and tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Screen reader label of an answer tile that was right.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}, correct answer'**
+  String choiceCorrect(String label);
+
+  /// Screen reader label of an answer tile that was wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}, wrong answer'**
+  String choiceWrong(String label);
 }
 
 class _AppLocalizationsDelegate

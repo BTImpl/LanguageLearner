@@ -23,4 +23,17 @@ class AppLocalizationsHu extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get back => 'Vissza';
+
+  @override
+  String choiceCorrect(String label) {
+    return '$label, helyes válasz';
+  }
+
+  @override
+  String choiceWrong(String label) {
+    return '$label, hibás válasz';
+  }
 }

@@ -12,5 +12,27 @@
         "type": "int"
       }
     }
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Label of the back button (screen reader and tooltip)."
+  },
+  "choiceCorrect": "{label}, correct answer",
+  "@choiceCorrect": {
+    "description": "Screen reader label of an answer tile that was right.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "choiceWrong": "{label}, wrong answer",
+  "@choiceWrong": {
+    "description": "Screen reader label of an answer tile that was wrong.",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
   }
 }

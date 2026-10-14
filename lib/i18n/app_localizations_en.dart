@@ -23,4 +23,17 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String choiceCorrect(String label) {
+    return '$label, correct answer';
+  }
+
+  @override
+  String choiceWrong(String label) {
+    return '$label, wrong answer';
+  }
 }

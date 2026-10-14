@@ -1,5 +1,8 @@
 {
   "@@locale": "hu",
   "appTitle": "LanguageLearner",
-  "wordCount": "{count, plural, =0{Nincs szó} =1{1 szó} other{{count} szó}}"
+  "wordCount": "{count, plural, =0{Nincs szó} =1{1 szó} other{{count} szó}}",
+  "back": "Vissza",
+  "choiceCorrect": "{label}, helyes válasz",
+  "choiceWrong": "{label}, hibás válasz"
 }
