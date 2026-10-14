@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:languagelearner/core/models/prompt_language.dart';
 
-/// The language the app asks in: the word is shown in this language and the
-/// answer is in the other one.
-enum PromptLanguage { english, hungarian }
+export 'package:languagelearner/core/models/prompt_language.dart';
 
 /// The color theme the student picked.
 enum ThemeChoice {
