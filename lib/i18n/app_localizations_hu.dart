@@ -137,4 +137,40 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get refreshFailed => 'Nem sikerült frissíteni a szólistát.';
+
+  @override
+  String get homeHeadline => 'Mit gyakorolunk ma?';
+
+  @override
+  String get openSettings => 'Beállítások megnyitása';
+
+  @override
+  String updatedToday(String time) {
+    return 'frissítve ma $time-kor';
+  }
+
+  @override
+  String updatedOn(String dateTime) {
+    return 'frissítve: $dateTime';
+  }
+
+  @override
+  String firstTimeCorrect(int count) {
+    return '$count megy elsőre';
+  }
+
+  @override
+  String get modeFlashcardsHint => 'Forgatás, felolvasás';
+
+  @override
+  String get modeMatchingHint => 'Keresd meg a párját';
+
+  @override
+  String get modeQuizHint => 'Egy szó, négy válasz';
+
+  @override
+  String get modeTypingHint => 'Írd le betűre pontosan';
+
+  @override
+  String get modeMixHint => 'Írás, választás és párosítás vegyesen';
 }

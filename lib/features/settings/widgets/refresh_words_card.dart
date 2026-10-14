@@ -7,6 +7,7 @@ import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/services/clock.dart';
+import 'package:languagelearner/core/utils/date_utils.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -45,11 +46,7 @@ class _RefreshWordsCardState extends ConsumerState<RefreshWordsCard> {
     final updated = updatedAt.toLocal();
     final now = ref.watch(clockProvider)();
     final locale = Localizations.localeOf(context).toString();
-    final isToday =
-        updated.year == now.year &&
-        updated.month == now.month &&
-        updated.day == now.day;
-    return isToday
+    return isSameDay(updated, now)
         ? i18n.lastRefreshedToday(DateFormat.Hm(locale).format(updated))
         : i18n.lastRefreshedOn(DateFormat.yMd(locale).add_Hm().format(updated));
   }

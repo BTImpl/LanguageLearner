@@ -35,5 +35,15 @@
   "lastRefreshedToday": "Utoljára ma {time}-kor",
   "lastRefreshedOn": "Utoljára frissítve: {dateTime}",
   "lastRefreshedNever": "Még nem frissítve",
-  "refreshFailed": "Nem sikerült frissíteni a szólistát."
+  "refreshFailed": "Nem sikerült frissíteni a szólistát.",
+  "homeHeadline": "Mit gyakorolunk ma?",
+  "openSettings": "Beállítások megnyitása",
+  "updatedToday": "frissítve ma {time}-kor",
+  "updatedOn": "frissítve: {dateTime}",
+  "firstTimeCorrect": "{count} megy elsőre",
+  "modeFlashcardsHint": "Forgatás, felolvasás",
+  "modeMatchingHint": "Keresd meg a párját",
+  "modeQuizHint": "Egy szó, négy válasz",
+  "modeTypingHint": "Írd le betűre pontosan",
+  "modeMixHint": "Írás, választás és párosítás vegyesen"
 }

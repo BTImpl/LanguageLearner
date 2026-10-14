@@ -20,6 +20,14 @@ abstract final class AppRadii {
     bottomLeft: Radius.circular(18),
   );
 
+  /// The wide Mix tile of the home screen: 18 / 18 / 44 / 18.
+  static const BorderRadius wideTile = BorderRadius.only(
+    topLeft: Radius.circular(18),
+    topRight: Radius.circular(18),
+    bottomRight: Radius.circular(44),
+    bottomLeft: Radius.circular(18),
+  );
+
   /// Highlighted cards: 28 / 28 / 64 / 28.
   static const BorderRadius highlighted = BorderRadius.only(
     topLeft: Radius.circular(28),

@@ -137,4 +137,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refreshFailed => 'Could not refresh the word list.';
+
+  @override
+  String get homeHeadline => 'What shall we practice today?';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String updatedToday(String time) {
+    return 'updated today at $time';
+  }
+
+  @override
+  String updatedOn(String dateTime) {
+    return 'updated $dateTime';
+  }
+
+  @override
+  String firstTimeCorrect(int count) {
+    return '$count right first time';
+  }
+
+  @override
+  String get modeFlashcardsHint => 'Flip and listen';
+
+  @override
+  String get modeMatchingHint => 'Find the pair';
+
+  @override
+  String get modeQuizHint => 'One word, four answers';
+
+  @override
+  String get modeTypingHint => 'Type it exactly';
+
+  @override
+  String get modeMixHint => 'Typing, choosing and matching, mixed';
 }

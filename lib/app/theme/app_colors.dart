@@ -18,6 +18,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.onPrimary,
     required this.indigo,
     required this.highlight,
+    required this.accent,
     required this.brandGradient,
     required this.onBrandGradient,
     required this.successBackground,
@@ -43,6 +44,10 @@ class AppColors extends ThemeExtension<AppColors> {
 
   /// Icons, selection and active text on the screen background.
   final Color highlight;
+
+  /// The active menu item and the progress indicator: the primary color in
+  /// dark mode, indigo in light mode (the primary color is too pale on white).
+  final Color accent;
 
   /// English side of the flashcard and the round-end header card only.
   final LinearGradient brandGradient;
@@ -78,6 +83,7 @@ class AppColors extends ThemeExtension<AppColors> {
     onPrimary: Color(0xFF0A1226),
     indigo: Color(0xFF5B6CFF),
     highlight: Color(0xFF8C99FF),
+    accent: Color(0xFF4FC3F7),
     brandGradient: _gradient,
     onBrandGradient: Color(0xFF0A1226),
     successBackground: Color(0xFF0F3A2C),
@@ -105,6 +111,7 @@ class AppColors extends ThemeExtension<AppColors> {
     onPrimary: Color(0xFF0A1226),
     indigo: Color(0xFF5B6CFF),
     highlight: Color(0xFF4353E0),
+    accent: Color(0xFF4353E0),
     brandGradient: _gradient,
     onBrandGradient: Color(0xFF0A1226),
     successBackground: Color(0xFFDDF6E9),
@@ -130,6 +137,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? onPrimary,
     Color? indigo,
     Color? highlight,
+    Color? accent,
     LinearGradient? brandGradient,
     Color? onBrandGradient,
     Color? successBackground,
@@ -153,6 +161,7 @@ class AppColors extends ThemeExtension<AppColors> {
       onPrimary: onPrimary ?? this.onPrimary,
       indigo: indigo ?? this.indigo,
       highlight: highlight ?? this.highlight,
+      accent: accent ?? this.accent,
       brandGradient: brandGradient ?? this.brandGradient,
       onBrandGradient: onBrandGradient ?? this.onBrandGradient,
       successBackground: successBackground ?? this.successBackground,
@@ -183,6 +192,7 @@ class AppColors extends ThemeExtension<AppColors> {
       onPrimary: Color.lerp(onPrimary, other.onPrimary, t)!,
       indigo: Color.lerp(indigo, other.indigo, t)!,
       highlight: Color.lerp(highlight, other.highlight, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
       brandGradient: LinearGradient.lerp(
         brandGradient,
         other.brandGradient,

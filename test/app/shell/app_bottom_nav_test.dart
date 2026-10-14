@@ -20,7 +20,7 @@ FontWeight? _labelWeight(WidgetTester tester, String label) =>
 void main() {
   for (final mode in themeModes) {
     group('${mode.name} mode', () {
-      testWidgets('the active tab is primary colored and bold', (tester) async {
+      testWidgets('the active tab is accent colored and bold', (tester) async {
         await pumpThemed(
           tester,
           AppBottomNav(items: _items, currentIndex: 1, onSelected: (_) {}),
@@ -28,7 +28,7 @@ void main() {
         );
 
         final c = tester.element(find.byType(AppBottomNav)).colors;
-        expect(_labelColor(tester, 'Statistics'), c.primary);
+        expect(_labelColor(tester, 'Statistics'), c.accent);
         expect(_labelWeight(tester, 'Statistics'), FontWeight.w700);
         expect(_labelColor(tester, 'Learn'), c.textMuted);
         expect(_labelColor(tester, 'Settings'), c.textMuted);

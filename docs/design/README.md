@@ -55,6 +55,7 @@ as in dark mode.
 | surface raised | `#E6EAFA` | slightly darker than the page background |
 | bottom nav background | `#FFFFFF` | same as surface |
 | highlight (icons, selection) | `#4353E0` | the design's light-mode highlight |
+| accent (active menu item, progress indicator) | `#4353E0` | the design's light-mode highlight; the primary color is too pale on white |
 | success background | `#DDF6E9` | pale tint of the dark-mode green |
 | success border | `#1FA971` | dark-mode green, darkened for contrast |
 | success text | `#0B4A33` | dark green on the pale background |
@@ -64,7 +65,8 @@ as in dark mode.
 | error text | `#6B1520` | dark red on the pale background |
 | error number | `#C4293A` | |
 
-In the dark theme `highlight` is `indigo light` (`#8C99FF`).
+In the dark theme `highlight` is `indigo light` (`#8C99FF`) and `accent` is the
+primary color (`#4FC3F7`).
 
 ## Typography
 
