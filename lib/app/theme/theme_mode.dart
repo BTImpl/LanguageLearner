@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:languagelearner/features/settings/settings_providers.dart';
 
-/// Whether the app is dark or light.
-///
-/// Fixed to dark for now (the design default). Card LL-08 binds this to the
-/// stored `themeMode` setting.
-final appThemeModeProvider = Provider<ThemeMode>((ref) => ThemeMode.dark);
+/// Whether the app is dark or light, from the stored settings.
+final appThemeModeProvider = Provider<ThemeMode>(
+  (ref) => ref.watch(settingsProvider.select((s) => s.themeChoice.themeMode)),
+);
