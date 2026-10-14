@@ -9,6 +9,9 @@ abstract final class AppRadii {
   static const BorderRadius choice = BorderRadius.all(Radius.circular(16));
   static const BorderRadius small = BorderRadius.all(Radius.circular(14));
 
+  /// Settings cards.
+  static const BorderRadius card = BorderRadius.all(Radius.circular(22));
+
   /// Tiles and cards: 18 / 18 / 36 / 18.
   static const BorderRadius tile = BorderRadius.only(
     topLeft: Radius.circular(18),

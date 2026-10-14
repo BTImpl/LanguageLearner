@@ -62,6 +62,27 @@ void main() {
         expect(taps, 1);
       });
 
+      testWidgets('compact SecondaryButton is 44 high and hugs its text', (
+        tester,
+      ) async {
+        await pumpThemed(
+          tester,
+          Align(
+            alignment: Alignment.topLeft,
+            child: SecondaryButton(
+              label: 'Sign out',
+              compact: true,
+              onPressed: () {},
+            ),
+          ),
+          mode: mode,
+        );
+
+        final size = tester.getSize(find.byType(SecondaryButton));
+        expect(size.height, 44);
+        expect(size.width, lessThan(200));
+      });
+
       testWidgets('IconSquareButton is 44 x 44 and has a label', (
         tester,
       ) async {

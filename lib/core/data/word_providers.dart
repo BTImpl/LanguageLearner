@@ -2,11 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/data/word_repository.dart';
 import 'package:languagelearner/core/models/deck.dart';
+import 'package:languagelearner/core/services/clock.dart';
 
 /// The source of the decks. Override this one provider to swap the source,
 /// e.g. for the backend (card LL-28) or in tests.
 final wordRepositoryProvider = Provider<WordRepository>(
-  (ref) => const FakeWordRepository(),
+  (ref) => FakeWordRepository(now: ref.watch(clockProvider)),
 );
 
 /// All decks of the student.
@@ -39,3 +40,25 @@ final selectedDeckProvider = Provider<AsyncValue<Deck?>>((ref) {
     return decks.firstOrNull;
   });
 });
+
+/// When the words were last read from the spreadsheet: the latest `updatedAt`
+/// of the decks, `null` while there are no decks.
+final lastUpdatedProvider = Provider<DateTime?>((ref) {
+  final decks = ref.watch(decksProvider).value;
+  if (decks == null || decks.isEmpty) {
+    return null;
+  }
+  return decks
+      .map((deck) => deck.updatedAt)
+      .reduce((a, b) => a.isAfter(b) ? a : b);
+});
+
+/// Reads the decks again from the source and reloads them. Throws if that
+/// fails.
+final refreshWordsProvider = Provider<Future<void> Function()>(
+  (ref) => () async {
+    await ref.read(wordRepositoryProvider).refresh();
+    ref.invalidate(decksProvider);
+    await ref.read(decksProvider.future);
+  },
+);

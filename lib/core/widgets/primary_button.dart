@@ -52,12 +52,17 @@ class PrimaryButton extends StatelessWidget {
   }
 }
 
-/// Full-width secondary action button: surface color with a 1 px border.
+/// Secondary action button: surface color with a 1 px border.
+///
+/// Full width and 56 high; with [compact] it is as wide as its content and 44
+/// high, for placing next to other content (e.g. in a card).
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
     required this.label,
     required this.onPressed,
     this.icon,
+    this.compact = false,
+    this.color,
     super.key,
   });
 
@@ -66,17 +71,28 @@ class SecondaryButton extends StatelessWidget {
   /// `null` disables the button.
   final VoidCallback? onPressed;
   final IconData? icon;
+  final bool compact;
+
+  /// Defaults to the surface color; pass the background color on a card.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final style = OutlinedButton.styleFrom(
-      minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-      backgroundColor: c.surface,
+      minimumSize: compact
+          ? const Size(0, AppSizes.touchTarget)
+          : const Size.fromHeight(AppSizes.buttonHeight),
+      padding: compact ? const EdgeInsets.symmetric(horizontal: 16) : null,
+      // Material pads the tap target to 48; the compact button is 44.
+      tapTargetSize: compact ? MaterialTapTargetSize.shrinkWrap : null,
+      backgroundColor: color ?? c.surface,
       foregroundColor: c.text,
       disabledForegroundColor: c.textMuted,
       side: BorderSide(color: c.line),
-      shape: const RoundedRectangleBorder(borderRadius: AppRadii.button),
+      shape: RoundedRectangleBorder(
+        borderRadius: compact ? AppRadii.small : AppRadii.button,
+      ),
       textStyle: _buttonTextStyle,
     );
     if (icon == null) {

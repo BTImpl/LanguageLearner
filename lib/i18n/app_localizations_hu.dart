@@ -63,4 +63,78 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get roundEnd => 'Kör vége';
+
+  @override
+  String get settingsTitle => 'Beállítások';
+
+  @override
+  String get signOut => 'Kijelentkezés';
+
+  @override
+  String get promptLanguageTitle => 'Melyik nyelven kérdezzen?';
+
+  @override
+  String get promptLanguageEnglish => 'Angolul';
+
+  @override
+  String get promptLanguageHungarian => 'Magyarul';
+
+  @override
+  String get promptLanguageHintEnglish =>
+      'Az angol szót látod, a magyart kell tudnod.';
+
+  @override
+  String get promptLanguageHintHungarian =>
+      'A magyar szót látod, az angolt kell tudnod.';
+
+  @override
+  String get appLanguageTitle => 'Az app nyelve';
+
+  @override
+  String get appLanguageHint => 'A menük és feliratok nyelve.';
+
+  @override
+  String get appLanguageSystem => 'Rendszer';
+
+  @override
+  String get pairsPerPageTitle => 'Párok egy oldalon';
+
+  @override
+  String pairsPerPageHint(int min, int max) {
+    return 'A párosítóban, $min és $max között';
+  }
+
+  @override
+  String get pairsFewer => 'Kevesebb pár';
+
+  @override
+  String get pairsMore => 'Több pár';
+
+  @override
+  String get appearanceTitle => 'Megjelenés';
+
+  @override
+  String get themeDark => 'Sötét';
+
+  @override
+  String get themeLight => 'Világos';
+
+  @override
+  String get refreshWordsTitle => 'Szólista frissítése';
+
+  @override
+  String lastRefreshedToday(String time) {
+    return 'Utoljára ma $time-kor';
+  }
+
+  @override
+  String lastRefreshedOn(String dateTime) {
+    return 'Utoljára frissítve: $dateTime';
+  }
+
+  @override
+  String get lastRefreshedNever => 'Még nem frissítve';
+
+  @override
+  String get refreshFailed => 'Nem sikerült frissíteni a szólistát.';
 }

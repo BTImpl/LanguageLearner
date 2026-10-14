@@ -63,4 +63,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get roundEnd => 'Round complete';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get promptLanguageTitle => 'Which language should it ask in?';
+
+  @override
+  String get promptLanguageEnglish => 'In English';
+
+  @override
+  String get promptLanguageHungarian => 'In Hungarian';
+
+  @override
+  String get promptLanguageHintEnglish =>
+      'You see the English word, you need to know the Hungarian.';
+
+  @override
+  String get promptLanguageHintHungarian =>
+      'You see the Hungarian word, you need to know the English.';
+
+  @override
+  String get appLanguageTitle => 'App language';
+
+  @override
+  String get appLanguageHint => 'The language of the menus and labels.';
+
+  @override
+  String get appLanguageSystem => 'System';
+
+  @override
+  String get pairsPerPageTitle => 'Pairs per page';
+
+  @override
+  String pairsPerPageHint(int min, int max) {
+    return 'In matching, between $min and $max';
+  }
+
+  @override
+  String get pairsFewer => 'Fewer pairs';
+
+  @override
+  String get pairsMore => 'More pairs';
+
+  @override
+  String get appearanceTitle => 'Appearance';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get refreshWordsTitle => 'Refresh word list';
+
+  @override
+  String lastRefreshedToday(String time) {
+    return 'Last updated today at $time';
+  }
+
+  @override
+  String lastRefreshedOn(String dateTime) {
+    return 'Last updated $dateTime';
+  }
+
+  @override
+  String get lastRefreshedNever => 'Not refreshed yet';
+
+  @override
+  String get refreshFailed => 'Could not refresh the word list.';
 }

@@ -70,5 +70,111 @@
   "roundEnd": "Round complete",
   "@roundEnd": {
     "description": "Title of the screen shown when a practice round is finished."
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title of the settings screen."
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Button that signs the student out."
+  },
+  "promptLanguageTitle": "Which language should it ask in?",
+  "@promptLanguageTitle": {
+    "description": "Title of the setting that picks the language the app asks in."
+  },
+  "promptLanguageEnglish": "In English",
+  "@promptLanguageEnglish": {
+    "description": "Option: the app asks in English."
+  },
+  "promptLanguageHungarian": "In Hungarian",
+  "@promptLanguageHungarian": {
+    "description": "Option: the app asks in Hungarian."
+  },
+  "promptLanguageHintEnglish": "You see the English word, you need to know the Hungarian.",
+  "@promptLanguageHintEnglish": {
+    "description": "Explains the asking language: English."
+  },
+  "promptLanguageHintHungarian": "You see the Hungarian word, you need to know the English.",
+  "@promptLanguageHintHungarian": {
+    "description": "Explains the asking language: Hungarian."
+  },
+  "appLanguageTitle": "App language",
+  "@appLanguageTitle": {
+    "description": "Title of the setting that picks the language of the app interface."
+  },
+  "appLanguageHint": "The language of the menus and labels.",
+  "@appLanguageHint": {
+    "description": "Explains the app language setting."
+  },
+  "appLanguageSystem": "System",
+  "@appLanguageSystem": {
+    "description": "Option: follow the device language."
+  },
+  "pairsPerPageTitle": "Pairs per page",
+  "@pairsPerPageTitle": {
+    "description": "Title of the setting for the number of pairs on a page of the matching game."
+  },
+  "pairsPerPageHint": "In matching, between {min} and {max}",
+  "@pairsPerPageHint": {
+    "description": "Explains the pairs per page setting.",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "pairsFewer": "Fewer pairs",
+  "@pairsFewer": {
+    "description": "Screen reader label of the minus button of the pairs per page setting."
+  },
+  "pairsMore": "More pairs",
+  "@pairsMore": {
+    "description": "Screen reader label of the plus button of the pairs per page setting."
+  },
+  "appearanceTitle": "Appearance",
+  "@appearanceTitle": {
+    "description": "Title of the dark/light theme setting."
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Option: dark theme."
+  },
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Option: light theme."
+  },
+  "refreshWordsTitle": "Refresh word list",
+  "@refreshWordsTitle": {
+    "description": "Row that reads the word list again from the teacher's spreadsheet."
+  },
+  "lastRefreshedToday": "Last updated today at {time}",
+  "@lastRefreshedToday": {
+    "description": "Time of the last refresh, when it was today.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "lastRefreshedOn": "Last updated {dateTime}",
+  "@lastRefreshedOn": {
+    "description": "Time of the last refresh, when it was before today.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "lastRefreshedNever": "Not refreshed yet",
+  "@lastRefreshedNever": {
+    "description": "Shown when there is no word list yet."
+  },
+  "refreshFailed": "Could not refresh the word list.",
+  "@refreshFailed": {
+    "description": "Message shown when refreshing the word list failed."
   }
 }

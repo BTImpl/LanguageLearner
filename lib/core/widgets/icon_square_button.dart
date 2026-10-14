@@ -11,6 +11,7 @@ class IconSquareButton extends StatelessWidget {
     required this.icon,
     required this.semanticLabel,
     required this.onPressed,
+    this.backgroundColor,
     super.key,
   });
 
@@ -19,6 +20,9 @@ class IconSquareButton extends StatelessWidget {
 
   /// `null` disables the button.
   final VoidCallback? onPressed;
+
+  /// Defaults to the surface color; pass the background color on a card.
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class IconSquareButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         // Material pads the tap target to 48; the design wants exactly 44.
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        backgroundColor: c.surface,
+        backgroundColor: backgroundColor ?? c.surface,
         foregroundColor: c.text,
         disabledForegroundColor: c.textMuted,
         side: BorderSide(color: c.line),

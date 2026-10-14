@@ -3,11 +3,12 @@ import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/models/deck.dart';
 
 void main() {
-  const repository = FakeWordRepository();
-
+  final refreshTime = DateTime(2026, 10, 14, 15, 30);
+  late FakeWordRepository repository;
   late List<Deck> decks;
 
   setUp(() async {
+    repository = FakeWordRepository(now: () => refreshTime);
     decks = await repository.getDecks();
   });
 
@@ -68,9 +69,18 @@ void main() {
     expect(words.any((word) => word.example != null), isTrue);
   });
 
-  test('refresh completes and the decks stay the same', () async {
+  test('refresh moves the update time to now and keeps the words', () async {
+    expect(decks.first.updatedAt, DateTime.utc(2026, 10, 7, 7, 12));
+
     await repository.refresh();
 
-    expect(await repository.getDecks(), decks);
+    final refreshed = await repository.getDecks();
+    expect(refreshed.map((deck) => deck.updatedAt).toSet(), {
+      refreshTime.toUtc(),
+    });
+    expect(
+      [for (final deck in refreshed) deck.words],
+      [for (final deck in decks) deck.words],
+    );
   });
 }
