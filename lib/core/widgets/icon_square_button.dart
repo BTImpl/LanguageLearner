@@ -12,6 +12,7 @@ class IconSquareButton extends StatelessWidget {
     required this.semanticLabel,
     required this.onPressed,
     this.backgroundColor,
+    this.loading = false,
     super.key,
   });
 
@@ -24,13 +25,21 @@ class IconSquareButton extends StatelessWidget {
   /// Defaults to the surface color; pass the background color on a card.
   final Color? backgroundColor;
 
+  /// Shows a progress indicator instead of the icon and disables the button.
+  final bool loading;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     return IconButton(
-      onPressed: onPressed,
+      onPressed: loading ? null : onPressed,
       tooltip: semanticLabel,
-      icon: Icon(icon),
+      icon: loading
+          ? SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(strokeWidth: 2.5, color: c.text),
+            )
+          : Icon(icon),
       style: IconButton.styleFrom(
         fixedSize: const Size.square(AppSizes.touchTarget),
         minimumSize: const Size.square(AppSizes.touchTarget),

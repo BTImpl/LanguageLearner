@@ -77,7 +77,7 @@ class _NavTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final color = selected ? c.primary : c.textMuted;
+    final color = selected ? c.accent : c.textMuted;
     return Semantics(
       button: true,
       selected: selected,
@@ -92,6 +92,8 @@ class _NavTab extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               item.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: bodyFontFamily,
                 fontSize: 12,

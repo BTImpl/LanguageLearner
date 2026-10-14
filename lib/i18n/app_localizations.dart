@@ -313,6 +313,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not refresh the word list.'**
   String get refreshFailed;
+
+  /// Headline of the home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'What shall we practice today?'**
+  String get homeHeadline;
+
+  /// Screen reader label of the monogram button that opens the settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// Part of the deck summary line, e.g. "12 words, updated today at 9:12".
+  ///
+  /// In en, this message translates to:
+  /// **'updated today at {time}'**
+  String updatedToday(String time);
+
+  /// Part of the deck summary line when the update was before today.
+  ///
+  /// In en, this message translates to:
+  /// **'updated {dateTime}'**
+  String updatedOn(String dateTime);
+
+  /// Number of words the student knew on the first try, on the deck card.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} right first time'**
+  String firstTimeCorrect(int count);
+
+  /// Short description of the flashcards mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip and listen'**
+  String get modeFlashcardsHint;
+
+  /// Short description of the matching mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the pair'**
+  String get modeMatchingHint;
+
+  /// Short description of the quiz mode.
+  ///
+  /// In en, this message translates to:
+  /// **'One word, four answers'**
+  String get modeQuizHint;
+
+  /// Short description of the exact-match typing mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Type it exactly'**
+  String get modeTypingHint;
+
+  /// Short description of the mix mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Typing, choosing and matching, mixed'**
+  String get modeMixHint;
 }
 
 class _AppLocalizationsDelegate

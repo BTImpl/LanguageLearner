@@ -6,11 +6,11 @@ import 'package:languagelearner/app/locale.dart';
 
 void main() {
   const expectedByLocale = <(Locale, String)>[
-    (Locale('en'), 'No words'),
-    (Locale('hu'), 'Nincs szó'),
+    (Locale('en'), 'What shall we practice today?'),
+    (Locale('hu'), 'Mit gyakorolunk ma?'),
   ];
 
-  for (final (locale, wordCountText) in expectedByLocale) {
+  for (final (locale, headline) in expectedByLocale) {
     testWidgets('home screen is shown in ${locale.languageCode}', (
       tester,
     ) async {
@@ -23,7 +23,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('LanguageLearner'), findsOneWidget);
-      expect(find.text(wordCountText), findsOneWidget);
+      expect(find.text(headline), findsOneWidget);
     });
   }
 }

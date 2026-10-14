@@ -30,7 +30,7 @@ class AppProgressBar extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   widthFactor: factor,
                   heightFactor: 1,
-                  child: ColoredBox(color: c.primary),
+                  child: ColoredBox(color: c.accent),
                 ),
               ),
             ),

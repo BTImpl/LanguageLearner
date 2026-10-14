@@ -176,5 +176,60 @@
   "refreshFailed": "Could not refresh the word list.",
   "@refreshFailed": {
     "description": "Message shown when refreshing the word list failed."
+  },
+  "homeHeadline": "What shall we practice today?",
+  "@homeHeadline": {
+    "description": "Headline of the home screen."
+  },
+  "openSettings": "Open settings",
+  "@openSettings": {
+    "description": "Screen reader label of the monogram button that opens the settings."
+  },
+  "updatedToday": "updated today at {time}",
+  "@updatedToday": {
+    "description": "Part of the deck summary line, e.g. \"12 words, updated today at 9:12\".",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "updatedOn": "updated {dateTime}",
+  "@updatedOn": {
+    "description": "Part of the deck summary line when the update was before today.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "firstTimeCorrect": "{count} right first time",
+  "@firstTimeCorrect": {
+    "description": "Number of words the student knew on the first try, on the deck card.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "modeFlashcardsHint": "Flip and listen",
+  "@modeFlashcardsHint": {
+    "description": "Short description of the flashcards mode."
+  },
+  "modeMatchingHint": "Find the pair",
+  "@modeMatchingHint": {
+    "description": "Short description of the matching mode."
+  },
+  "modeQuizHint": "One word, four answers",
+  "@modeQuizHint": {
+    "description": "Short description of the quiz mode."
+  },
+  "modeTypingHint": "Type it exactly",
+  "@modeTypingHint": {
+    "description": "Short description of the exact-match typing mode."
+  },
+  "modeMixHint": "Typing, choosing and matching, mixed",
+  "@modeMixHint": {
+    "description": "Short description of the mix mode."
   }
 }
