@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
@@ -5,6 +7,7 @@ import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/features/home/widgets/deck_card.dart';
+import 'package:languagelearner/features/home/widgets/deck_picker_sheet.dart';
 import 'package:languagelearner/features/home/widgets/home_header.dart';
 import 'package:languagelearner/features/home/widgets/mode_tiles.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
@@ -46,7 +49,10 @@ class HomeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               if (deck != null) ...[
-                DeckCard(deck: deck),
+                DeckCard(
+                  deck: deck,
+                  onTap: () => unawaited(showDeckPicker(context)),
+                ),
                 const SizedBox(height: 14),
               ],
               const ModeTiles(),

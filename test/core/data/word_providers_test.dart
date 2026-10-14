@@ -4,6 +4,9 @@ import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/data/word_repository.dart';
 import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
+import 'package:languagelearner/core/services/key_value_store.dart';
+
+import '../../helpers/in_memory_key_value_store.dart';
 
 class _StubRepository implements WordRepository {
   _StubRepository(this.decks);
@@ -87,5 +90,30 @@ void main() {
 
     expect(selected.hasValue, isTrue);
     expect(selected.value, isNull);
+  });
+
+  test('the picked deck is saved and loaded back after a restart', () async {
+    final store = InMemoryKeyValueStore();
+    final first = ProviderContainer(
+      overrides: [keyValueStoreProvider.overrideWithValue(store)],
+    );
+    addTearDown(first.dispose);
+
+    first.read(selectedDeckIdProvider.notifier).select('y');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(store.values[selectedDeckIdKey], 'y');
+
+    final restarted = ProviderContainer(
+      overrides: [
+        keyValueStoreProvider.overrideWithValue(store),
+        initialSelectedDeckIdProvider.overrideWithValue(
+          await store.getString(selectedDeckIdKey),
+        ),
+      ],
+    );
+    addTearDown(restarted.dispose);
+
+    expect(restarted.read(selectedDeckIdProvider), 'y');
   });
 }

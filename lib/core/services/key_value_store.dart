@@ -1,4 +1,10 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Where the app keeps its small persistent values. Override in tests.
+final keyValueStoreProvider = Provider<KeyValueStore>(
+  (ref) => SharedPreferencesStore(),
+);
 
 /// A tiny key-value storage that survives app restarts.
 ///

@@ -173,4 +173,13 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get modeMixHint => 'Írás, választás és párosítás vegyesen';
+
+  @override
+  String get pickDeckTitle => 'Válassz paklit';
+
+  @override
+  String get close => 'Bezárás';
+
+  @override
+  String get pickDeck => 'Pakli választása';
 }

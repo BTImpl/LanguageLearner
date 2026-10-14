@@ -3,11 +3,6 @@ import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
 
-/// Where the settings are stored. Override in tests.
-final keyValueStoreProvider = Provider<KeyValueStore>(
-  (ref) => SharedPreferencesStore(),
-);
-
 final settingsRepositoryProvider = Provider<SettingsRepository>(
   (ref) => StoreSettingsRepository(ref.watch(keyValueStoreProvider)),
 );
