@@ -173,4 +173,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modeMixHint => 'Typing, choosing and matching, mixed';
+
+  @override
+  String get pickDeckTitle => 'Pick a deck';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get pickDeck => 'Pick a deck';
 }

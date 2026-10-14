@@ -93,6 +93,7 @@ class DeckCard extends ConsumerWidget {
     }
     return Semantics(
       button: true,
+      hint: context.i18n.pickDeck,
       child: GestureDetector(onTap: onTap, child: card),
     );
   }

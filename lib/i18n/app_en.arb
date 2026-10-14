@@ -231,5 +231,17 @@
   "modeMixHint": "Typing, choosing and matching, mixed",
   "@modeMixHint": {
     "description": "Short description of the mix mode."
+  },
+  "pickDeckTitle": "Pick a deck",
+  "@pickDeckTitle": {
+    "description": "Title of the deck picker sheet."
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Label of close buttons (screen reader and tooltip)."
+  },
+  "pickDeck": "Pick a deck",
+  "@pickDeck": {
+    "description": "Screen reader hint of the deck card that opens the deck picker."
   }
 }

@@ -373,6 +373,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Typing, choosing and matching, mixed'**
   String get modeMixHint;
+
+  /// Title of the deck picker sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a deck'**
+  String get pickDeckTitle;
+
+  /// Label of close buttons (screen reader and tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Screen reader hint of the deck card that opens the deck picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a deck'**
+  String get pickDeck;
 }
 
 class _AppLocalizationsDelegate

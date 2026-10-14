@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/theme/theme_mode.dart';
+import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';

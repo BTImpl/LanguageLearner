@@ -45,5 +45,8 @@
   "modeMatchingHint": "Keresd meg a párját",
   "modeQuizHint": "Egy szó, négy válasz",
   "modeTypingHint": "Írd le betűre pontosan",
-  "modeMixHint": "Írás, választás és párosítás vegyesen"
+  "modeMixHint": "Írás, választás és párosítás vegyesen",
+  "pickDeckTitle": "Válassz paklit",
+  "close": "Bezárás",
+  "pickDeck": "Pakli választása"
 }
