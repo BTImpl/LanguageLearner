@@ -36,4 +36,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String choiceWrong(String label) {
     return '$label, wrong answer';
   }
+
+  @override
+  String get navLearn => 'Learn';
+
+  @override
+  String get navStats => 'Statistics';
+
+  @override
+  String get navSettings => 'Settings';
+
+  @override
+  String get modeFlashcards => 'Flashcards';
+
+  @override
+  String get modeMatching => 'Matching';
+
+  @override
+  String get modeQuiz => 'Quiz';
+
+  @override
+  String get modeTyping => 'Exact match';
+
+  @override
+  String get modeMix => 'Mix';
+
+  @override
+  String get roundEnd => 'Round complete';
 }
