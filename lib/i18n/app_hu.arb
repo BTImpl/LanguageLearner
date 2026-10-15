@@ -70,5 +70,13 @@
   "statFirstTry": "elsőre megvolt",
   "statPages": "oldal",
   "matchingHeadline": "Mind a {count} pár megvan",
-  "restartMatching": "Párosító újrakezdése"
+  "restartMatching": "Párosító újrakezdése",
+  "quizQuestionToHungarian": "Mit jelent magyarul?",
+  "quizQuestionToEnglish": "Hogy van angolul?",
+  "quizTryAgain": "Nem ez az. Próbáld újra!",
+  "statGuessed": "elsőre eltalált",
+  "statWrongFirst": "elsőre hibás",
+  "quizHeadline": "{total} szóból {first} ment elsőre",
+  "restartQuiz": "Tanuló újrakezdése",
+  "quizNeedsWords": "Ehhez a módhoz legalább 4 szó kell a pakliban."
 }
