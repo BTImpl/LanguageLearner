@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/app/shell/app_shell.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
+import 'package:languagelearner/features/play/flashcards/flashcards_screen.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/play_placeholder_screen.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
@@ -56,20 +57,24 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
           ),
         ],
       ),
-      for (final mode in PlayMode.values)
+      for (final mode in PlayMode.values) ...[
         GoRoute(
           path: AppRoutes.play(mode),
-          builder: (context, state) => PlayPlaceholderScreen(mode: mode),
-          routes: [
-            GoRoute(
-              path: 'summary',
-              builder: (context, state) => switch (state.extra) {
-                final RoundSummaryData data => RoundSummaryScreen(data: data),
-                _ => PlayPlaceholderScreen(mode: mode, summary: true),
-              },
-            ),
-          ],
+          builder: (context, state) => switch (mode) {
+            PlayMode.flashcards => const FlashcardsScreen(),
+            _ => PlayPlaceholderScreen(mode: mode),
+          },
         ),
+        // Not a sub-route of the game: going back to the game must build a
+        // new screen (a new round), not reveal the finished one below.
+        GoRoute(
+          path: AppRoutes.summary(mode),
+          builder: (context, state) => switch (state.extra) {
+            final RoundSummaryData data => RoundSummaryScreen(data: data),
+            _ => PlayPlaceholderScreen(mode: mode, summary: true),
+          },
+        ),
+      ],
     ],
   );
 }

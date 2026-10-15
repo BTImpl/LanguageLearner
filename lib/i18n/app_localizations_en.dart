@@ -188,4 +188,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToHome => 'Back to home';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageHungarian => 'Hungarian';
+
+  @override
+  String get flipHintHungarian => 'Tap for the Hungarian side';
+
+  @override
+  String get flipHintEnglish => 'Tap for the English side';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get readAloud => 'Read aloud';
+
+  @override
+  String get restartFlashcards => 'Restart Flashcards';
+
+  @override
+  String cardsViewedHeadline(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You viewed all $count cards',
+      one: 'You viewed the card',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statCards => 'cards';
+
+  @override
+  String get statReadAloud => 'read aloud';
+
+  @override
+  String get statMinutes => 'minutes';
 }

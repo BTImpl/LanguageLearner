@@ -251,5 +251,62 @@
   "backToHome": "Back to home",
   "@backToHome": {
     "description": "Button that leaves a screen for the home screen."
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Label of the English side of a flashcard."
+  },
+  "languageHungarian": "Hungarian",
+  "@languageHungarian": {
+    "description": "Label of the Hungarian side of a flashcard."
+  },
+  "flipHintHungarian": "Tap for the Hungarian side",
+  "@flipHintHungarian": {
+    "description": "Hint at the bottom of the English flashcard side."
+  },
+  "flipHintEnglish": "Tap for the English side",
+  "@flipHintEnglish": {
+    "description": "Hint at the bottom of the Hungarian flashcard side."
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Button that goes to the previous card."
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Button that goes to the next card."
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Button on the last card that ends the round."
+  },
+  "readAloud": "Read aloud",
+  "@readAloud": {
+    "description": "Label of the button that reads the English word aloud."
+  },
+  "restartFlashcards": "Restart Flashcards",
+  "@restartFlashcards": {
+    "description": "Button on the round-end screen of the flashcards mode."
+  },
+  "cardsViewedHeadline": "{count, plural, =1{You viewed the card} other{You viewed all {count} cards}}",
+  "@cardsViewedHeadline": {
+    "description": "Headline of the round-end screen of the flashcards mode.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statCards": "cards",
+  "@statCards": {
+    "description": "Caption of the number of cards on the round-end screen."
+  },
+  "statReadAloud": "read aloud",
+  "@statReadAloud": {
+    "description": "Caption of the number of read-alouds on the round-end screen."
+  },
+  "statMinutes": "minutes",
+  "@statMinutes": {
+    "description": "Caption of the elapsed minutes on the round-end screen."
   }
 }
