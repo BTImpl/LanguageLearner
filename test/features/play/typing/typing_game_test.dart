@@ -317,6 +317,18 @@ void main() {
       expect(s.scheduler.pending, 0);
     });
 
+    test('every request gets a new revision', () {
+      final s = _Setup();
+      final before = s.game.helpRevision;
+
+      s.game.requestHelp();
+      final first = s.game.helpRevision;
+      s.game.requestHelp();
+
+      expect(first, isNot(before));
+      expect(s.game.helpRevision, isNot(first));
+    });
+
     test('stays while a wrong answer is sent', () {
       final s = _Setup();
       s.game.requestHelp();

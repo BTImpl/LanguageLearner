@@ -10,6 +10,7 @@ import 'package:languagelearner/features/play/play_placeholder_screen.dart';
 import 'package:languagelearner/features/play/quiz/quiz_screen.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
+import 'package:languagelearner/features/play/typing/typing_screen.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
 
@@ -66,6 +67,7 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
             PlayMode.flashcards => const FlashcardsScreen(),
             PlayMode.matching => const MatchingScreen(),
             PlayMode.quiz => const QuizScreen(),
+            PlayMode.typing => const TypingScreen(),
             _ => PlayPlaceholderScreen(mode: mode),
           },
         ),

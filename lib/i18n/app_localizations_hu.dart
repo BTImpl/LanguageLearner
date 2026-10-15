@@ -271,7 +271,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get statWrongFirst => 'elsőre hibás';
 
   @override
-  String quizHeadline(int total, int first) {
+  String firstTryHeadline(int total, int first) {
     return '$total szóból $first ment elsőre';
   }
 
@@ -280,4 +280,36 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get quizNeedsWords => 'Ehhez a módhoz legalább 4 szó kell a pakliban.';
+
+  @override
+  String get typingWriteHungarian => 'Írd le magyarul';
+
+  @override
+  String get typingWriteEnglish => 'Írd le angolul';
+
+  @override
+  String get typingAnswerLabel => 'A válaszod';
+
+  @override
+  String get typingHelp => 'Segítség';
+
+  @override
+  String get typingCheck => 'Ellenőrzés';
+
+  @override
+  String get typingMismatch => 'Nem egyezik. Próbáld újra!';
+
+  @override
+  String typingHelpCountdown(int seconds) {
+    return 'még $seconds mp látszik';
+  }
+
+  @override
+  String get statCorrectFirst => 'elsőre jó';
+
+  @override
+  String get statWithHelp => 'segítséggel';
+
+  @override
+  String get restartTyping => 'Pontos egyezés újrakezdése';
 }

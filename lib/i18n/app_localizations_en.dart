@@ -283,7 +283,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statWrongFirst => 'wrong first time';
 
   @override
-  String quizHeadline(int total, int first) {
+  String firstTryHeadline(int total, int first) {
     String _temp0 = intl.Intl.pluralLogic(
       total,
       locale: localeName,
@@ -298,4 +298,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizNeedsWords => 'This mode needs at least 4 words in the deck.';
+
+  @override
+  String get typingWriteHungarian => 'Write it in Hungarian';
+
+  @override
+  String get typingWriteEnglish => 'Write it in English';
+
+  @override
+  String get typingAnswerLabel => 'Your answer';
+
+  @override
+  String get typingHelp => 'Help';
+
+  @override
+  String get typingCheck => 'Check';
+
+  @override
+  String get typingMismatch => 'Doesn\'t match. Try again!';
+
+  @override
+  String typingHelpCountdown(int seconds) {
+    return '$seconds s left';
+  }
+
+  @override
+  String get statCorrectFirst => 'right first time';
+
+  @override
+  String get statWithHelp => 'with help';
+
+  @override
+  String get restartTyping => 'Restart Exact match';
 }
