@@ -17,6 +17,7 @@ import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
+import 'package:languagelearner/features/stats/data/record_round.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The quiz mode: a word and four answers, until every word is known.
@@ -67,6 +68,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     final i18n = context.i18n;
     final session = game.session;
     final result = game.result;
+    recordRound(ref, result: result, deckId: _deck.id, mode: PlayMode.quiz);
     final data = RoundSummaryData(
       modeName: PlayMode.quiz.title(context),
       deckName: _deck.name,

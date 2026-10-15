@@ -142,6 +142,9 @@ class RoundSession {
       helpedWords: wordsOf(WordOutcome.withHelp),
       duration: (_finishedAt ?? _now()).difference(_startedAt),
       extras: Map.unmodifiable(_extras),
+      outcomes: Map.unmodifiable({
+        for (final word in decided) word.id: _outcomes[word.id]!,
+      }),
     );
   }
 
