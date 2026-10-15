@@ -235,4 +235,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statMinutes => 'minutes';
+
+  @override
+  String matchingPageCounter(int page, int pages) {
+    return 'Page $page of $pages';
+  }
+
+  @override
+  String get statPairsFound => 'pairs found';
+
+  @override
+  String get statWrongTries => 'wrong attempts';
+
+  @override
+  String get statFirstTry => 'right first time';
+
+  @override
+  String get statPages => 'pages';
+
+  @override
+  String matchingHeadline(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'All $count pairs found',
+      one: 'The pair is found',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get restartMatching => 'Restart Matching';
 }

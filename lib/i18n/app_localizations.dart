@@ -481,6 +481,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'minutes'**
   String get statMinutes;
+
+  /// Counter of the matching screen, e.g. "Page 2 of 3".
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {pages}'**
+  String matchingPageCounter(int page, int pages);
+
+  /// Caption of the number of found pairs in the matching game.
+  ///
+  /// In en, this message translates to:
+  /// **'pairs found'**
+  String get statPairsFound;
+
+  /// Caption of the number of wrong attempts.
+  ///
+  /// In en, this message translates to:
+  /// **'wrong attempts'**
+  String get statWrongTries;
+
+  /// Caption of the number of words found without a wrong attempt.
+  ///
+  /// In en, this message translates to:
+  /// **'right first time'**
+  String get statFirstTry;
+
+  /// Caption of the number of pages in the matching game.
+  ///
+  /// In en, this message translates to:
+  /// **'pages'**
+  String get statPages;
+
+  /// Headline of the round-end screen of the matching game.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{The pair is found} other{All {count} pairs found}}'**
+  String matchingHeadline(int count);
+
+  /// Button on the round-end screen of the matching game.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Matching'**
+  String get restartMatching;
 }
 
 class _AppLocalizationsDelegate
