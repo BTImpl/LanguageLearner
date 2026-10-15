@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
 import 'package:languagelearner/features/stats/data/stats_providers.dart';
+import 'package:languagelearner/features/stats/data/stats_repository.dart';
 
 /// Saves a finished round in the statistics.
 ///
@@ -16,13 +17,22 @@ void recordRound(
   required String deckId,
   required PlayMode mode,
 }) {
+  // Read everything now: the screen may be gone when the saving is done.
   final repository = ref.read(statsRepositoryProvider);
-  unawaited(_save(repository.saveRound(result, deckId: deckId, mode: mode)));
+  final revision = ref.read(statsRevisionProvider.notifier);
+  unawaited(_save(repository, revision, result, deckId, mode));
 }
 
-Future<void> _save(Future<void> saving) async {
+Future<void> _save(
+  StatsRepository repository,
+  StatsRevision revision,
+  RoundResult result,
+  String deckId,
+  PlayMode mode,
+) async {
   try {
-    await saving;
+    await repository.saveRound(result, deckId: deckId, mode: mode);
+    revision.bump();
   } on Exception {
     // Ignored on purpose, see above.
   }

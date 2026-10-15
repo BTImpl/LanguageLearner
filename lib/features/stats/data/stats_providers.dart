@@ -23,3 +23,35 @@ final statsRepositoryProvider = Provider<StatsRepository>(
     newId: ref.watch(attemptIdGeneratorProvider),
   ),
 );
+
+/// Counts the saved rounds. The statistics providers watch it, so they read
+/// the database again after every round without a restart of the app.
+final statsRevisionProvider = NotifierProvider<StatsRevision, int>(
+  StatsRevision.new,
+);
+
+class StatsRevision extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  /// Tells the statistics that a round was saved.
+  void bump() => state++;
+}
+
+/// The totals of the deck with the given id.
+final deckSummaryProvider = FutureProvider.family<DeckSummary, String>((
+  ref,
+  deckId,
+) {
+  ref.watch(statsRevisionProvider);
+  return ref.watch(statsRepositoryProvider).deckSummary(deckId);
+});
+
+/// How the answered words of the deck with the given id went, hardest first.
+final wordStatsProvider = FutureProvider.family<List<WordStat>, String>((
+  ref,
+  deckId,
+) {
+  ref.watch(statsRevisionProvider);
+  return ref.watch(statsRepositoryProvider).wordStats(deckId);
+});

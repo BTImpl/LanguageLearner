@@ -89,5 +89,12 @@
   "statCorrectFirst": "elsőre jó",
   "statWithHelp": "segítséggel",
   "restartTyping": "Pontos egyezés újrakezdése",
-  "restartMix": "Mix újrakezdése"
+  "restartMix": "Mix újrakezdése",
+  "statsSummaryHeadline": "{total} szóból {known} megy elsőre",
+  "statsAnswersLine": "{total} válasz összesen, ebből {first} elsőre jó",
+  "statsWordsTitle": "Szavak, a legnehezebbtől",
+  "statsWordRatio": "{first} / {total}",
+  "statsNotPracticed": "még nem gyakoroltad",
+  "statsEmptyText": "Itt látod majd, mely szavak mennek jól. Indíts el egy kört a Tanulás fülön.",
+  "statsEmptyAction": "Gyakorlás indítása"
 }

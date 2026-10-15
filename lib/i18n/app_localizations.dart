@@ -637,6 +637,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restart Mix'**
   String get restartMix;
+
+  /// Headline of the statistics summary card: how many words of the deck go right first time.
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{{known} of 1 word goes right first time} other{{known} of {total} words go right first time}}'**
+  String statsSummaryHeadline(int total, int known);
+
+  /// Line under the progress bar of the statistics summary card.
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{1 answer in total, {first} right first time} other{{total} answers in total, {first} right first time}}'**
+  String statsAnswersLine(int total, int first);
+
+  /// Title of the word list of the statistics screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Words, hardest first'**
+  String get statsWordsTitle;
+
+  /// Right-first-time answers out of all answers of a word, e.g. "1 / 5".
+  ///
+  /// In en, this message translates to:
+  /// **'{first} / {total}'**
+  String statsWordRatio(int first, int total);
+
+  /// Shown instead of the bar for a word nobody answered yet.
+  ///
+  /// In en, this message translates to:
+  /// **'not practiced yet'**
+  String get statsNotPracticed;
+
+  /// Statistics screen before the first finished round.
+  ///
+  /// In en, this message translates to:
+  /// **'You will see here which words go well. Start a round on the Learn tab.'**
+  String get statsEmptyText;
+
+  /// Button of the empty statistics screen that opens the home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Start practicing'**
+  String get statsEmptyAction;
 }
 
 class _AppLocalizationsDelegate
