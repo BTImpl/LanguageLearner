@@ -5,6 +5,8 @@ import 'package:languagelearner/app/shell/app_shell.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/play_placeholder_screen.dart';
+import 'package:languagelearner/features/play/summary/round_summary_data.dart';
+import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
 
@@ -61,8 +63,10 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
           routes: [
             GoRoute(
               path: 'summary',
-              builder: (context, state) =>
-                  PlayPlaceholderScreen(mode: mode, summary: true),
+              builder: (context, state) => switch (state.extra) {
+                final RoundSummaryData data => RoundSummaryScreen(data: data),
+                _ => PlayPlaceholderScreen(mode: mode, summary: true),
+              },
             ),
           ],
         ),

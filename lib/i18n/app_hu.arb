@@ -48,5 +48,7 @@
   "modeMixHint": "Írás, választás és párosítás vegyesen",
   "pickDeckTitle": "Válassz paklit",
   "close": "Bezárás",
-  "pickDeck": "Pakli választása"
+  "pickDeck": "Pakli választása",
+  "reviewAgainTitle": "Ezeket érdemes újra átnézni",
+  "backToHome": "Vissza a kezdőlapra"
 }

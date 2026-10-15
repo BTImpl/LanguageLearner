@@ -182,4 +182,10 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get pickDeck => 'Pakli választása';
+
+  @override
+  String get reviewAgainTitle => 'Ezeket érdemes újra átnézni';
+
+  @override
+  String get backToHome => 'Vissza a kezdőlapra';
 }
