@@ -262,6 +262,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get quizQuestionToEnglish => 'Hogy van angolul?';
 
   @override
+  String get switchQuestionLanguage => 'Kérdés nyelvének váltása';
+
+  @override
   String get quizTryAgain => 'Nem ez az. Próbáld újra!';
 
   @override

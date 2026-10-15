@@ -358,6 +358,10 @@
   "@quizQuestionToEnglish": {
     "description": "Label above the Hungarian word in the quiz."
   },
+  "switchQuestionLanguage": "Switch the question language",
+  "@switchQuestionLanguage": {
+    "description": "Tooltip of the button in the games that swaps the question and the answer language until the player leaves the game."
+  },
   "quizTryAgain": "Not this one. Try again!",
   "@quizTryAgain": {
     "description": "Shown under the answers after a wrong choice in the quiz."

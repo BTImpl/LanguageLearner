@@ -274,6 +274,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizQuestionToEnglish => 'How do you say it in English?';
 
   @override
+  String get switchQuestionLanguage => 'Switch the question language';
+
+  @override
   String get quizTryAgain => 'Not this one. Try again!';
 
   @override
