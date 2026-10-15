@@ -558,7 +558,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{total, plural, =1{{first} of 1 word went right first time} other{{first} of {total} words went right first time}}'**
-  String quizHeadline(int total, int first);
+  String firstTryHeadline(int total, int first);
 
   /// Button on the round-end screen of the quiz.
   ///
@@ -571,6 +571,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This mode needs at least 4 words in the deck.'**
   String get quizNeedsWords;
+
+  /// Label above the English word in the exact-match game.
+  ///
+  /// In en, this message translates to:
+  /// **'Write it in Hungarian'**
+  String get typingWriteHungarian;
+
+  /// Label above the Hungarian word in the exact-match game.
+  ///
+  /// In en, this message translates to:
+  /// **'Write it in English'**
+  String get typingWriteEnglish;
+
+  /// Label of the input field of the exact-match game.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get typingAnswerLabel;
+
+  /// Button that shows the right answer for a few seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get typingHelp;
+
+  /// Button that checks the typed answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get typingCheck;
+
+  /// Shown under the input after a wrong answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Doesn\'t match. Try again!'**
+  String get typingMismatch;
+
+  /// Countdown in the help box, e.g. "2 s left".
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s left'**
+  String typingHelpCountdown(int seconds);
+
+  /// Caption of the number of words typed right at the first attempt, without help.
+  ///
+  /// In en, this message translates to:
+  /// **'right first time'**
+  String get statCorrectFirst;
+
+  /// Caption of the number of words solved with help.
+  ///
+  /// In en, this message translates to:
+  /// **'with help'**
+  String get statWithHelp;
+
+  /// Button on the round-end screen of the exact-match game.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Exact match'**
+  String get restartTyping;
 }
 
 class _AppLocalizationsDelegate

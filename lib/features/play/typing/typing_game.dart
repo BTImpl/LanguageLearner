@@ -49,6 +49,7 @@ class TypingGame {
   Cancel? _cancelHelp;
   var _solved = false;
   var _helpVisible = false;
+  var _helpRevision = 0;
   var _feedback = TypingFeedback.none;
   var _disposed = false;
 
@@ -70,6 +71,10 @@ class TypingGame {
 
   /// Whether the help is showing the right answer now.
   bool get helpVisible => _helpVisible;
+
+  /// Grows with every [requestHelp], so a screen can tell a new request from
+  /// the one it is already showing.
+  int get helpRevision => _helpRevision;
 
   /// The right answer while the help is showing, otherwise `null`.
   String? get helpText {
@@ -115,6 +120,7 @@ class TypingGame {
       return;
     }
     session.recordHelp(word);
+    _helpRevision++;
     _cancelHelp?.call();
     _helpVisible = true;
     _cancelHelp = _schedule(helpDuration, () {

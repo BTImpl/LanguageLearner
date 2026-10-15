@@ -370,8 +370,8 @@
   "@statWrongFirst": {
     "description": "Caption of the number of words answered wrong at the first choice."
   },
-  "quizHeadline": "{total, plural, =1{{first} of 1 word went right first time} other{{first} of {total} words went right first time}}",
-  "@quizHeadline": {
+  "firstTryHeadline": "{total, plural, =1{{first} of 1 word went right first time} other{{first} of {total} words went right first time}}",
+  "@firstTryHeadline": {
     "description": "Headline of the round-end screen of the quiz.",
     "placeholders": {
       "total": {
@@ -389,5 +389,50 @@
   "quizNeedsWords": "This mode needs at least 4 words in the deck.",
   "@quizNeedsWords": {
     "description": "Shown instead of the quiz when the deck is too small."
+  },
+  "typingWriteHungarian": "Write it in Hungarian",
+  "@typingWriteHungarian": {
+    "description": "Label above the English word in the exact-match game."
+  },
+  "typingWriteEnglish": "Write it in English",
+  "@typingWriteEnglish": {
+    "description": "Label above the Hungarian word in the exact-match game."
+  },
+  "typingAnswerLabel": "Your answer",
+  "@typingAnswerLabel": {
+    "description": "Label of the input field of the exact-match game."
+  },
+  "typingHelp": "Help",
+  "@typingHelp": {
+    "description": "Button that shows the right answer for a few seconds."
+  },
+  "typingCheck": "Check",
+  "@typingCheck": {
+    "description": "Button that checks the typed answer."
+  },
+  "typingMismatch": "Doesn't match. Try again!",
+  "@typingMismatch": {
+    "description": "Shown under the input after a wrong answer."
+  },
+  "typingHelpCountdown": "{seconds} s left",
+  "@typingHelpCountdown": {
+    "description": "Countdown in the help box, e.g. \"2 s left\".",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "statCorrectFirst": "right first time",
+  "@statCorrectFirst": {
+    "description": "Caption of the number of words typed right at the first attempt, without help."
+  },
+  "statWithHelp": "with help",
+  "@statWithHelp": {
+    "description": "Caption of the number of words solved with help."
+  },
+  "restartTyping": "Restart Exact match",
+  "@restartTyping": {
+    "description": "Button on the round-end screen of the exact-match game."
   }
 }

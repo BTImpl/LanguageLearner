@@ -76,7 +76,17 @@
   "quizTryAgain": "Nem ez az. Próbáld újra!",
   "statGuessed": "elsőre eltalált",
   "statWrongFirst": "elsőre hibás",
-  "quizHeadline": "{total} szóból {first} ment elsőre",
+  "firstTryHeadline": "{total} szóból {first} ment elsőre",
   "restartQuiz": "Tanuló újrakezdése",
-  "quizNeedsWords": "Ehhez a módhoz legalább 4 szó kell a pakliban."
+  "quizNeedsWords": "Ehhez a módhoz legalább 4 szó kell a pakliban.",
+  "typingWriteHungarian": "Írd le magyarul",
+  "typingWriteEnglish": "Írd le angolul",
+  "typingAnswerLabel": "A válaszod",
+  "typingHelp": "Segítség",
+  "typingCheck": "Ellenőrzés",
+  "typingMismatch": "Nem egyezik. Próbáld újra!",
+  "typingHelpCountdown": "még {seconds} mp látszik",
+  "statCorrectFirst": "elsőre jó",
+  "statWithHelp": "segítséggel",
+  "restartTyping": "Pontos egyezés újrakezdése"
 }
