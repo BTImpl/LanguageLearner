@@ -188,4 +188,45 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get backToHome => 'Vissza a kezdőlapra';
+
+  @override
+  String get languageEnglish => 'Angol';
+
+  @override
+  String get languageHungarian => 'Magyar';
+
+  @override
+  String get flipHintHungarian => 'Koppints a magyar oldalért';
+
+  @override
+  String get flipHintEnglish => 'Koppints az angol oldalért';
+
+  @override
+  String get previous => 'Előző';
+
+  @override
+  String get next => 'Következő';
+
+  @override
+  String get finish => 'Befejezés';
+
+  @override
+  String get readAloud => 'Felolvasás';
+
+  @override
+  String get restartFlashcards => 'Kártyák újrakezdése';
+
+  @override
+  String cardsViewedHeadline(int count) {
+    return 'Mind a $count kártyát átnézted';
+  }
+
+  @override
+  String get statCards => 'kártya';
+
+  @override
+  String get statReadAloud => 'felolvasás';
+
+  @override
+  String get statMinutes => 'perc';
 }

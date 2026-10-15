@@ -50,5 +50,18 @@
   "close": "Bezárás",
   "pickDeck": "Pakli választása",
   "reviewAgainTitle": "Ezeket érdemes újra átnézni",
-  "backToHome": "Vissza a kezdőlapra"
+  "backToHome": "Vissza a kezdőlapra",
+  "languageEnglish": "Angol",
+  "languageHungarian": "Magyar",
+  "flipHintHungarian": "Koppints a magyar oldalért",
+  "flipHintEnglish": "Koppints az angol oldalért",
+  "previous": "Előző",
+  "next": "Következő",
+  "finish": "Befejezés",
+  "readAloud": "Felolvasás",
+  "restartFlashcards": "Kártyák újrakezdése",
+  "cardsViewedHeadline": "Mind a {count} kártyát átnézted",
+  "statCards": "kártya",
+  "statReadAloud": "felolvasás",
+  "statMinutes": "perc"
 }

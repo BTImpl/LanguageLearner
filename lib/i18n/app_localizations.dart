@@ -403,6 +403,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to home'**
   String get backToHome;
+
+  /// Label of the English side of a flashcard.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// Label of the Hungarian side of a flashcard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hungarian'**
+  String get languageHungarian;
+
+  /// Hint at the bottom of the English flashcard side.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for the Hungarian side'**
+  String get flipHintHungarian;
+
+  /// Hint at the bottom of the Hungarian flashcard side.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for the English side'**
+  String get flipHintEnglish;
+
+  /// Button that goes to the previous card.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// Button that goes to the next card.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Button on the last card that ends the round.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// Label of the button that reads the English word aloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Read aloud'**
+  String get readAloud;
+
+  /// Button on the round-end screen of the flashcards mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Flashcards'**
+  String get restartFlashcards;
+
+  /// Headline of the round-end screen of the flashcards mode.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You viewed the card} other{You viewed all {count} cards}}'**
+  String cardsViewedHeadline(int count);
+
+  /// Caption of the number of cards on the round-end screen.
+  ///
+  /// In en, this message translates to:
+  /// **'cards'**
+  String get statCards;
+
+  /// Caption of the number of read-alouds on the round-end screen.
+  ///
+  /// In en, this message translates to:
+  /// **'read aloud'**
+  String get statReadAloud;
+
+  /// Caption of the elapsed minutes on the round-end screen.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get statMinutes;
 }
 
 class _AppLocalizationsDelegate
