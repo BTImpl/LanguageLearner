@@ -6,20 +6,16 @@ import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/models/deck.dart';
-import 'package:languagelearner/core/models/word_pair.dart';
 import 'package:languagelearner/core/services/clock.dart';
-import 'package:languagelearner/core/services/tts_service.dart';
-import 'package:languagelearner/core/widgets/choice_tile.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
 import 'package:languagelearner/core/widgets/stat_tile.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
+import 'package:languagelearner/features/play/quiz/quiz_content.dart';
 import 'package:languagelearner/features/play/quiz/quiz_game.dart';
-import 'package:languagelearner/features/play/quiz/quiz_option.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
-import 'package:languagelearner/features/play/widgets/question_card.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -100,10 +96,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     context.go(AppRoutes.summary(PlayMode.quiz), extra: data);
   }
 
-  void _readAloud(WordPair word) {
-    ref.read(ttsServiceProvider).speak(word.english).ignore();
-  }
-
   @override
   void dispose() {
     _game?.dispose();
@@ -137,11 +129,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     }
 
     final i18n = context.i18n;
-    final word = game.current!;
-    final session = game.session;
-    final options = game.options;
-    final answered = options.any((o) => o.state == QuizOptionState.correct);
-    final hasWrong = options.any((o) => o.state == QuizOptionState.wrong);
     final wrongFirst = game.wrongFirstCount;
 
     return GameScaffold(
@@ -152,31 +139,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  QuestionCard(
-                    label: session.promptIsEnglish
-                        ? i18n.quizQuestionToHungarian
-                        : i18n.quizQuestionToEnglish,
-                    text: session.promptText(word),
-                    onReadAloud: session.promptIsEnglish
-                        ? () => _readAloud(word)
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-                  for (var i = 0; i < options.length; i++) ...[
-                    if (i > 0) const SizedBox(height: 12),
-                    _optionTile(game, options[i], locked: answered),
-                  ],
-                  const SizedBox(height: 12),
-                  _TryAgainHint(visible: hasWrong && !answered),
-                ],
-              ),
-            ),
-          ),
+          Expanded(child: QuizContent(game: game)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -200,55 +163,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           const SizedBox(height: 20),
         ],
       ),
-    );
-  }
-
-  Widget _optionTile(QuizGame game, QuizOption option, {required bool locked}) {
-    final state = switch (option.state) {
-      QuizOptionState.idle => ChoiceState.idle,
-      QuizOptionState.wrong => ChoiceState.wrong,
-      QuizOptionState.correct => ChoiceState.correct,
-    };
-    final canTap = option.state == QuizOptionState.idle && !locked;
-    return ChoiceTile(
-      key: quizOptionKey(option.word),
-      label: option.text,
-      state: state,
-      onTap: canTap ? () => game.choose(option.word) : null,
-    );
-  }
-}
-
-/// The key of the answer tile that comes from [word], for tests.
-Key quizOptionKey(WordPair word) => Key('quiz-option-${word.id}');
-
-/// "Not this one" under the answers. It always takes its place, so the
-/// answers do not jump when it appears.
-class _TryAgainHint extends StatelessWidget {
-  const _TryAgainHint({required this.visible});
-
-  final bool visible;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return SizedBox(
-      height: 24,
-      child: visible
-          ? Semantics(
-              liveRegion: true,
-              child: Text(
-                context.i18n.quizTryAgain,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: bodyFontFamily,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: c.errorText,
-                ),
-              ),
-            )
-          : null,
     );
   }
 }

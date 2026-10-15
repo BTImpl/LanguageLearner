@@ -434,5 +434,9 @@
   "restartTyping": "Restart Exact match",
   "@restartTyping": {
     "description": "Button on the round-end screen of the exact-match game."
+  },
+  "restartMix": "Restart Mix",
+  "@restartMix": {
+    "description": "Button on the round-end screen of the Mix mode."
   }
 }

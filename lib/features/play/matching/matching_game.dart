@@ -69,6 +69,18 @@ class MatchingGame {
   /// pages following each other it is only `true` until the next page starts.
   bool get pageDone => _pageDone;
 
+  /// How many words are paired so far, counting the pairs of the current
+  /// page that are found but still fading away.
+  int get pairsFound {
+    if (isFinished || _pageDone) {
+      return session.index;
+    }
+    final waiting = _english
+        .where((tile) => tile.state != TileState.matched)
+        .length;
+    return session.index + _pageSize - waiting;
+  }
+
   /// The number of pages the round has.
   int get pageCount => (session.total / pairsPerPage).ceil();
 
