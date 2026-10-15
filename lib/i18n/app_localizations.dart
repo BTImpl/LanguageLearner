@@ -679,6 +679,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start practicing'**
   String get statsEmptyAction;
+
+  /// Part of the deck summary line when the update was yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'updated yesterday'**
+  String get updatedYesterday;
+
+  /// Shown on the deck card while no word of the deck was answered.
+  ///
+  /// In en, this message translates to:
+  /// **'Not practiced yet'**
+  String get deckNotPracticed;
 }
 
 class _AppLocalizationsDelegate

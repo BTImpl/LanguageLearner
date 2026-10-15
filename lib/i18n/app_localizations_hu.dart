@@ -343,4 +343,10 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get statsEmptyAction => 'Gyakorlás indítása';
+
+  @override
+  String get updatedYesterday => 'frissítve tegnap';
+
+  @override
+  String get deckNotPracticed => 'Még nem gyakoroltad';
 }

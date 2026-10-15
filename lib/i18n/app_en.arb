@@ -490,5 +490,13 @@
   "statsEmptyAction": "Start practicing",
   "@statsEmptyAction": {
     "description": "Button of the empty statistics screen that opens the home screen."
+  },
+  "updatedYesterday": "updated yesterday",
+  "@updatedYesterday": {
+    "description": "Part of the deck summary line when the update was yesterday."
+  },
+  "deckNotPracticed": "Not practiced yet",
+  "@deckNotPracticed": {
+    "description": "Shown on the deck card while no word of the deck was answered."
   }
 }

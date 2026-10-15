@@ -7,6 +7,11 @@ import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/core/services/clock.dart';
+import 'package:languagelearner/features/play/play_mode.dart';
+import 'package:languagelearner/features/play/round/word_outcome.dart';
+import 'package:languagelearner/features/stats/data/attempt_record.dart';
+import 'package:languagelearner/features/stats/data/attempt_store.dart';
+import 'package:languagelearner/features/stats/data/stats_providers.dart';
 
 final _now = DateTime(2026, 10, 14, 15, 30);
 
@@ -14,6 +19,7 @@ Future<GoRouter> _openHome(
   WidgetTester tester, {
   Locale locale = const Locale('en'),
   Size size = const Size(390, 1400),
+  AttemptStore? attempts,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -27,6 +33,7 @@ Future<GoRouter> _openHome(
         routerProvider.overrideWithValue(router),
         appLocaleProvider.overrideWithValue(locale),
         clockProvider.overrideWithValue(() => _now),
+        if (attempts != null) attemptStoreProvider.overrideWithValue(attempts),
       ],
       child: const LanguageLearnerApp(),
     ),
@@ -48,7 +55,7 @@ void main() {
     expect(find.text('What shall we practice today?'), findsOneWidget);
     expect(find.text('KA'), findsOneWidget);
     expect(find.textContaining('12 words, updated'), findsOneWidget);
-    expect(find.text('8 right first time'), findsOneWidget);
+    expect(find.text('Not practiced yet'), findsOneWidget);
     expect(find.text('Mix'), findsOneWidget);
     expect(find.text('Flashcards'), findsOneWidget);
     expect(find.text('Flip and listen'), findsOneWidget);
@@ -59,7 +66,50 @@ void main() {
 
     expect(find.text('Mit gyakorolunk ma?'), findsOneWidget);
     expect(find.text('Keresd meg a párját'), findsOneWidget);
-    expect(find.text('8 megy elsőre'), findsOneWidget);
+    expect(find.text('Még nem gyakoroltad'), findsOneWidget);
+  });
+
+  group('deck progress', () {
+    AttemptRecord attempt(String wordId, WordOutcome outcome, int minute) =>
+        AttemptRecord(
+          id: '$wordId-$minute',
+          deckId: 'travel',
+          wordId: wordId,
+          mode: PlayMode.quiz,
+          outcome: outcome,
+          answeredAt: DateTime.utc(2026, 10, 14, 12, minute),
+        );
+
+    testWidgets('shows the words that go first try', (tester) async {
+      final store = InMemoryAttemptStore();
+      await store.insertAll([
+        attempt('travel-1', WordOutcome.firstTry, 0),
+        attempt('travel-2', WordOutcome.firstTry, 0),
+        attempt('travel-3', WordOutcome.wrongFirst, 0),
+        // travel-2 slipped in its latest answer, so it no longer counts.
+        attempt('travel-2', WordOutcome.wrongFirst, 1),
+      ]);
+
+      await _openHome(tester, attempts: store);
+
+      expect(find.text('1 right first time'), findsOneWidget);
+      expect(find.text('Not practiced yet'), findsNothing);
+    });
+
+    testWidgets('updates when a round is saved', (tester) async {
+      final store = InMemoryAttemptStore();
+      await _openHome(tester, attempts: store);
+      expect(find.text('Not practiced yet'), findsOneWidget);
+
+      await store.insertAll([attempt('travel-1', WordOutcome.firstTry, 0)]);
+      final container = ProviderScope.containerOf(
+        tester.element(find.byType(LanguageLearnerApp)),
+      );
+      container.read(statsRevisionProvider.notifier).bump();
+      await tester.pumpAndSettle();
+
+      expect(find.text('1 right first time'), findsOneWidget);
+    });
   });
 
   testWidgets('refresh shows the update time of today', (tester) async {

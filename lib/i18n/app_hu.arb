@@ -96,5 +96,7 @@
   "statsWordRatio": "{first} / {total}",
   "statsNotPracticed": "még nem gyakoroltad",
   "statsEmptyText": "Itt látod majd, mely szavak mennek jól. Indíts el egy kört a Tanulás fülön.",
-  "statsEmptyAction": "Gyakorlás indítása"
+  "statsEmptyAction": "Gyakorlás indítása",
+  "updatedYesterday": "frissítve tegnap",
+  "deckNotPracticed": "Még nem gyakoroltad"
 }

@@ -373,4 +373,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statsEmptyAction => 'Start practicing';
+
+  @override
+  String get updatedYesterday => 'updated yesterday';
+
+  @override
+  String get deckNotPracticed => 'Not practiced yet';
 }
