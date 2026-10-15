@@ -536,6 +536,12 @@ abstract class AppLocalizations {
   /// **'How do you say it in English?'**
   String get quizQuestionToEnglish;
 
+  /// Tooltip of the button in the games that swaps the question and the answer language until the player leaves the game.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch the question language'**
+  String get switchQuestionLanguage;
+
   /// Shown under the answers after a wrong choice in the quiz.
   ///
   /// In en, this message translates to:

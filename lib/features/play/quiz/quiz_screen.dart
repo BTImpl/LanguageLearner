@@ -8,15 +8,16 @@ import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
+import 'package:languagelearner/core/widgets/icon_square_button.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
 import 'package:languagelearner/core/widgets/stat_tile.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/quiz/quiz_content.dart';
 import 'package:languagelearner/features/play/quiz/quiz_game.dart';
+import 'package:languagelearner/features/play/round/prompt_language_providers.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
-import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/stats/data/record_round.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -39,7 +40,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       final random = ref.read(roundRandomProvider);
       final session = RoundSession(
         words: deck.words,
-        promptLanguage: ref.read(settingsProvider).promptLanguage,
+        promptLanguage: ref.read(effectivePromptLanguageProvider),
         random: random,
         now: ref.read(clockProvider),
       );
@@ -47,6 +48,15 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         ..addListener(_onChanged);
     }
     return _game;
+  }
+
+  /// Asks in the other language and starts the round again. The choice lasts
+  /// until the player returns to the menu.
+  void _switchLanguage() {
+    final language = ref.read(effectivePromptLanguageProvider);
+    ref.read(promptLanguageOverrideProvider.notifier).choose(language.flipped);
+    _game?.dispose();
+    setState(() => _game = null);
   }
 
   void _onChanged() {
@@ -138,10 +148,17 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       counter: '${game.index + 1} / ${game.total}',
       progress: (game.index + 1) / game.total,
       onBack: goHome,
+      action: IconSquareButton(
+        icon: Icons.swap_horiz,
+        semanticLabel: i18n.switchQuestionLanguage,
+        onPressed: _switchLanguage,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: QuizContent(game: game)),
+          Expanded(
+            child: QuizContent(key: ObjectKey(game), game: game),
+          ),
           const SizedBox(height: 16),
           Row(
             children: [

@@ -364,4 +364,105 @@ void main() {
     await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
     handle.dispose();
   });
+
+  testWidgets('the switch button asks in the other language', (tester) async {
+    final h = await _open(tester);
+    final first = h.words.first;
+    expect(find.text('What does it mean in Hungarian?'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+
+    expect(find.text('How do you say it in English?'), findsOneWidget);
+    expect(find.byTooltip('Read aloud'), findsNothing);
+    expect(_labels(tester), hasLength(4));
+    // Same deck, new round: every word is a possible question.
+    expect(find.text('1 / 12'), findsOneWidget);
+    expect(
+      find.byType(ChoiceTile),
+      findsNWidgets(4),
+      reason: 'answers are English now (first word was ${first.english})',
+    );
+  });
+
+  testWidgets('switching in the middle of the round restarts it', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    final [first, second, ...] = h.words;
+    await _answerRight(tester, first.hungarian);
+    await _answerRight(tester, second.hungarian);
+    expect(find.text('3 / 12'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+
+    expect(find.text('1 / 12'), findsOneWidget);
+    expect(find.text('0'), findsNWidgets(2));
+    expect(find.text('How do you say it in English?'), findsOneWidget);
+  });
+
+  testWidgets('switching twice goes back to the default direction', (
+    tester,
+  ) async {
+    await _open(tester);
+
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+
+    expect(find.text('What does it mean in Hungarian?'), findsOneWidget);
+  });
+
+  testWidgets('the switch works from a Hungarian default, too', (tester) async {
+    await _open(tester, promptLanguage: PromptLanguage.hungarian);
+
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+
+    expect(find.text('What does it mean in Hungarian?'), findsOneWidget);
+    expect(find.byTooltip('Read aloud'), findsOneWidget);
+  });
+
+  testWidgets('the choice survives a restart but not the menu', (tester) async {
+    final h = await _open(tester);
+    await tester.tap(find.byTooltip('Switch the question language'));
+    await tester.pump();
+    // The restarted round has its own order: answer whatever is asked.
+    for (var i = 0; i < h.words.length; i++) {
+      final asked = h.words.singleWhere(
+        (w) => find.text(w.hungarian).evaluate().isNotEmpty,
+      );
+      await _answerRight(tester, asked.english);
+    }
+    await tester.pumpAndSettle();
+    expect(find.byType(RoundSummaryScreen), findsOneWidget);
+
+    await tester.tap(find.text('Restart Quiz'));
+    await tester.pumpAndSettle();
+    expect(find.text('How do you say it in English?'), findsOneWidget);
+
+    h.router.go(AppRoutes.home);
+    await tester.pumpAndSettle();
+    h.router.go(AppRoutes.play(PlayMode.quiz));
+    await tester.pumpAndSettle();
+
+    expect(find.text('What does it mean in Hungarian?'), findsOneWidget);
+  });
+
+  testWidgets('the switch button is not shown for a too small deck', (
+    tester,
+  ) async {
+    await _open(tester, repository: _Repository(_plainWords(3)));
+
+    expect(find.byTooltip('Switch the question language'), findsNothing);
+  });
+
+  testWidgets('the switch button has a Hungarian label', (tester) async {
+    await _open(tester, locale: const Locale('hu'));
+
+    expect(find.byTooltip('Kérdés nyelvének váltása'), findsOneWidget);
+  });
 }

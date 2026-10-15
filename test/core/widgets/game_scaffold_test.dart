@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:languagelearner/core/widgets/app_progress_bar.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
+import 'package:languagelearner/core/widgets/icon_square_button.dart';
 
 import '../../helpers/pump_themed.dart';
 
@@ -88,5 +89,62 @@ void main() {
     await tester.tap(find.byTooltip('Back'));
     await tester.pumpAndSettle();
     expect(find.text('Quiz'), findsNothing);
+  });
+
+  testWidgets('an action sits before the counter, the title stays centered', (
+    tester,
+  ) async {
+    var taps = 0;
+    await pumpThemed(
+      tester,
+      GameScaffold(
+        title: 'Quiz',
+        counter: '7 / 12',
+        progress: 0.5,
+        action: IconSquareButton(
+          icon: Icons.swap_horiz,
+          semanticLabel: 'Switch',
+          onPressed: () => taps++,
+        ),
+        child: const SizedBox.shrink(),
+      ),
+      asScreen: true,
+    );
+
+    final screen = tester.getSize(find.byType(Scaffold));
+    expect(tester.getCenter(find.text('Quiz')).dx, screen.width / 2);
+    expect(
+      tester.getCenter(find.byTooltip('Switch')).dx,
+      lessThan(tester.getCenter(find.text('7 / 12')).dx),
+    );
+    expect(tester.takeException(), isNull);
+
+    await tester.tap(find.byTooltip('Switch'));
+    expect(taps, 1);
+  });
+
+  testWidgets('the header with an action fits a narrow screen', (tester) async {
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await pumpThemed(
+      tester,
+      GameScaffold(
+        title: 'Pontos egyezés',
+        counter: '12 / 12',
+        progress: 1,
+        action: IconSquareButton(
+          icon: Icons.swap_horiz,
+          semanticLabel: 'Switch',
+          onPressed: () {},
+        ),
+        child: const SizedBox.shrink(),
+      ),
+      asScreen: true,
+    );
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('12 / 12'), findsOneWidget);
   });
 }

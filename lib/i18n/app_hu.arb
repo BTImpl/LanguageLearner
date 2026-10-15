@@ -73,6 +73,7 @@
   "restartMatching": "Párosító újrakezdése",
   "quizQuestionToHungarian": "Mit jelent magyarul?",
   "quizQuestionToEnglish": "Hogy van angolul?",
+  "switchQuestionLanguage": "Kérdés nyelvének váltása",
   "quizTryAgain": "Nem ez az. Próbáld újra!",
   "statGuessed": "elsőre eltalált",
   "statWrongFirst": "elsőre hibás",
