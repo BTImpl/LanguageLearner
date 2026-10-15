@@ -182,4 +182,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pickDeck => 'Pick a deck';
+
+  @override
+  String get reviewAgainTitle => 'Worth another look';
+
+  @override
+  String get backToHome => 'Back to home';
 }

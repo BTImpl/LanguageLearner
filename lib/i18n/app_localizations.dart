@@ -391,6 +391,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pick a deck'**
   String get pickDeck;
+
+  /// Title of the word list on the round-end screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Worth another look'**
+  String get reviewAgainTitle;
+
+  /// Button that leaves a screen for the home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get backToHome;
 }
 
 class _AppLocalizationsDelegate

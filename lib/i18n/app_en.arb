@@ -243,5 +243,13 @@
   "pickDeck": "Pick a deck",
   "@pickDeck": {
     "description": "Screen reader hint of the deck card that opens the deck picker."
+  },
+  "reviewAgainTitle": "Worth another look",
+  "@reviewAgainTitle": {
+    "description": "Title of the word list on the round-end screen."
+  },
+  "backToHome": "Back to home",
+  "@backToHome": {
+    "description": "Button that leaves a screen for the home screen."
   }
 }
