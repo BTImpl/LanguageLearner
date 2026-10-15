@@ -229,4 +229,29 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get statMinutes => 'perc';
+
+  @override
+  String matchingPageCounter(int page, int pages) {
+    return '$page / $pages. oldal';
+  }
+
+  @override
+  String get statPairsFound => 'pár megvan';
+
+  @override
+  String get statWrongTries => 'hibás próbálkozás';
+
+  @override
+  String get statFirstTry => 'elsőre megvolt';
+
+  @override
+  String get statPages => 'oldal';
+
+  @override
+  String matchingHeadline(int count) {
+    return 'Mind a $count pár megvan';
+  }
+
+  @override
+  String get restartMatching => 'Párosító újrakezdése';
 }

@@ -308,5 +308,46 @@
   "statMinutes": "minutes",
   "@statMinutes": {
     "description": "Caption of the elapsed minutes on the round-end screen."
+  },
+  "matchingPageCounter": "Page {page} of {pages}",
+  "@matchingPageCounter": {
+    "description": "Counter of the matching screen, e.g. \"Page 2 of 3\".",
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "pages": {
+        "type": "int"
+      }
+    }
+  },
+  "statPairsFound": "pairs found",
+  "@statPairsFound": {
+    "description": "Caption of the number of found pairs in the matching game."
+  },
+  "statWrongTries": "wrong attempts",
+  "@statWrongTries": {
+    "description": "Caption of the number of wrong attempts."
+  },
+  "statFirstTry": "right first time",
+  "@statFirstTry": {
+    "description": "Caption of the number of words found without a wrong attempt."
+  },
+  "statPages": "pages",
+  "@statPages": {
+    "description": "Caption of the number of pages in the matching game."
+  },
+  "matchingHeadline": "{count, plural, =1{The pair is found} other{All {count} pairs found}}",
+  "@matchingHeadline": {
+    "description": "Headline of the round-end screen of the matching game.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restartMatching": "Restart Matching",
+  "@restartMatching": {
+    "description": "Button on the round-end screen of the matching game."
   }
 }

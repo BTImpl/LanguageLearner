@@ -63,5 +63,12 @@
   "cardsViewedHeadline": "Mind a {count} kártyát átnézted",
   "statCards": "kártya",
   "statReadAloud": "felolvasás",
-  "statMinutes": "perc"
+  "statMinutes": "perc",
+  "matchingPageCounter": "{page} / {pages}. oldal",
+  "statPairsFound": "pár megvan",
+  "statWrongTries": "hibás próbálkozás",
+  "statFirstTry": "elsőre megvolt",
+  "statPages": "oldal",
+  "matchingHeadline": "Mind a {count} pár megvan",
+  "restartMatching": "Párosító újrakezdése"
 }

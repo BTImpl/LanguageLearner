@@ -4,6 +4,7 @@ import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/app/shell/app_shell.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
 import 'package:languagelearner/features/play/flashcards/flashcards_screen.dart';
+import 'package:languagelearner/features/play/matching/matching_screen.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/play_placeholder_screen.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
@@ -62,6 +63,7 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
           path: AppRoutes.play(mode),
           builder: (context, state) => switch (mode) {
             PlayMode.flashcards => const FlashcardsScreen(),
+            PlayMode.matching => const MatchingScreen(),
             _ => PlayPlaceholderScreen(mode: mode),
           },
         ),
