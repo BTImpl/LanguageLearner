@@ -312,4 +312,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get restartTyping => 'Pontos egyezés újrakezdése';
+
+  @override
+  String get restartMix => 'Mix újrakezdése';
 }

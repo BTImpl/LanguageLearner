@@ -631,6 +631,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restart Exact match'**
   String get restartTyping;
+
+  /// Button on the round-end screen of the Mix mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Mix'**
+  String get restartMix;
 }
 
 class _AppLocalizationsDelegate

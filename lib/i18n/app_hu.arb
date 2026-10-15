@@ -88,5 +88,6 @@
   "typingHelpCountdown": "még {seconds} mp látszik",
   "statCorrectFirst": "elsőre jó",
   "statWithHelp": "segítséggel",
-  "restartTyping": "Pontos egyezés újrakezdése"
+  "restartTyping": "Pontos egyezés újrakezdése",
+  "restartMix": "Mix újrakezdése"
 }

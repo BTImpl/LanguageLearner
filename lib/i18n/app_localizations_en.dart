@@ -330,4 +330,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restartTyping => 'Restart Exact match';
+
+  @override
+  String get restartMix => 'Restart Mix';
 }
