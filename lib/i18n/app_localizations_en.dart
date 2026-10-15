@@ -333,4 +333,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restartMix => 'Restart Mix';
+
+  @override
+  String statsSummaryHeadline(int total, int known) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$known of $total words go right first time',
+      one: '$known of 1 word goes right first time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statsAnswersLine(int total, int first) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total answers in total, $first right first time',
+      one: '1 answer in total, $first right first time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statsWordsTitle => 'Words, hardest first';
+
+  @override
+  String statsWordRatio(int first, int total) {
+    return '$first / $total';
+  }
+
+  @override
+  String get statsNotPracticed => 'not practiced yet';
+
+  @override
+  String get statsEmptyText =>
+      'You will see here which words go well. Start a round on the Learn tab.';
+
+  @override
+  String get statsEmptyAction => 'Start practicing';
 }

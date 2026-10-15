@@ -438,5 +438,57 @@
   "restartMix": "Restart Mix",
   "@restartMix": {
     "description": "Button on the round-end screen of the Mix mode."
+  },
+  "statsSummaryHeadline": "{total, plural, =1{{known} of 1 word goes right first time} other{{known} of {total} words go right first time}}",
+  "@statsSummaryHeadline": {
+    "description": "Headline of the statistics summary card: how many words of the deck go right first time.",
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "known": {
+        "type": "int"
+      }
+    }
+  },
+  "statsAnswersLine": "{total, plural, =1{1 answer in total, {first} right first time} other{{total} answers in total, {first} right first time}}",
+  "@statsAnswersLine": {
+    "description": "Line under the progress bar of the statistics summary card.",
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "first": {
+        "type": "int"
+      }
+    }
+  },
+  "statsWordsTitle": "Words, hardest first",
+  "@statsWordsTitle": {
+    "description": "Title of the word list of the statistics screen."
+  },
+  "statsWordRatio": "{first} / {total}",
+  "@statsWordRatio": {
+    "description": "Right-first-time answers out of all answers of a word, e.g. \"1 / 5\".",
+    "placeholders": {
+      "first": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsNotPracticed": "not practiced yet",
+  "@statsNotPracticed": {
+    "description": "Shown instead of the bar for a word nobody answered yet."
+  },
+  "statsEmptyText": "You will see here which words go well. Start a round on the Learn tab.",
+  "@statsEmptyText": {
+    "description": "Statistics screen before the first finished round."
+  },
+  "statsEmptyAction": "Start practicing",
+  "@statsEmptyAction": {
+    "description": "Button of the empty statistics screen that opens the home screen."
   }
 }

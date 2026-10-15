@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 
-/// A 6 px high rounded progress indicator.
+/// A rounded progress indicator, 6 px high unless [height] says otherwise.
 ///
 /// [value] is between 0 and 1; values outside are clamped.
 class AppProgressBar extends StatelessWidget {
-  const AppProgressBar({required this.value, super.key});
+  const AppProgressBar({
+    required this.value,
+    this.height = defaultHeight,
+    super.key,
+  });
 
-  static const double height = 6;
+  static const double defaultHeight = 6;
 
   final double value;
+  final double height;
 
   @override
   Widget build(BuildContext context) {

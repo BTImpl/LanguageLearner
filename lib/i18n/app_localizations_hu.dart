@@ -315,4 +315,32 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get restartMix => 'Mix újrakezdése';
+
+  @override
+  String statsSummaryHeadline(int total, int known) {
+    return '$total szóból $known megy elsőre';
+  }
+
+  @override
+  String statsAnswersLine(int total, int first) {
+    return '$total válasz összesen, ebből $first elsőre jó';
+  }
+
+  @override
+  String get statsWordsTitle => 'Szavak, a legnehezebbtől';
+
+  @override
+  String statsWordRatio(int first, int total) {
+    return '$first / $total';
+  }
+
+  @override
+  String get statsNotPracticed => 'még nem gyakoroltad';
+
+  @override
+  String get statsEmptyText =>
+      'Itt látod majd, mely szavak mennek jól. Indíts el egy kört a Tanulás fülön.';
+
+  @override
+  String get statsEmptyAction => 'Gyakorlás indítása';
 }
