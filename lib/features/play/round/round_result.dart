@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
+import 'package:languagelearner/features/play/round/word_outcome.dart';
 
 /// Names of the extra counters a game mode can keep in a round.
 abstract final class RoundCounters {
@@ -25,6 +26,7 @@ class RoundResult {
     required this.helpedWords,
     required this.duration,
     this.extras = const {},
+    this.outcomes = const {},
   });
 
   /// Number of words in the round.
@@ -44,6 +46,10 @@ class RoundResult {
 
   /// Counters of the game mode, see [RoundCounters].
   final Map<String, int> extras;
+
+  /// The outcome of every decided word by word id, in round order. Saved by
+  /// the statistics at the end of the round.
+  final Map<String, WordOutcome> outcomes;
 
   /// The elapsed time in whole minutes, rounded up.
   int get minutes => (duration.inSeconds + 59) ~/ 60;
