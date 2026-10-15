@@ -1,20 +1,19 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/services/clock.dart';
-import 'package:languagelearner/core/utils/date_utils.dart';
 import 'package:languagelearner/core/widgets/app_card.dart';
 import 'package:languagelearner/core/widgets/app_progress_bar.dart';
+import 'package:languagelearner/features/home/widgets/updated_text.dart';
+import 'package:languagelearner/features/stats/data/stats_providers.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The selected deck: name, word count, last update and progress.
 ///
-/// The progress is a fixed placeholder until card LL-26 reads the statistics.
+/// The progress comes from the statistics of the deck; before the first
+/// answer the bar is empty and the caption says it was not practiced yet.
 /// [onTap] opens the deck picker (card LL-11); without it the card is static.
 class DeckCard extends ConsumerWidget {
   const DeckCard({required this.deck, this.onTap, super.key});
@@ -25,19 +24,18 @@ class DeckCard extends ConsumerWidget {
   String _summary(BuildContext context, WidgetRef ref) {
     final i18n = context.i18n;
     final locale = Localizations.localeOf(context).toString();
-    final updated = deck.updatedAt.toLocal();
     final now = ref.watch(clockProvider)();
-    final updatedText = isSameDay(updated, now)
-        ? i18n.updatedToday(DateFormat.Hm(locale).format(updated))
-        : i18n.updatedOn(DateFormat.yMd(locale).add_Hm().format(updated));
-    return '${i18n.wordCount(deck.words.length)}, $updatedText';
+    final updated = updatedText(i18n, locale, deck.updatedAt.toLocal(), now);
+    return '${i18n.wordCount(deck.words.length)}, $updated';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final total = deck.words.length;
-    final known = min(8, total);
+    final summary = ref.watch(deckSummaryProvider(deck.id)).value;
+    final practiced = summary != null && summary.totalAnswers > 0;
+    final known = practiced ? summary.wordsGoingFirstTry.clamp(0, total) : 0;
     final card = AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +76,9 @@ class DeckCard extends ConsumerWidget {
           AppProgressBar(value: total == 0 ? 0 : known / total),
           const SizedBox(height: 8),
           Text(
-            context.i18n.firstTimeCorrect(known),
+            practiced
+                ? context.i18n.firstTimeCorrect(known)
+                : context.i18n.deckNotPracticed,
             style: TextStyle(
               fontFamily: bodyFontFamily,
               fontSize: 13,
