@@ -24,6 +24,7 @@ class MatchingGame {
   MatchingGame({
     required this.session,
     required this.pairsPerPage,
+    this.singlePage = false,
     Random? random,
     Schedule? schedule,
     this.matchedDelay = const Duration(milliseconds: 400),
@@ -38,6 +39,11 @@ class MatchingGame {
 
   final RoundSession session;
   final int pairsPerPage;
+
+  /// With `true` the game is just one page: when its pairs are all found
+  /// [pageDone] turns `true` and no further page starts. The Mix mode plays
+  /// the matching game like this, one page per step.
+  final bool singlePage;
   final Duration matchedDelay;
   final Duration wrongDelay;
 
@@ -50,6 +56,7 @@ class MatchingGame {
   var _english = <MatchTile>[];
   var _hungarian = <MatchTile>[];
   var _pageSize = 0;
+  var _pageDone = false;
 
   /// The English column of the current page, without the pairs that are gone.
   List<MatchTile> get englishTiles => List.unmodifiable(_english);
@@ -57,6 +64,10 @@ class MatchingGame {
   /// The Hungarian column of the current page, without the pairs that are
   /// gone.
   List<MatchTile> get hungarianTiles => List.unmodifiable(_hungarian);
+
+  /// Whether the pairs of the page are all found and the page is over. With
+  /// pages following each other it is only `true` until the next page starts.
+  bool get pageDone => _pageDone;
 
   /// The number of pages the round has.
   int get pageCount => (session.total / pairsPerPage).ceil();
@@ -172,7 +183,8 @@ class MatchingGame {
     ];
     if (_english.isEmpty) {
       session.advance(_pageSize);
-      if (!session.isFinished) {
+      _pageDone = true;
+      if (!singlePage && !session.isFinished) {
         _startPage();
       }
     }
@@ -182,6 +194,7 @@ class MatchingGame {
     final end = min(session.index + pairsPerPage, session.total);
     final words = session.words.sublist(session.index, end);
     _pageSize = words.length;
+    _pageDone = false;
     final english = RoundSession.shuffled(words, _random);
     var hungarian = RoundSession.shuffled(words, _random);
     // Two columns in the same order would give the answers away.

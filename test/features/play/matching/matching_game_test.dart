@@ -308,4 +308,65 @@ void main() {
       expect(s.scheduler.pending, 0);
     });
   });
+
+  group('single page', () {
+    test('stops after its page, the session moves on by the page size', () {
+      final s = _Setup(0);
+      final session = RoundSession(
+        words: _words(8),
+        promptLanguage: PromptLanguage.english,
+        random: Random(1),
+      );
+      final game = MatchingGame(
+        session: session,
+        pairsPerPage: 3,
+        singlePage: true,
+        random: Random(1),
+        schedule: s.scheduler.call,
+      );
+      expect(game.pageDone, isFalse);
+      final words = [for (final tile in game.englishTiles) tile.word];
+      expect(words, hasLength(3));
+
+      for (final word in words) {
+        game
+          ..tap(word, MatchSide.english)
+          ..tap(word, MatchSide.hungarian);
+      }
+      s.scheduler.elapse(const Duration(milliseconds: 400));
+
+      expect(game.pageDone, isTrue);
+      expect(game.englishTiles, isEmpty);
+      expect(session.index, 3);
+      expect(session.isFinished, isFalse);
+      expect(session.result.firstTry, 3);
+    });
+
+    test('a smaller rest makes a smaller page', () {
+      final s = _Setup(0);
+      final session = RoundSession(
+        words: _words(2),
+        promptLanguage: PromptLanguage.english,
+        random: Random(1),
+      );
+      final game = MatchingGame(
+        session: session,
+        pairsPerPage: 3,
+        singlePage: true,
+        random: Random(1),
+        schedule: s.scheduler.call,
+      );
+
+      expect(game.englishTiles, hasLength(2));
+    });
+
+    test('pages that follow each other are the default', () {
+      final s = _Setup(7, pairsPerPage: 3);
+
+      expect(s.game.singlePage, isFalse);
+      s.solvePage();
+      expect(s.game.pageDone, isFalse);
+      expect(s.game.englishTiles, hasLength(3));
+    });
+  });
 }
