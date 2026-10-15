@@ -1,22 +1,10 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:languagelearner/core/models/word_pair.dart';
 import 'package:languagelearner/features/play/matching/match_tile.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
-
-/// Cancels a scheduled action.
-typedef Cancel = void Function();
-
-/// Runs [action] after [delay] and returns a way to cancel it. Tests pass a
-/// manual implementation; the default one uses a [Timer].
-typedef Schedule = Cancel Function(Duration delay, void Function() action);
-
-Cancel _timerSchedule(Duration delay, void Function() action) {
-  final timer = Timer(delay, action);
-  return timer.cancel;
-}
+import 'package:languagelearner/features/play/round/schedule.dart';
 
 /// The rules of the matching game, independent of any screen.
 ///
@@ -42,7 +30,7 @@ class MatchingGame {
     this.wrongDelay = const Duration(seconds: 1),
   }) : assert(pairsPerPage >= 1, 'A page needs at least one pair.'),
        _random = random ?? Random(),
-       _schedule = schedule ?? _timerSchedule {
+       _schedule = schedule ?? timerSchedule {
     if (!session.isFinished) {
       _startPage();
     }
