@@ -8,28 +8,7 @@ import 'package:languagelearner/features/play/matching/matching_game.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 
-/// A fake clock: scheduled actions run when the time is moved forward.
-class _ManualScheduler {
-  final _tasks = <({Duration due, void Function() action})>[];
-  var _now = Duration.zero;
-
-  Cancel call(Duration delay, void Function() action) {
-    final task = (due: _now + delay, action: action);
-    _tasks.add(task);
-    return () => _tasks.remove(task);
-  }
-
-  int get pending => _tasks.length;
-
-  void elapse(Duration time) {
-    _now += time;
-    final due = _tasks.where((task) => task.due <= _now).toList();
-    _tasks.removeWhere(due.contains);
-    for (final task in due) {
-      task.action();
-    }
-  }
-}
+import '../../../helpers/manual_scheduler.dart';
 
 List<WordPair> _words(int count) => [
   for (var i = 0; i < count; i++)
@@ -51,7 +30,7 @@ class _Setup {
     );
   }
 
-  final scheduler = _ManualScheduler();
+  final scheduler = ManualScheduler();
   late final RoundSession session;
   late final MatchingGame game;
 
