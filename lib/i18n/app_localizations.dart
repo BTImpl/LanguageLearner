@@ -523,6 +523,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restart Matching'**
   String get restartMatching;
+
+  /// Label above the English word in the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'What does it mean in Hungarian?'**
+  String get quizQuestionToHungarian;
+
+  /// Label above the Hungarian word in the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you say it in English?'**
+  String get quizQuestionToEnglish;
+
+  /// Shown under the answers after a wrong choice in the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Not this one. Try again!'**
+  String get quizTryAgain;
+
+  /// Caption of the number of words answered right at the first choice.
+  ///
+  /// In en, this message translates to:
+  /// **'right first time'**
+  String get statGuessed;
+
+  /// Caption of the number of words answered wrong at the first choice.
+  ///
+  /// In en, this message translates to:
+  /// **'wrong first time'**
+  String get statWrongFirst;
+
+  /// Headline of the round-end screen of the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{{first} of 1 word went right first time} other{{first} of {total} words went right first time}}'**
+  String quizHeadline(int total, int first);
+
+  /// Button on the round-end screen of the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Quiz'**
+  String get restartQuiz;
+
+  /// Shown instead of the quiz when the deck is too small.
+  ///
+  /// In en, this message translates to:
+  /// **'This mode needs at least 4 words in the deck.'**
+  String get quizNeedsWords;
 }
 
 class _AppLocalizationsDelegate

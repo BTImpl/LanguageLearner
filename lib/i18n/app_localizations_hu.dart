@@ -254,4 +254,30 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get restartMatching => 'Párosító újrakezdése';
+
+  @override
+  String get quizQuestionToHungarian => 'Mit jelent magyarul?';
+
+  @override
+  String get quizQuestionToEnglish => 'Hogy van angolul?';
+
+  @override
+  String get quizTryAgain => 'Nem ez az. Próbáld újra!';
+
+  @override
+  String get statGuessed => 'elsőre eltalált';
+
+  @override
+  String get statWrongFirst => 'elsőre hibás';
+
+  @override
+  String quizHeadline(int total, int first) {
+    return '$total szóból $first ment elsőre';
+  }
+
+  @override
+  String get restartQuiz => 'Tanuló újrakezdése';
+
+  @override
+  String get quizNeedsWords => 'Ehhez a módhoz legalább 4 szó kell a pakliban.';
 }

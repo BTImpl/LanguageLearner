@@ -266,4 +266,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restartMatching => 'Restart Matching';
+
+  @override
+  String get quizQuestionToHungarian => 'What does it mean in Hungarian?';
+
+  @override
+  String get quizQuestionToEnglish => 'How do you say it in English?';
+
+  @override
+  String get quizTryAgain => 'Not this one. Try again!';
+
+  @override
+  String get statGuessed => 'right first time';
+
+  @override
+  String get statWrongFirst => 'wrong first time';
+
+  @override
+  String quizHeadline(int total, int first) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$first of $total words went right first time',
+      one: '$first of 1 word went right first time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get restartQuiz => 'Restart Quiz';
+
+  @override
+  String get quizNeedsWords => 'This mode needs at least 4 words in the deck.';
 }
