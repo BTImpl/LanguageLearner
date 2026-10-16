@@ -39,7 +39,8 @@ class RoundSession {
     return result;
   }
 
-  /// Which side of a word is the question.
+  /// Which side of a word is the question, unless [setPromptLanguage] gave
+  /// the word a direction of its own.
   final PromptLanguage promptLanguage;
 
   final Random _random;
@@ -50,6 +51,7 @@ class RoundSession {
   var _index = 0;
   final _outcomes = <String, WordOutcome>{};
   final _extras = <String, int>{};
+  final _promptLanguages = <String, PromptLanguage>{};
 
   /// The words in the order of this round.
   List<WordPair> get words => _words;
@@ -100,26 +102,57 @@ class RoundSession {
   void count(String name, [int by = 1]) =>
       _extras[name] = (_extras[name] ?? 0) + by;
 
+  /// The direction [word] is asked in: the one given by
+  /// [setPromptLanguage], or [promptLanguage] when it has none.
+  PromptLanguage promptLanguageOf(WordPair word) =>
+      _promptLanguages[word.id] ?? promptLanguage;
+
+  /// Asks [word] in [language] from now on, whatever [promptLanguage] is.
+  /// The Mix mode uses it to draw a direction for every step. A restart
+  /// forgets it.
+  void setPromptLanguage(WordPair word, PromptLanguage language) {
+    _checkMember(word);
+    _promptLanguages[word.id] = language;
+  }
+
   /// The text of [word] that is the question.
-  String promptText(WordPair word) => switch (promptLanguage) {
-    PromptLanguage.english => word.english,
-    PromptLanguage.hungarian => word.hungarian,
-  };
+  String promptText(WordPair word) => promptIn(word, promptLanguageOf(word));
 
   /// The text of [word] that is the answer.
-  String answerText(WordPair word) => switch (promptLanguage) {
-    PromptLanguage.english => word.hungarian,
-    PromptLanguage.hungarian => word.english,
-  };
+  String answerText(WordPair word) => answerIn(word, promptLanguageOf(word));
 
   /// Every text accepted as an exact answer for [word].
-  List<String> acceptedAnswers(WordPair word) => switch (promptLanguage) {
-    PromptLanguage.english => word.acceptedHungarian,
-    PromptLanguage.hungarian => word.acceptedEnglish,
-  };
+  List<String> acceptedAnswers(WordPair word) =>
+      acceptedIn(word, promptLanguageOf(word));
 
   /// Whether the question is English, i.e. whether it can be read aloud.
+  /// For words with a direction of their own see [promptIsEnglishFor].
   bool get promptIsEnglish => promptLanguage == PromptLanguage.english;
+
+  /// Whether the question of [word] is English.
+  bool promptIsEnglishFor(WordPair word) =>
+      promptLanguageOf(word) == PromptLanguage.english;
+
+  /// The text of [word] that is the question when asking in [language].
+  static String promptIn(WordPair word, PromptLanguage language) =>
+      switch (language) {
+        PromptLanguage.english => word.english,
+        PromptLanguage.hungarian => word.hungarian,
+      };
+
+  /// The text of [word] that is the answer when asking in [language].
+  static String answerIn(WordPair word, PromptLanguage language) =>
+      switch (language) {
+        PromptLanguage.english => word.hungarian,
+        PromptLanguage.hungarian => word.english,
+      };
+
+  /// Every text accepted as an answer for [word] when asking in [language].
+  static List<String> acceptedIn(WordPair word, PromptLanguage language) =>
+      switch (language) {
+        PromptLanguage.english => word.acceptedHungarian,
+        PromptLanguage.hungarian => word.acceptedEnglish,
+      };
 
   /// The outcome so far. The duration runs until the round is finished.
   RoundResult get result {
@@ -154,14 +187,19 @@ class RoundSession {
     _index = 0;
     _outcomes.clear();
     _extras.clear();
+    _promptLanguages.clear();
     _startedAt = _now();
     _finishedAt = _words.isEmpty ? _startedAt : null;
   }
 
   void _record(WordPair word, WordOutcome outcome) {
+    _checkMember(word);
+    _outcomes.putIfAbsent(word.id, () => outcome);
+  }
+
+  void _checkMember(WordPair word) {
     if (!_words.any((w) => w.id == word.id)) {
       throw ArgumentError.value(word, 'word', 'is not part of this round');
     }
-    _outcomes.putIfAbsent(word.id, () => outcome);
   }
 }

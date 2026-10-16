@@ -93,11 +93,11 @@ class _TypingContentState extends ConsumerState<TypingContent> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 QuestionCard(
-                  label: session.promptIsEnglish
+                  label: session.promptIsEnglishFor(word)
                       ? i18n.typingWriteHungarian
                       : i18n.typingWriteEnglish,
                   text: session.promptText(word),
-                  onReadAloud: session.promptIsEnglish
+                  onReadAloud: session.promptIsEnglishFor(word)
                       ? () => ref
                             .read(ttsServiceProvider)
                             .speak(word.english)

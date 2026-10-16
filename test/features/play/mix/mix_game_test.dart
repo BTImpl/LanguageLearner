@@ -8,6 +8,7 @@ import 'package:languagelearner/features/play/mix/mix_game.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/round/word_outcome.dart';
+import 'package:languagelearner/features/play/typing/typing_game.dart';
 
 import '../../../helpers/manual_scheduler.dart';
 
@@ -27,10 +28,11 @@ class _Setup {
     int count = 12,
     int pairsPerPage = 5,
     List<WordPair>? words,
+    PromptLanguage promptLanguage = PromptLanguage.english,
   }) {
     session = RoundSession(
       words: words ?? _words(count),
-      promptLanguage: PromptLanguage.english,
+      promptLanguage: promptLanguage,
       random: Random(seed),
     );
     mix = MixGame(
@@ -401,6 +403,184 @@ void main() {
     });
   });
 
+  group('direction', () {
+    test('typing and quiz steps draw both directions, matching none', () {
+      final seen = <MixStepType, Set<PromptLanguage>>{
+        for (final type in MixStepType.values) type: {},
+      };
+      for (var seed = 1; seed <= 30; seed++) {
+        final s = _Setup(seed: seed);
+        while (!s.mix.isFinished) {
+          final language = s.mix.stepPromptLanguage;
+          if (s.mix.stepType == MixStepType.matching) {
+            expect(language, isNull, reason: 'seed $seed');
+          } else {
+            expect(language, isNotNull, reason: 'seed $seed');
+            seen[s.mix.stepType!]!.add(language!);
+          }
+          s.solveStep();
+        }
+      }
+
+      expect(seen[MixStepType.typing], PromptLanguage.values.toSet());
+      expect(seen[MixStepType.quiz], PromptLanguage.values.toSet());
+      expect(seen[MixStepType.matching], isEmpty);
+    });
+
+    test('the draw is the same whatever the setting of the student is', () {
+      List<(MixStepType, PromptLanguage?)> draw(
+        int seed,
+        PromptLanguage setting,
+      ) {
+        final s = _Setup(seed: seed, promptLanguage: setting);
+        final steps = <(MixStepType, PromptLanguage?)>[];
+        while (!s.mix.isFinished) {
+          steps.add((s.mix.stepType!, s.mix.stepPromptLanguage));
+          s.solveStep();
+        }
+        return steps;
+      }
+
+      for (var seed = 1; seed <= 20; seed++) {
+        expect(
+          draw(seed, PromptLanguage.hungarian),
+          draw(seed, PromptLanguage.english),
+          reason: 'seed $seed',
+        );
+      }
+    });
+
+    test('the direction belongs to the step, so a round mixes them', () {
+      var mixed = false;
+      for (var seed = 1; seed <= 30 && !mixed; seed++) {
+        final s = _Setup(seed: seed);
+        final languages = <PromptLanguage>{};
+        while (!s.mix.isFinished) {
+          final language = s.mix.stepPromptLanguage;
+          if (language != null) {
+            languages.add(language);
+          }
+          s.solveStep();
+        }
+        mixed = languages.length == 2;
+      }
+
+      expect(mixed, isTrue);
+    });
+
+    test('a Hungarian typing question wants the English answer', () {
+      final s = _firstStep(MixStepType.typing, PromptLanguage.hungarian);
+      final game = s.mix.typing!;
+      final asked = game.current!;
+
+      expect(s.session.promptText(asked), asked.hungarian);
+      expect(game.submit(asked.hungarian), SubmitResult.wrong);
+      expect(game.submit(asked.english), SubmitResult.correct);
+      game.next();
+
+      expect(s.session.outcomeOf(asked), WordOutcome.wrongFirst);
+      expect(s.mix.index, 1);
+    });
+
+    test('an English typing question wants the Hungarian answer', () {
+      final s = _firstStep(MixStepType.typing, PromptLanguage.english);
+      final game = s.mix.typing!;
+      final asked = game.current!;
+
+      expect(s.session.promptText(asked), asked.english);
+      expect(game.submit(asked.english), SubmitResult.wrong);
+      expect(game.submit(asked.hungarian), SubmitResult.correct);
+    });
+
+    test('the help shows the answer of the drawn direction', () {
+      final s = _firstStep(MixStepType.typing, PromptLanguage.hungarian);
+      final game = s.mix.typing!;
+
+      game.requestHelp();
+
+      expect(game.helpText, game.current!.english);
+    });
+
+    test('a Hungarian quiz question has English answers', () {
+      final s = _firstStep(MixStepType.quiz, PromptLanguage.hungarian);
+      final game = s.mix.quiz!;
+      final asked = game.current!;
+
+      expect(s.session.promptText(asked), asked.hungarian);
+      expect(game.options, hasLength(4));
+      expect(game.options.every((o) => o.text.startsWith('en')), isTrue);
+      expect(game.options.singleWhere((o) => o.isCorrect).text, asked.english);
+    });
+
+    test('an English quiz question has Hungarian answers', () {
+      final s = _firstStep(MixStepType.quiz, PromptLanguage.english);
+      final game = s.mix.quiz!;
+      final asked = game.current!;
+
+      expect(s.session.promptText(asked), asked.english);
+      expect(game.options.every((o) => o.text.startsWith('hu')), isTrue);
+      expect(
+        game.options.singleWhere((o) => o.isCorrect).text,
+        asked.hungarian,
+      );
+    });
+
+    test('the direction stays with the word after its step', () {
+      final s = _firstStep(MixStepType.typing, PromptLanguage.hungarian);
+      final asked = s.mix.typing!.current!;
+
+      s.solveStep();
+
+      expect(s.session.promptLanguageOf(asked), PromptLanguage.hungarian);
+      expect(s.session.promptText(asked), asked.hungarian);
+      expect(s.session.answerText(asked), asked.english);
+    });
+
+    test('a restart draws the directions again', () {
+      final s = _firstStep(MixStepType.typing, PromptLanguage.hungarian);
+      final asked = s.mix.typing!.current!;
+      s.solveStep();
+
+      s.mix.restart();
+
+      // The old direction of the word is forgotten; the first step of the new
+      // round has a direction of its own.
+      final current = switch (s.mix.stepType!) {
+        MixStepType.typing => s.mix.typing!.current,
+        MixStepType.quiz => s.mix.quiz!.current,
+        MixStepType.matching => null,
+      };
+      if (current != null) {
+        expect(s.session.promptLanguageOf(current), s.mix.stepPromptLanguage);
+      }
+      if (current == null || current.id != asked.id) {
+        expect(s.session.promptLanguageOf(asked), PromptLanguage.english);
+      }
+    });
+
+    test('quiz is not drawn when one direction lacks wrong answers', () {
+      // Three Hungarian texts only: an English question has just two wrong
+      // Hungarian answers, so the quiz could not always be played.
+      final deck = [
+        for (var i = 0; i < 6; i++)
+          WordPair.fromCells(
+            id: 'w$i',
+            english: 'en$i',
+            hungarian: 'hu${i % 3}',
+          ),
+      ];
+      final seen = <MixStepType>{};
+      for (var seed = 1; seed <= 100; seed++) {
+        seen.addAll(
+          _Setup(seed: seed, words: deck).solveAll().map((s) => s.type),
+        );
+      }
+
+      expect(seen, isNot(contains(MixStepType.quiz)));
+      expect(seen, contains(MixStepType.typing));
+    });
+  });
+
   group('lifecycle', () {
     test('restart starts a new round with a new order', () {
       final s = _Setup();
@@ -448,6 +628,18 @@ void main() {
       expect(s.mix.stepType, isNull);
     });
   });
+}
+
+/// A setup whose first step is [type] (typing or quiz) and whose question is
+/// asked in [question].
+_Setup _firstStep(MixStepType type, PromptLanguage question) {
+  for (var seed = 1; seed <= 500; seed++) {
+    final s = _Setup(seed: seed);
+    if (s.mix.stepType == type && s.mix.stepPromptLanguage == question) {
+      return s;
+    }
+  }
+  throw StateError('No seed starts with $type asking in $question.');
 }
 
 /// A setup whose first step is [type].

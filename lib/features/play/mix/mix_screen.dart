@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/models/deck.dart';
+import 'package:languagelearner/core/models/prompt_language.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
 import 'package:languagelearner/core/widgets/stat_tile.dart';
@@ -46,7 +47,9 @@ class _MixScreenState extends ConsumerState<MixScreen> {
       final random = ref.read(roundRandomProvider);
       final session = RoundSession(
         words: deck.words,
-        promptLanguage: settings.promptLanguage,
+        // Only the words of matching steps keep this direction (in the
+        // summary); typing and quiz steps draw their own.
+        promptLanguage: PromptLanguage.english,
         random: random,
         now: ref.read(clockProvider),
       );

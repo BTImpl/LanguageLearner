@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:languagelearner/core/models/prompt_language.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
 import 'package:languagelearner/features/play/quiz/quiz_option.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
@@ -32,7 +33,9 @@ class QuizGame {
        _random = random ?? Random(),
        _schedule = schedule ?? timerSchedule {
     _isPlayable = session.words.every(
-      (word) => _candidates(word).length >= optionCount - 1,
+      (word) =>
+          _candidates(word, session.promptLanguageOf(word)).length >=
+          optionCount - 1,
     );
     if (_isPlayable) {
       _buildOptions();
@@ -41,6 +44,21 @@ class QuizGame {
 
   /// The number of answers of a question.
   static const optionCount = 4;
+
+  /// Whether the words of [session] can all be asked in [language]: each has
+  /// enough different wrong answers in the [pool] (the session's words by
+  /// default). Needs no game, so a caller can ask about a direction that is
+  /// not the one of the session.
+  static bool isPlayableIn(
+    RoundSession session,
+    PromptLanguage language, {
+    Iterable<WordPair>? pool,
+  }) {
+    final words = List<WordPair>.unmodifiable(pool ?? session.words);
+    return session.words.every(
+      (word) => _candidatesFor(word, words, language).length >= optionCount - 1,
+    );
+  }
 
   final RoundSession session;
   final Duration correctDelay;
@@ -145,38 +163,48 @@ class QuizGame {
       _options = [];
       return;
     }
+    // The answers are in the language of the asked word's direction.
+    final language = session.promptLanguageOf(asked);
     final wrong = RoundSession.shuffled(
-      _candidates(asked),
+      _candidates(asked, language),
       _random,
     ).take(optionCount - 1);
     _options = [
       for (final word in RoundSession.shuffled([asked, ...wrong], _random))
         QuizOption(
           word: word,
-          text: session.answerText(word),
+          text: RoundSession.answerIn(word, language),
           isCorrect: word.id == asked.id,
         ),
     ];
   }
 
-  /// The words that can be a wrong answer to [asked]: not the word itself, no
-  /// answer text equal to an accepted answer of it, and every text only once.
-  List<WordPair> _candidates(WordPair asked) {
+  List<WordPair> _candidates(WordPair asked, PromptLanguage language) =>
+      _candidatesFor(asked, _pool, language);
+
+  /// The words of [pool] that can be a wrong answer to [asked] when asking in
+  /// [language]: not the word itself, no answer text equal to an accepted
+  /// answer of it, and every text only once.
+  static List<WordPair> _candidatesFor(
+    WordPair asked,
+    Iterable<WordPair> pool,
+    PromptLanguage language,
+  ) {
     final blocked = {
-      _key(session.answerText(asked)),
-      for (final text in session.acceptedAnswers(asked)) _key(text),
+      _key(RoundSession.answerIn(asked, language)),
+      for (final text in RoundSession.acceptedIn(asked, language)) _key(text),
     };
     final seen = <String>{};
     final result = <WordPair>[];
-    for (final other in _pool) {
+    for (final other in pool) {
       if (other.id == asked.id) {
         continue;
       }
-      final accepted = session.acceptedAnswers(other);
+      final accepted = RoundSession.acceptedIn(other, language);
       if (accepted.any((text) => blocked.contains(_key(text)))) {
         continue;
       }
-      final key = _key(session.answerText(other));
+      final key = _key(RoundSession.answerIn(other, language));
       if (blocked.contains(key) || !seen.add(key)) {
         continue;
       }
@@ -186,7 +214,7 @@ class QuizGame {
   }
 
   /// Texts that differ only in case or spacing are the same answer.
-  String _key(String text) =>
+  static String _key(String text) =>
       text.trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
 
   void _setState(int position, QuizOptionState state) {

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:languagelearner/core/models/prompt_language.dart';
 import 'package:languagelearner/features/play/matching/matching_game.dart';
 import 'package:languagelearner/features/play/quiz/quiz_game.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
@@ -25,10 +26,18 @@ typedef MixStepRecord = ({MixStepType type, int words});
 /// Rules of the draw:
 ///
 /// - matching only if at least 2 words are left;
-/// - quiz only if the deck can give every word three wrong answers (see
-///   [QuizGame.isPlayable]); the wrong answers come from the whole deck, not
-///   only from the words that are left;
+/// - quiz only if the deck can give every word three wrong answers in both
+///   directions (see [QuizGame.isPlayableIn]); the wrong answers come from
+///   the whole deck, not only from the words that are left;
 /// - never two matching steps in a row.
+///
+/// A typing or quiz step also draws its own direction, English to Hungarian
+/// or the other way round with equal chance, and gives it to the word with
+/// [RoundSession.setPromptLanguage]. The direction belongs to the step, not
+/// to the round, and the [RoundSession.promptLanguage] of the session (the
+/// setting of the student) plays no part in it: with the same random source
+/// the draw is the same for any setting. Matching shows both languages and
+/// has no direction.
 ///
 /// The step games work on the shared [session], so their outcomes end up in
 /// one [result]. The game finishes after the last word.
@@ -74,6 +83,16 @@ class MixGame {
   /// The game of the current step when it is matching, otherwise `null`.
   MatchingGame? get matching => _matching;
 
+  /// The direction the current typing or quiz step asks in, `null` for
+  /// matching and when the round is finished.
+  PromptLanguage? get stepPromptLanguage {
+    final word = switch (_type) {
+      MixStepType.typing || MixStepType.quiz => session.current,
+      MixStepType.matching || null => null,
+    };
+    return word == null ? null : session.promptLanguageOf(word);
+  }
+
   /// Counts the steps started so far, from 1. A screen can tell a new step
   /// from a change inside the step by it.
   int get stepNumber => _stepNumber;
@@ -113,17 +132,11 @@ class MixGame {
     _listeners.clear();
   }
 
-  /// Whether the quiz can be played with this deck.
-  bool _canPlayQuiz() {
-    final probe = QuizGame(
-      session: session,
-      random: _random,
-      schedule: _schedule,
-    );
-    final playable = probe.isPlayable;
-    probe.dispose();
-    return playable;
-  }
+  /// Whether the quiz can be played with this deck: whichever direction a
+  /// step draws, every word has enough wrong answers.
+  bool _canPlayQuiz() => PromptLanguage.values.every(
+    (language) => QuizGame.isPlayableIn(session, language),
+  );
 
   void _startStep() {
     if (session.isFinished) {
@@ -140,6 +153,12 @@ class MixGame {
     _type = type;
     _stepStart = session.index;
     _stepNumber++;
+    if (type != MixStepType.matching) {
+      final direction = _random.nextBool()
+          ? PromptLanguage.english
+          : PromptLanguage.hungarian;
+      session.setPromptLanguage(session.current!, direction);
+    }
     switch (type) {
       case MixStepType.typing:
         _typing = TypingGame(session: session, schedule: _schedule)

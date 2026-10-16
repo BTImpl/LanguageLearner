@@ -40,11 +40,11 @@ class QuizContent extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           QuestionCard(
-            label: session.promptIsEnglish
+            label: session.promptIsEnglishFor(word)
                 ? i18n.quizQuestionToHungarian
                 : i18n.quizQuestionToEnglish,
             text: session.promptText(word),
-            onReadAloud: session.promptIsEnglish
+            onReadAloud: session.promptIsEnglishFor(word)
                 ? () =>
                       ref.read(ttsServiceProvider).speak(word.english).ignore()
                 : null,

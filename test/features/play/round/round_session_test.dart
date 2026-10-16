@@ -255,6 +255,96 @@ void main() {
       expect(session.acceptedAnswers(word), hasLength(2));
     });
   });
+
+  group('direction of a word', () {
+    test('a word follows the prompt language of the session by default', () {
+      final session = _session(promptLanguage: PromptLanguage.hungarian);
+      final word = session.words.first;
+
+      expect(session.promptLanguageOf(word), PromptLanguage.hungarian);
+      expect(session.promptIsEnglishFor(word), isFalse);
+    });
+
+    test('a word can be asked in the other direction on its own', () {
+      final session = _session();
+      final [first, second, ...] = session.words;
+
+      session.setPromptLanguage(first, PromptLanguage.hungarian);
+
+      expect(session.promptLanguageOf(first), PromptLanguage.hungarian);
+      expect(session.promptIsEnglishFor(first), isFalse);
+      expect(session.promptText(first), first.hungarian);
+      expect(session.answerText(first), first.english);
+      expect(session.acceptedAnswers(first), first.acceptedEnglish);
+      // The other words and the session itself are not touched.
+      expect(session.promptLanguageOf(second), PromptLanguage.english);
+      expect(session.promptText(second), second.english);
+      expect(session.promptLanguage, PromptLanguage.english);
+      expect(session.promptIsEnglish, isTrue);
+    });
+
+    test('the direction of a word can be changed again', () {
+      final session = _session();
+      final word = session.words.first;
+
+      session
+        ..setPromptLanguage(word, PromptLanguage.hungarian)
+        ..setPromptLanguage(word, PromptLanguage.english);
+
+      expect(session.promptText(word), word.english);
+    });
+
+    test('a restart forgets the directions of the words', () {
+      final session = _session();
+      final word = session.words.first;
+      session.setPromptLanguage(word, PromptLanguage.hungarian);
+
+      session.restart();
+
+      expect(session.promptLanguageOf(word), PromptLanguage.english);
+      expect(session.promptText(word), word.english);
+    });
+
+    test('a word outside the round cannot get a direction', () {
+      final session = _session();
+      final stranger = WordPair.fromCells(
+        id: 'x',
+        english: 'stranger',
+        hungarian: 'idegen',
+      );
+
+      expect(
+        () => session.setPromptLanguage(stranger, PromptLanguage.hungarian),
+        throwsArgumentError,
+      );
+    });
+
+    test('the static helpers give the texts of a direction', () {
+      final word = _words(1).single;
+
+      expect(
+        RoundSession.promptIn(word, PromptLanguage.hungarian),
+        word.hungarian,
+      );
+      expect(
+        RoundSession.answerIn(word, PromptLanguage.hungarian),
+        word.english,
+      );
+      expect(
+        RoundSession.acceptedIn(word, PromptLanguage.hungarian),
+        word.acceptedEnglish,
+      );
+      expect(RoundSession.promptIn(word, PromptLanguage.english), word.english);
+      expect(
+        RoundSession.answerIn(word, PromptLanguage.english),
+        word.hungarian,
+      );
+      expect(
+        RoundSession.acceptedIn(word, PromptLanguage.english),
+        word.acceptedHungarian,
+      );
+    });
+  });
 }
 
 /// A [Random] that always picks the last candidate: Fisher–Yates then swaps
