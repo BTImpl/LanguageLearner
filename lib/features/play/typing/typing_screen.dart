@@ -6,14 +6,15 @@ import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
+import 'package:languagelearner/core/widgets/icon_square_button.dart';
 import 'package:languagelearner/core/widgets/stat_tile.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
+import 'package:languagelearner/features/play/round/prompt_language_providers.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/typing/typing_content.dart';
 import 'package:languagelearner/features/play/typing/typing_game.dart';
-import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/stats/data/record_round.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -35,13 +36,22 @@ class _TypingScreenState extends ConsumerState<TypingScreen> {
       _deck = deck;
       final session = RoundSession(
         words: deck.words,
-        promptLanguage: ref.read(settingsProvider).promptLanguage,
+        promptLanguage: ref.read(effectivePromptLanguageProvider),
         random: ref.read(roundRandomProvider),
         now: ref.read(clockProvider),
       );
       _game = TypingGame(session: session)..addListener(_onChanged);
     }
     return _game;
+  }
+
+  /// Asks in the other language and starts the round again. The choice lasts
+  /// until the player returns to the menu.
+  void _switchLanguage() {
+    final language = ref.read(effectivePromptLanguageProvider);
+    ref.read(promptLanguageOverrideProvider.notifier).choose(language.flipped);
+    _game?.dispose();
+    setState(() => _game = null);
   }
 
   void _onChanged() {
@@ -125,7 +135,13 @@ class _TypingScreenState extends ConsumerState<TypingScreen> {
       counter: '${game.index + 1} / ${game.total}',
       progress: (game.index + 1) / game.total,
       onBack: goHome,
-      child: TypingContent(game: game),
+      action: IconSquareButton(
+        icon: Icons.swap_horiz,
+        semanticLabel: context.i18n.switchQuestionLanguage,
+        onPressed: _switchLanguage,
+      ),
+      // A new game gets a new input: empty, without error and help.
+      child: TypingContent(key: ObjectKey(game), game: game),
     );
   }
 }

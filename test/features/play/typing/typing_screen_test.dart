@@ -12,12 +12,14 @@ import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
 import 'package:languagelearner/core/services/tts_service.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
+import 'package:languagelearner/features/play/round/prompt_language_providers.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
 import 'package:languagelearner/features/play/typing/typing_screen.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
+import 'package:languagelearner/features/stats/data/stats_providers.dart';
 
 import '../../../helpers/fake_tts_service.dart';
 
@@ -92,6 +94,18 @@ Future<void> _solve(WidgetTester tester, String answer) async {
   final next = find.text('Next');
   await _tapButton(tester, next.evaluate().isEmpty ? 'Finish' : 'Next');
 }
+
+const _switchTooltip = 'Switch the question language';
+
+Future<void> _switchLanguage(WidgetTester tester) async {
+  await tester.tap(find.byTooltip(_switchTooltip));
+  await tester.pump();
+}
+
+/// The word of the round that is asked now, whatever the question language.
+WordPair _asked(_Harness h, {required bool english}) => h.words.singleWhere(
+  (w) => find.text(english ? w.english : w.hungarian).evaluate().isNotEmpty,
+);
 
 void main() {
   testWidgets('shows the first word, the input and the two buttons', (
@@ -373,6 +387,195 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(find.text('Next'), findsOneWidget);
+  });
+
+  testWidgets('the switch button asks in the other language', (tester) async {
+    final h = await _open(tester);
+    expect(find.text('Write it in Hungarian'), findsOneWidget);
+    expect(find.byTooltip('Read aloud'), findsOneWidget);
+
+    await _switchLanguage(tester);
+
+    expect(find.text('Write it in English'), findsOneWidget);
+    expect(find.text('Write it in Hungarian'), findsNothing);
+    expect(find.byTooltip('Read aloud'), findsNothing);
+    // The English word is the right answer now, where the Hungarian was.
+    final asked = _asked(h, english: false);
+    await _type(tester, asked.english);
+    await _tapButton(tester, 'Check');
+    expect(find.text('Next'), findsOneWidget);
+    expect(find.text("Doesn't match. Try again!"), findsNothing);
+  });
+
+  testWidgets('the old answer language is wrong after the switch', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    await _switchLanguage(tester);
+
+    await _type(tester, _asked(h, english: false).hungarian);
+    await _tapButton(tester, 'Check');
+
+    expect(find.text("Doesn't match. Try again!"), findsOneWidget);
+  });
+
+  testWidgets('switching in the middle restarts the round from scratch', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    await _solve(tester, h.words[0].hungarian);
+    await _solve(tester, h.words[1].hungarian);
+    await _tapButton(tester, 'Help');
+    await _type(tester, 'nope');
+    await _tapButton(tester, 'Check');
+    expect(find.text('3 / 12'), findsOneWidget);
+    expect(find.text('3 s left'), findsOneWidget);
+    expect(find.text("Doesn't match. Try again!"), findsOneWidget);
+
+    await _switchLanguage(tester);
+
+    expect(find.text('1 / 12'), findsOneWidget);
+    expect(_typed, isEmpty);
+    expect(find.text("Doesn't match. Try again!"), findsNothing);
+    expect(find.text('3 s left'), findsNothing);
+    expect(find.byType(LinearProgressIndicator), findsNothing);
+    expect(find.text('Check'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+  });
+
+  testWidgets('the unfinished round saves no statistics', (tester) async {
+    final h = await _open(tester);
+    await _solve(tester, h.words[0].hungarian);
+
+    await _switchLanguage(tester);
+
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(TypingScreen)),
+    );
+    await tester.pumpAndSettle();
+    expect(container.read(statsRevisionProvider), 0);
+    expect(h.path, AppRoutes.play(PlayMode.typing));
+    expect(find.byType(RoundSummaryScreen), findsNothing);
+  });
+
+  testWidgets('switching twice goes back to the default direction', (
+    tester,
+  ) async {
+    await _open(tester);
+
+    await _switchLanguage(tester);
+    await _switchLanguage(tester);
+
+    expect(find.text('Write it in Hungarian'), findsOneWidget);
+  });
+
+  testWidgets('the switch works from a Hungarian default, too', (tester) async {
+    await _open(tester, promptLanguage: PromptLanguage.hungarian);
+    expect(find.text('Write it in English'), findsOneWidget);
+
+    await _switchLanguage(tester);
+
+    expect(find.text('Write it in Hungarian'), findsOneWidget);
+    expect(find.byTooltip('Read aloud'), findsOneWidget);
+  });
+
+  testWidgets('the stored setting stays, the menu clears the switch', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(TypingScreen)),
+    );
+
+    await _switchLanguage(tester);
+
+    expect(
+      container.read(settingsProvider).promptLanguage,
+      PromptLanguage.english,
+    );
+    expect(
+      container.read(effectivePromptLanguageProvider),
+      PromptLanguage.hungarian,
+    );
+
+    h.router.go(AppRoutes.home);
+    await tester.pumpAndSettle();
+    h.router.go(AppRoutes.play(PlayMode.typing));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Write it in Hungarian'), findsOneWidget);
+    expect(
+      container.read(settingsProvider).promptLanguage,
+      PromptLanguage.english,
+    );
+  });
+
+  testWidgets('the restart at the end of the round keeps the switch', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    await _switchLanguage(tester);
+    // The restarted round has its own order: answer whatever is asked.
+    for (var i = 0; i < h.words.length; i++) {
+      await _solve(tester, _asked(h, english: false).english);
+    }
+    await tester.pumpAndSettle();
+    expect(find.byType(RoundSummaryScreen), findsOneWidget);
+
+    await tester.tap(find.text('Restart Exact match'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Write it in English'), findsOneWidget);
+    expect(find.text('1 / 12'), findsOneWidget);
+
+    h.router.go(AppRoutes.home);
+    await tester.pumpAndSettle();
+    h.router.go(AppRoutes.play(PlayMode.typing));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Write it in Hungarian'), findsOneWidget);
+  });
+
+  testWidgets('the switch button has a Hungarian label', (tester) async {
+    await _open(tester, locale: const Locale('hu'));
+
+    expect(find.byTooltip('Kérdés nyelvének váltása'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Kérdés nyelvének váltása'));
+    await tester.pump();
+
+    expect(find.text('Írd le angolul'), findsOneWidget);
+  });
+
+  testWidgets('the title stays centered next to the switch button', (
+    tester,
+  ) async {
+    await _open(tester);
+
+    final center = tester.getCenter(find.text('Exact match')).dx;
+    expect(center, closeTo(390 / 2, 0.5));
+    expect(find.byTooltip(_switchTooltip), findsOneWidget);
+    final size = tester.getSize(find.byTooltip(_switchTooltip));
+    expect(size, const Size(44, 44));
+  });
+
+  testWidgets('the switch button stays reachable with the keyboard open', (
+    tester,
+  ) async {
+    tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+    addTearDown(tester.view.resetViewInsets);
+    await _open(tester, size: const Size(320, 568));
+
+    expect(tester.takeException(), isNull);
+    expect(
+      tester.getRect(find.byTooltip(_switchTooltip)).bottom,
+      lessThanOrEqualTo(268),
+    );
+
+    await _switchLanguage(tester);
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Write it in English'), findsOneWidget);
   });
 
   testWidgets('meets the tap target guidelines', (tester) async {
