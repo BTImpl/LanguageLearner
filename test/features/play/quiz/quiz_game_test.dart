@@ -160,6 +160,62 @@ void main() {
     });
   });
 
+  group('direction of a word', () {
+    test('a word with its own direction gets answers in that language', () {
+      final session = RoundSession(
+        words: _words(12),
+        promptLanguage: PromptLanguage.english,
+        random: Random(1),
+      );
+      final asked = session.words.first;
+      session.setPromptLanguage(asked, PromptLanguage.hungarian);
+
+      final game = QuizGame(session: session, random: Random(1));
+
+      expect(game.isPlayable, isTrue);
+      expect(game.current, asked);
+      expect(game.options, hasLength(4));
+      expect(game.options.every((o) => o.text.startsWith('en')), isTrue);
+      expect(game.options.singleWhere((o) => o.isCorrect).text, asked.english);
+      game.dispose();
+    });
+
+    test('isPlayableIn tells which directions the deck can be asked in', () {
+      // Three Hungarian texts only: an English question has just two wrong
+      // Hungarian answers, a Hungarian question has plenty of English ones.
+      final words = [
+        for (var i = 0; i < 6; i++)
+          WordPair.fromCells(
+            id: 'w$i',
+            english: 'en$i',
+            hungarian: 'hu${i % 3}',
+          ),
+      ];
+      final session = RoundSession(
+        words: words,
+        promptLanguage: PromptLanguage.english,
+        random: Random(1),
+      );
+
+      expect(QuizGame.isPlayableIn(session, PromptLanguage.english), isFalse);
+      expect(QuizGame.isPlayableIn(session, PromptLanguage.hungarian), isTrue);
+    });
+
+    test('isPlayableIn takes the wrong answers from the given pool', () {
+      final session = RoundSession(
+        words: _words(2),
+        promptLanguage: PromptLanguage.english,
+        random: Random(1),
+      );
+
+      expect(QuizGame.isPlayableIn(session, PromptLanguage.english), isFalse);
+      expect(
+        QuizGame.isPlayableIn(session, PromptLanguage.english, pool: _words(8)),
+        isTrue,
+      );
+    });
+  });
+
   group('answering', () {
     test('a wrong answer turns red, stays and the word does not move on', () {
       final s = _Setup();

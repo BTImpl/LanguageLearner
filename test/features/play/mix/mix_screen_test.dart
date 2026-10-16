@@ -19,6 +19,7 @@ import 'package:languagelearner/features/play/quiz/quiz_content.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
+import 'package:languagelearner/features/play/widgets/question_card.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 
@@ -38,6 +39,7 @@ class _Harness {
 Future<_Harness> _open(
   WidgetTester tester, {
   Locale locale = const Locale('en'),
+  PromptLanguage promptLanguage = PromptLanguage.english,
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1;
@@ -56,7 +58,7 @@ Future<_Harness> _open(
         roundRandomProvider.overrideWithValue(Random(1)),
         ttsServiceProvider.overrideWithValue(FakeTtsService()),
         initialSettingsProvider.overrideWithValue(
-          AppSettings(promptLanguage: PromptLanguage.english),
+          AppSettings(promptLanguage: promptLanguage),
         ),
       ],
       child: const LanguageLearnerApp(),
@@ -70,6 +72,15 @@ Future<_Harness> _open(
 
 Finder get _field => find.byType(TextField);
 
+/// The text of the question card, which is where the asked word is shown.
+Finder _asked(String text) =>
+    find.descendant(of: find.byType(QuestionCard), matching: find.text(text));
+
+/// The right answer of a typing step: the other language than the one shown
+/// in the question card, because every step draws its own direction.
+String _typingAnswer(WordPair word) =>
+    _asked(word.english).evaluate().isNotEmpty ? word.hungarian : word.english;
+
 Finder _tile(WordPair word, MatchSide side) =>
     find.byKey(matchTileKey(word, side));
 
@@ -81,7 +92,7 @@ Future<int> _solveStep(
   int solved,
 ) async {
   if (_field.evaluate().isNotEmpty) {
-    await tester.enterText(_field, words[solved].hungarian);
+    await tester.enterText(_field, _typingAnswer(words[solved]));
     await tester.pump();
     await tester.tap(find.text('Check'));
     await tester.pump();
@@ -151,6 +162,119 @@ void main() {
     expect(find.text('Restart Mix'), findsOneWidget);
   });
 
+  testWidgets('every step asks in its own direction and says so', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+
+    var solved = 0;
+    var guard = 0;
+    while (h.path == AppRoutes.play(PlayMode.mix) && guard++ < 40) {
+      final word = h.words[solved];
+      final typing = _field.evaluate().isNotEmpty;
+      final quiz = find.byKey(quizOptionKey(word)).evaluate().isNotEmpty;
+      if (typing || quiz) {
+        final englishQuestion = _asked(word.english).evaluate().isNotEmpty;
+        final label = switch ((typing, englishQuestion)) {
+          (true, true) => 'Write it in Hungarian',
+          (true, false) => 'Write it in English',
+          (false, true) => 'What does it mean in Hungarian?',
+          (false, false) => 'How do you say it in English?',
+        };
+        expect(find.text(label), findsOneWidget, reason: 'word $solved');
+        if (!englishQuestion) {
+          expect(_asked(word.hungarian), findsOneWidget);
+        }
+        // Only an English question can be read aloud.
+        expect(
+          find.byTooltip('Read aloud'),
+          englishQuestion ? findsOneWidget : findsNothing,
+          reason: 'word $solved',
+        );
+      }
+      solved += await _solveStep(tester, h.words, solved);
+    }
+
+    expect(solved, 12);
+    expect(h.path, AppRoutes.summary(PlayMode.mix));
+  });
+
+  testWidgets('the setting of the student does not decide the direction', (
+    tester,
+  ) async {
+    Future<List<bool>> directions(PromptLanguage setting) async {
+      final h = await _open(tester, promptLanguage: setting);
+      final englishQuestions = <bool>[];
+      var solved = 0;
+      var guard = 0;
+      while (h.path == AppRoutes.play(PlayMode.mix) && guard++ < 40) {
+        final word = h.words[solved];
+        if (_field.evaluate().isNotEmpty ||
+            find.byKey(quizOptionKey(word)).evaluate().isNotEmpty) {
+          englishQuestions.add(_asked(word.english).evaluate().isNotEmpty);
+        }
+        solved += await _solveStep(tester, h.words, solved);
+      }
+      await tester.pumpWidget(const SizedBox());
+      return englishQuestions;
+    }
+
+    final fromEnglish = await directions(PromptLanguage.english);
+    final fromHungarian = await directions(PromptLanguage.hungarian);
+
+    expect(fromHungarian, fromEnglish);
+  });
+
+  testWidgets('the summary shows a missed word as it was asked', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+    final [first, second, ...] = h.words;
+
+    // Miss the first word, whatever kind of step it is in.
+    var askedInEnglish = true;
+    if (_field.evaluate().isNotEmpty) {
+      askedInEnglish = _asked(first.english).evaluate().isNotEmpty;
+      await tester.enterText(_field, 'nope');
+      await tester.pump();
+      await tester.tap(find.text('Check'));
+      await tester.pump();
+    } else if (find.byKey(quizOptionKey(first)).evaluate().isNotEmpty) {
+      askedInEnglish = _asked(first.english).evaluate().isNotEmpty;
+      final wrong = h.words
+          .skip(1)
+          .firstWhere(
+            (w) => find.byKey(quizOptionKey(w)).evaluate().isNotEmpty,
+          );
+      await tester.tap(find.byKey(quizOptionKey(wrong)));
+      await tester.pump();
+    } else {
+      await tester.tap(_tile(first, MatchSide.english));
+      await tester.pump();
+      await tester.tap(_tile(second, MatchSide.hungarian));
+      await tester.pump(const Duration(seconds: 1));
+    }
+
+    var solved = 0;
+    var guard = 0;
+    while (h.path == AppRoutes.play(PlayMode.mix) && guard++ < 40) {
+      solved += await _solveStep(tester, h.words, solved);
+    }
+    await tester.pumpAndSettle();
+
+    expect(h.path, AppRoutes.summary(PlayMode.mix));
+    final (asked, answer) = askedInEnglish
+        ? (first.english, first.hungarian)
+        : (first.hungarian, first.english);
+    expect(find.text(asked), findsOneWidget);
+    expect(find.text(answer), findsOneWidget);
+    // The asked word is on the left, its pair on the right.
+    expect(
+      tester.getTopLeft(find.text(asked)).dx,
+      lessThan(tester.getTopLeft(find.text(answer)).dx),
+    );
+  });
+
   testWidgets('the summary is in Hungarian too', (tester) async {
     final h = await _open(tester, locale: const Locale('hu'));
 
@@ -158,7 +282,7 @@ void main() {
     var guard = 0;
     while (h.path == AppRoutes.play(PlayMode.mix) && guard++ < 40) {
       if (_field.evaluate().isNotEmpty) {
-        await tester.enterText(_field, h.words[solved].hungarian);
+        await tester.enterText(_field, _typingAnswer(h.words[solved]));
         await tester.pump();
         await tester.tap(find.text('Ellenőrzés'));
         await tester.pump();
