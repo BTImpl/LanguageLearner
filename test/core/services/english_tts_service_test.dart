@@ -5,9 +5,10 @@ import 'package:languagelearner/core/services/tts_engine.dart';
 import '../../helpers/fake_tts_service.dart';
 
 class _FakeEngine implements TtsEngine {
-  _FakeEngine({this.britishAvailable = true});
+  _FakeEngine({this.britishAvailable = true, this.americanAvailable = true});
 
   final bool britishAvailable;
+  final bool americanAvailable;
   final calls = <String>[];
   Exception? failure;
 
@@ -16,7 +17,8 @@ class _FakeEngine implements TtsEngine {
 
   @override
   Future<bool> isLanguageAvailable(String language) async =>
-      language == 'en-GB' && britishAvailable;
+      (language == 'en-GB' && britishAvailable) ||
+      (language == 'en-US' && americanAvailable);
 
   @override
   Future<void> setLanguage(String language) async =>
@@ -33,6 +35,11 @@ class _FakeEngine implements TtsEngine {
 
   @override
   Future<void> stop() async => calls.add('stop');
+}
+
+class _BrokenEngine extends _FakeEngine {
+  @override
+  Future<void> prepare() async => throw Exception('no engine');
 }
 
 void main() {
@@ -56,6 +63,37 @@ void main() {
 
     expect(engine.calls, contains('language:en-US'));
     expect(engine.calls, isNot(contains('language:en-GB')));
+  });
+
+  group('availability', () {
+    test('is available with a British or an American voice', () async {
+      expect(await EnglishTtsService(_FakeEngine()).isAvailable(), isTrue);
+      expect(
+        await EnglishTtsService(_FakeEngine(britishAvailable: false))
+            .isAvailable(),
+        isTrue,
+      );
+    });
+
+    test('is not available without any English voice', () async {
+      final engine = _FakeEngine(
+        britishAvailable: false,
+        americanAvailable: false,
+      );
+      final service = EnglishTtsService(engine);
+
+      expect(await service.isAvailable(), isFalse);
+
+      await service.speak('ticket');
+
+      expect(engine.calls, ['prepare']);
+    });
+
+    test('is not available when the engine fails to start', () async {
+      final service = EnglishTtsService(_BrokenEngine());
+
+      expect(await service.isAvailable(), isFalse);
+    });
   });
 
   test('sets the engine up only once', () async {

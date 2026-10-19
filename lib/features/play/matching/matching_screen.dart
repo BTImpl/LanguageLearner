@@ -139,6 +139,7 @@ class _MatchingScreenState extends ConsumerState<MatchingScreen> {
       counter: i18n.matchingPageCounter(game.pageIndex + 1, game.pageCount),
       progress: found / total,
       onBack: goHome,
+      confirmLeave: found > 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

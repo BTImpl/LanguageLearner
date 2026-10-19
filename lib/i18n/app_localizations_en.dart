@@ -403,4 +403,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInOtherAccount => 'Sign in with another account';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get refreshAction => 'Refresh';
+
+  @override
+  String get noConnectionTitle => 'No internet connection';
+
+  @override
+  String get noConnectionMessage => 'The first download of the word list needs internet.';
+
+  @override
+  String get noDecksTitle => 'No word list yet';
+
+  @override
+  String get noDecksMessage => 'Ask your teacher, then refresh.';
+
+  @override
+  String get wordsUnavailableTitle => 'The word list is not available right now';
+
+  @override
+  String get wordsUnavailableMessage => 'Please try again a little later.';
+
+  @override
+  String get wordsLoadFailedTitle => 'Could not download the word list';
+
+  @override
+  String get wordsLoadFailedMessage => 'Something went wrong. Please try again.';
+
+  @override
+  String get deckNoWords => 'This deck has no words';
+
+  @override
+  String get leaveRoundTitle => 'Leave the round?';
+
+  @override
+  String get leaveRoundMessage => 'Your result so far will not be saved.';
+
+  @override
+  String get leaveRoundConfirm => 'Leave';
+
+  @override
+  String get leaveRoundCancel => 'Keep playing';
+
+  @override
+  String needsWords(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'At least $count words needed',
+      one: 'At least 1 word needed',
+    );
+    return '$_temp0';
+  }
 }

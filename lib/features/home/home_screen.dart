@@ -10,20 +10,21 @@ import 'package:languagelearner/features/home/widgets/deck_card.dart';
 import 'package:languagelearner/features/home/widgets/deck_picker_sheet.dart';
 import 'package:languagelearner/features/home/widgets/home_header.dart';
 import 'package:languagelearner/features/home/widgets/mode_tiles.dart';
+import 'package:languagelearner/features/home/widgets/word_list_message.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The start screen: the selected deck and the practice modes.
 ///
-/// While the very first word list is downloaded a spinner takes the place of
-/// the deck card. Error and empty states come with card LL-31; until then the
-/// deck card is simply hidden while there is no deck.
+/// The deck card and the modes take the place of what is not there yet:
+/// a spinner while the very first word list is downloaded, a message with a
+/// button when it could not be downloaded or the student has no deck.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final decks = ref.watch(selectedDeckProvider);
-    final deck = decks.value;
+    final decks = ref.watch(decksProvider);
+    final deck = ref.watch(selectedDeckProvider).value;
     return Scaffold(
       backgroundColor: context.colors.background,
       body: SafeArea(
@@ -50,16 +51,19 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              if (deck == null && decks.isLoading)
-                const _LoadingDeck()
-              else if (deck != null) ...[
+              if (deck != null) ...[
                 DeckCard(
                   deck: deck,
                   onTap: () => unawaited(showDeckPicker(context)),
                 ),
                 const SizedBox(height: 14),
-              ],
-              const ModeTiles(),
+                ModeTiles(wordCount: deck.words.length),
+              ] else if (decks.isLoading)
+                const _LoadingDeck()
+              else if (decks.hasError)
+                WordListFailed(error: decks.error!)
+              else
+                const NoDecksMessage(),
             ],
           ),
         ),

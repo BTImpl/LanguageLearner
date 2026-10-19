@@ -526,5 +526,74 @@
   "signInOtherAccount": "Sign in with another account",
   "@signInOtherAccount": {
     "description": "Label of the sign-in button after the account was not found."
+  },
+  "retry": "Try again",
+  "@retry": {
+    "description": "Button that tries the failed word list download again."
+  },
+  "refreshAction": "Refresh",
+  "@refreshAction": {
+    "description": "Button that refreshes the word list from the empty-state message."
+  },
+  "noConnectionTitle": "No internet connection",
+  "@noConnectionTitle": {
+    "description": "Title shown when the first word list download fails for lack of network."
+  },
+  "noConnectionMessage": "The first download of the word list needs internet.",
+  "@noConnectionMessage": {
+    "description": "Message under the no-connection title."
+  },
+  "noDecksTitle": "No word list yet",
+  "@noDecksTitle": {
+    "description": "Title shown when the student has no deck at all."
+  },
+  "noDecksMessage": "Ask your teacher, then refresh.",
+  "@noDecksMessage": {
+    "description": "Message under the no-decks title."
+  },
+  "wordsUnavailableTitle": "The word list is not available right now",
+  "@wordsUnavailableTitle": {
+    "description": "Title shown when the backend cannot read the spreadsheet (503)."
+  },
+  "wordsUnavailableMessage": "Please try again a little later.",
+  "@wordsUnavailableMessage": {
+    "description": "Message under the unavailable title."
+  },
+  "wordsLoadFailedTitle": "Could not download the word list",
+  "@wordsLoadFailedTitle": {
+    "description": "Title shown for other word list download problems."
+  },
+  "wordsLoadFailedMessage": "Something went wrong. Please try again.",
+  "@wordsLoadFailedMessage": {
+    "description": "Message under the download-failed title."
+  },
+  "deckNoWords": "This deck has no words",
+  "@deckNoWords": {
+    "description": "Caption of the deck card when the deck is empty."
+  },
+  "leaveRoundTitle": "Leave the round?",
+  "@leaveRoundTitle": {
+    "description": "Title of the dialog that asks before leaving a running round."
+  },
+  "leaveRoundMessage": "Your result so far will not be saved.",
+  "@leaveRoundMessage": {
+    "description": "Message of the leave-round dialog."
+  },
+  "leaveRoundConfirm": "Leave",
+  "@leaveRoundConfirm": {
+    "description": "Button that leaves the round."
+  },
+  "leaveRoundCancel": "Keep playing",
+  "@leaveRoundCancel": {
+    "description": "Button that stays in the round."
+  },
+  "needsWords": "{count, plural, =1{At least 1 word needed} other{At least {count} words needed}}",
+  "@needsWords": {
+    "description": "Shown on a mode tile that is disabled because the deck has too few words.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

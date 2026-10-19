@@ -733,6 +733,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in with another account'**
   String get signInOtherAccount;
+
+  /// Button that tries the failed word list download again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// Button that refreshes the word list from the empty-state message.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refreshAction;
+
+  /// Title shown when the first word list download fails for lack of network.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noConnectionTitle;
+
+  /// Message under the no-connection title.
+  ///
+  /// In en, this message translates to:
+  /// **'The first download of the word list needs internet.'**
+  String get noConnectionMessage;
+
+  /// Title shown when the student has no deck at all.
+  ///
+  /// In en, this message translates to:
+  /// **'No word list yet'**
+  String get noDecksTitle;
+
+  /// Message under the no-decks title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask your teacher, then refresh.'**
+  String get noDecksMessage;
+
+  /// Title shown when the backend cannot read the spreadsheet (503).
+  ///
+  /// In en, this message translates to:
+  /// **'The word list is not available right now'**
+  String get wordsUnavailableTitle;
+
+  /// Message under the unavailable title.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again a little later.'**
+  String get wordsUnavailableMessage;
+
+  /// Title shown for other word list download problems.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not download the word list'**
+  String get wordsLoadFailedTitle;
+
+  /// Message under the download-failed title.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get wordsLoadFailedMessage;
+
+  /// Caption of the deck card when the deck is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'This deck has no words'**
+  String get deckNoWords;
+
+  /// Title of the dialog that asks before leaving a running round.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the round?'**
+  String get leaveRoundTitle;
+
+  /// Message of the leave-round dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Your result so far will not be saved.'**
+  String get leaveRoundMessage;
+
+  /// Button that leaves the round.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leaveRoundConfirm;
+
+  /// Button that stays in the round.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing'**
+  String get leaveRoundCancel;
+
+  /// Shown on a mode tile that is disabled because the deck has too few words.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{At least 1 word needed} other{At least {count} words needed}}'**
+  String needsWords(int count);
 }
 
 class _AppLocalizationsDelegate

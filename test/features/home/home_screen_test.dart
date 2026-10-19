@@ -123,7 +123,7 @@ void main() {
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.byType(DeckCard), findsNothing);
-    expect(find.text('Mix'), findsOneWidget);
+    expect(find.text('Mix'), findsNothing);
 
     answer.complete(await FakeWordRepository().getDecks());
     await tester.pumpAndSettle();

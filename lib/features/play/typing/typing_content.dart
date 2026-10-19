@@ -97,7 +97,8 @@ class _TypingContentState extends ConsumerState<TypingContent> {
                       ? i18n.typingWriteHungarian
                       : i18n.typingWriteEnglish,
                   text: session.promptText(word),
-                  onReadAloud: session.promptIsEnglishFor(word)
+                  onReadAloud:
+                      session.promptIsEnglishFor(word) && ref.canReadAloud
                       ? () => ref
                             .read(ttsServiceProvider)
                             .speak(word.english)

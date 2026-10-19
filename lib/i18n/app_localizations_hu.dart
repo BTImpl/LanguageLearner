@@ -373,4 +373,54 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get signInOtherAccount => 'Belépés másik fiókkal';
+
+  @override
+  String get retry => 'Újra';
+
+  @override
+  String get refreshAction => 'Frissítés';
+
+  @override
+  String get noConnectionTitle => 'Nincs internetkapcsolat';
+
+  @override
+  String get noConnectionMessage => 'A szólista első letöltéséhez netre van szükség.';
+
+  @override
+  String get noDecksTitle => 'Még nincs szólistád';
+
+  @override
+  String get noDecksMessage => 'Szólj a tanárodnak, aztán frissíts.';
+
+  @override
+  String get wordsUnavailableTitle => 'A szólista most nem érhető el';
+
+  @override
+  String get wordsUnavailableMessage => 'Próbáld meg kicsit később.';
+
+  @override
+  String get wordsLoadFailedTitle => 'Nem sikerült letölteni a szólistát';
+
+  @override
+  String get wordsLoadFailedMessage => 'Valami hiba történt. Próbáld újra.';
+
+  @override
+  String get deckNoWords => 'Ebben a pakliban nincs szó';
+
+  @override
+  String get leaveRoundTitle => 'Kilépsz a körből?';
+
+  @override
+  String get leaveRoundMessage => 'Az eddigi eredmény nem mentődik.';
+
+  @override
+  String get leaveRoundConfirm => 'Kilépek';
+
+  @override
+  String get leaveRoundCancel => 'Folytatom';
+
+  @override
+  String needsWords(int count) {
+    return 'Legalább $count szó kell';
+  }
 }

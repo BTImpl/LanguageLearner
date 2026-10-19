@@ -147,4 +147,125 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('12 / 12'), findsOneWidget);
   });
+
+  group('confirmLeave', () {
+    Future<List<String>> pumpConfirming(
+      WidgetTester tester, {
+      bool confirmLeave = true,
+    }) async {
+      final events = <String>[];
+      await pumpThemed(
+        tester,
+        GameScaffold(
+          title: 'Quiz',
+          counter: '3 / 12',
+          progress: 0.25,
+          confirmLeave: confirmLeave,
+          onBack: () => events.add('back'),
+          child: const SizedBox.shrink(),
+        ),
+        asScreen: true,
+      );
+      return events;
+    }
+
+    testWidgets('asks before the back button leaves', (tester) async {
+      final events = await pumpConfirming(tester);
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Leave the round?'), findsOneWidget);
+      expect(
+        find.text('Your result so far will not be saved.'),
+        findsOneWidget,
+      );
+      expect(events, isEmpty);
+    });
+
+    testWidgets('Keep playing stays', (tester) async {
+      final events = await pumpConfirming(tester);
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Keep playing'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Leave the round?'), findsNothing);
+      expect(events, isEmpty);
+    });
+
+    testWidgets('Leave goes back', (tester) async {
+      final events = await pumpConfirming(tester);
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Leave'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Leave the round?'), findsNothing);
+      expect(events, ['back']);
+    });
+
+    testWidgets('the system back asks too', (tester) async {
+      final events = await pumpConfirming(tester);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Leave the round?'), findsOneWidget);
+      expect(events, isEmpty);
+
+      await tester.tap(find.text('Leave'));
+      await tester.pumpAndSettle();
+
+      expect(events, ['back']);
+    });
+
+    testWidgets('without it the back button leaves at once', (tester) async {
+      final events = await pumpConfirming(tester, confirmLeave: false);
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Leave the round?'), findsNothing);
+      expect(events, ['back']);
+    });
+
+    testWidgets('Leave pops the route when there is no onBack', (tester) async {
+      await pumpThemed(
+        tester,
+        Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () => Navigator.push<void>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const GameScaffold(
+                    title: 'Quiz',
+                    counter: '3 / 12',
+                    progress: 0.25,
+                    confirmLeave: true,
+                    child: SizedBox.shrink(),
+                  ),
+                ),
+              ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+        asScreen: true,
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Leave'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Quiz'), findsNothing);
+      expect(find.text('open'), findsOneWidget);
+    });
+  });
 }

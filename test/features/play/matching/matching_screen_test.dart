@@ -332,4 +332,38 @@ void main() {
     await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
     handle.dispose();
   });
+
+  testWidgets('leaving before any progress needs no confirmation', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsNothing);
+    expect(h.path, AppRoutes.home);
+  });
+
+  testWidgets('leaving a round with progress asks first', (tester) async {
+    final h = await _open(tester);
+    await _solve(tester, [h.words.first]);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsOneWidget);
+    expect(h.path, AppRoutes.play(PlayMode.matching));
+
+    await tester.tap(find.text('Keep playing'));
+    await tester.pumpAndSettle();
+    expect(h.path, AppRoutes.play(PlayMode.matching));
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Leave'));
+    await tester.pumpAndSettle();
+
+    expect(h.path, AppRoutes.home);
+  });
 }

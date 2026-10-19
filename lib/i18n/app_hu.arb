@@ -105,5 +105,21 @@
   "signInButton": "Belépés Google-fiókkal",
   "signInFailed": "Nem sikerült belépni. Próbáld újra.",
   "signInStudentNotFound": "Ezzel a fiókkal nem találunk szólistát. Kérd meg a tanárodat, hogy vegyen fel, vagy lépj be másik fiókkal.",
-  "signInOtherAccount": "Belépés másik fiókkal"
+  "signInOtherAccount": "Belépés másik fiókkal",
+  "retry": "Újra",
+  "refreshAction": "Frissítés",
+  "noConnectionTitle": "Nincs internetkapcsolat",
+  "noConnectionMessage": "A szólista első letöltéséhez netre van szükség.",
+  "noDecksTitle": "Még nincs szólistád",
+  "noDecksMessage": "Szólj a tanárodnak, aztán frissíts.",
+  "wordsUnavailableTitle": "A szólista most nem érhető el",
+  "wordsUnavailableMessage": "Próbáld meg kicsit később.",
+  "wordsLoadFailedTitle": "Nem sikerült letölteni a szólistát",
+  "wordsLoadFailedMessage": "Valami hiba történt. Próbáld újra.",
+  "deckNoWords": "Ebben a pakliban nincs szó",
+  "leaveRoundTitle": "Kilépsz a körből?",
+  "leaveRoundMessage": "Az eddigi eredmény nem mentődik.",
+  "leaveRoundConfirm": "Kilépek",
+  "leaveRoundCancel": "Folytatom",
+  "needsWords": "Legalább {count} szó kell"
 }
