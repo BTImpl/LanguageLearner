@@ -55,6 +55,12 @@ class ApiWordRepository implements WordRepository {
     _refreshed = await _decks('POST', '/api/v1/decks/refresh');
   }
 
+  // Nothing is saved here; the `CachedWordRepository` on top does that.
+  @override
+  Future<void> clearLocal() async {
+    _refreshed = null;
+  }
+
   Future<List<Deck>> _decks(String method, String path) async {
     final response = await _send(method, path);
     try {

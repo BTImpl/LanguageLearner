@@ -173,9 +173,13 @@
   "@lastRefreshedNever": {
     "description": "Shown when there is no word list yet."
   },
-  "refreshFailed": "Could not refresh the word list.",
+  "refreshFailed": "Could not refresh. You still see the earlier word list.",
   "@refreshFailed": {
-    "description": "Message shown when refreshing the word list failed."
+    "description": "Message shown when refreshing the word list failed; the saved word list stays."
+  },
+  "loadingWords": "Loading words…",
+  "@loadingWords": {
+    "description": "Accessibility label of the spinner on the home screen while the first word list is downloaded."
   },
   "homeHeadline": "What shall we practice today?",
   "@homeHeadline": {

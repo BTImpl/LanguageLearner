@@ -14,6 +14,9 @@ import '../../helpers/in_memory_key_value_store.dart';
 
 class _SingleDeckRepository implements WordRepository {
   @override
+  Future<void> clearLocal() async {}
+
+  @override
   Future<List<Deck>> getDecks() async => [
     Deck(
       id: 'only',

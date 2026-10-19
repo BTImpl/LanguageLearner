@@ -28,6 +28,9 @@ import '../../../helpers/fake_tts_service.dart';
 
 /// One deck with the given words.
 class _Repository implements WordRepository {
+  @override
+  Future<void> clearLocal() async {}
+
   _Repository(this.words);
 
   final List<WordPair> words;

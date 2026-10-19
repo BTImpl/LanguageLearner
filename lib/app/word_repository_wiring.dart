@@ -4,8 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/app_config.dart';
 import 'package:languagelearner/core/data/api/api_word_repository.dart';
+import 'package:languagelearner/core/data/cached_word_repository.dart';
+import 'package:languagelearner/core/data/deck_cache.dart';
 import 'package:languagelearner/core/data/word_load_exception.dart';
+import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/data/word_repository.dart';
+import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/auth/auth_repository.dart';
 
@@ -43,6 +47,28 @@ WordRepository createApiWordRepository(Ref ref, {Dio? dio}) {
     onStudentNotFound: () => unawaited(
       ref.read(authControllerProvider.notifier).signOutStudentNotFound(),
     ),
+  );
+}
+
+/// The [WordRepository] of the app: the decks of [remote] saved in [cache], so
+/// the words are there without a network. A background download that brings
+/// new words reloads the decks of the screens.
+WordRepository createCachedWordRepository(
+  Ref ref, {
+  required WordRepository remote,
+  required DeckCache cache,
+}) {
+  var disposed = false;
+  ref.onDispose(() => disposed = true);
+  return CachedWordRepository(
+    remote: remote,
+    cache: cache,
+    now: ref.read(clockProvider),
+    onBackgroundUpdate: () {
+      if (!disposed) {
+        ref.invalidate(decksProvider);
+      }
+    },
   );
 }
 

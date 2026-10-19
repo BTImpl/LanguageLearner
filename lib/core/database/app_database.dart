@@ -32,8 +32,57 @@ class Attempts extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
+/// A deck of the last word list downloaded from the backend (card LL-29).
+@DataClassName('CachedDeckRow')
+class CachedDecks extends Table {
+  @override
+  String get tableName => 'cached_deck';
+
+  TextColumn get id => text()();
+  TextColumn get name => text()();
+
+  /// The place of the deck in the downloaded list.
+  IntColumn get position => integer()();
+
+  /// When the backend read the deck from the spreadsheet.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// When the phone downloaded the deck.
+  DateTimeColumn get fetchedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+/// A word of a [CachedDecks] row.
+@DataClassName('CachedWordRow')
+class CachedWords extends Table {
+  @override
+  String get tableName => 'cached_word';
+
+  TextColumn get deckId => text()();
+  TextColumn get id => text()();
+
+  /// The place of the word in its deck.
+  IntColumn get position => integer()();
+
+  TextColumn get english => text()();
+  TextColumn get hungarian => text()();
+
+  /// A JSON list of the accepted English texts.
+  TextColumn get acceptedEnglish => text()();
+
+  /// A JSON list of the accepted Hungarian texts.
+  TextColumn get acceptedHungarian => text()();
+
+  TextColumn get example => text().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {deckId, id};
+}
+
 /// The local SQLite database of the app.
-@DriftDatabase(tables: [Attempts])
+@DriftDatabase(tables: [Attempts, CachedDecks, CachedWords])
 class AppDatabase extends _$AppDatabase {
   /// Opens the database on [executor]; tests pass an in-memory one.
   AppDatabase(super.executor);
@@ -43,5 +92,16 @@ class AppDatabase extends _$AppDatabase {
       AppDatabase(driftDatabase(name: 'languagelearner'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (migrator) => migrator.createAll(),
+    onUpgrade: (migrator, from, to) async {
+      if (from < 2) {
+        await migrator.createTable(cachedDecks);
+        await migrator.createTable(cachedWords);
+      }
+    },
+  );
 }

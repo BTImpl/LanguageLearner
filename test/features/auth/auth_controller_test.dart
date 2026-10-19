@@ -1,10 +1,34 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:languagelearner/core/data/word_providers.dart';
+import 'package:languagelearner/core/data/word_repository.dart';
+import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/auth/auth_repository.dart';
 import 'package:languagelearner/features/auth/auth_state.dart';
 
 import '../../helpers/fake_auth_repository.dart';
+
+class _CountingRepository implements WordRepository {
+  var clears = 0;
+
+  /// When set, [clearLocal] throws it.
+  Exception? clearError;
+
+  @override
+  Future<List<Deck>> getDecks() async => const [];
+
+  @override
+  Future<void> refresh() async {}
+
+  @override
+  Future<void> clearLocal() async {
+    clears++;
+    if (clearError case final error?) {
+      throw error;
+    }
+  }
+}
 
 void main() {
   late FakeAuthRepository repository;
@@ -50,6 +74,43 @@ void main() {
     );
 
     expect(c.read(authControllerProvider), isA<SignedOut>());
+  });
+
+  group('the saved words', () {
+    late _CountingRepository words;
+
+    ProviderContainer signedInContainer() {
+      final container = ProviderContainer(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(repository),
+          initialAuthStateProvider.overrideWithValue(
+            const SignedIn(testAccount),
+          ),
+          wordRepositoryProvider.overrideWithValue(words),
+        ],
+      );
+      addTearDown(container.dispose);
+      return container;
+    }
+
+    setUp(() => words = _CountingRepository());
+
+    test('are forgotten when the student signs out', () async {
+      final c = signedInContainer();
+
+      await c.read(authControllerProvider.notifier).signOut();
+
+      expect(words.clears, 1);
+    });
+
+    test('a problem forgetting them does not stop the sign-out', () async {
+      words.clearError = Exception('disk');
+      final c = signedInContainer();
+
+      await c.read(authControllerProvider.notifier).signOut();
+
+      expect(c.read(authControllerProvider), isA<SignedOut>());
+    });
   });
 
   test('signing out signs out of Google and clears the account', () async {
