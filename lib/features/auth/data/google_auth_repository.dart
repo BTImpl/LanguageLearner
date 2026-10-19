@@ -36,12 +36,12 @@ class GoogleAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<String> idToken() async {
+  Future<String> idToken({bool forceRefresh = false}) async {
     final current = _identity;
     if (current == null) {
       throw const AuthException(AuthFailure.notSignedIn);
     }
-    if (!_needsRenewal(current.idToken)) {
+    if (!forceRefresh && !_needsRenewal(current.idToken)) {
       return current.idToken;
     }
     // Calls that arrive together share one renewal.

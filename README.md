@@ -83,6 +83,32 @@ On start the app tries to sign in silently (5 seconds at most). Without a
 signed-in student every route leads to the sign-in screen
 (`signInRedirect` in `lib/app/router.dart`).
 
+## Backend
+
+The decks come from the backend (`BTImpl/LanguageLearner-backend`) through
+`ApiWordRepository`: `GET /api/v1/decks` and `POST /api/v1/decks/refresh`, with
+the Google ID token as a bearer token. Timeouts: 10 seconds to connect, 20
+seconds for the answer.
+
+- A 401 answer is retried once with a new token; a second one signs the student
+  out.
+- A 403 answer (`STUDENT_NOT_FOUND`) signs the student out and the sign-in
+  screen explains it.
+- Other problems are a `WordLoadException` with a `WordLoadFailure` (no network,
+  timeout, word list unavailable, server error) for the screens to explain
+  (card LL-31). `decksProvider` does not retry on its own.
+
+Build-time settings (`--dart-define`):
+
+| Name | Default | Meaning |
+| --- | --- | --- |
+| `API_BASE_URL` | the Cloud Run service | the backend, e.g. `http://localhost:8080` for a local one |
+| `USE_FAKE_DATA` | `false` | `true` uses the built-in sample decks (the sign-in is still needed) |
+
+```
+flutter run --dart-define=USE_FAKE_DATA=true
+```
+
 ## Git hook
 
 A pre-commit hook runs the formatting check before every commit, the same

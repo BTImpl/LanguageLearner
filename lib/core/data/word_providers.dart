@@ -14,8 +14,12 @@ final wordRepositoryProvider = Provider<WordRepository>(
 );
 
 /// All decks of the student.
+///
+/// A failure is not retried automatically: the screens show it and the student
+/// decides (the refresh button), and a refused sign-in must not be repeated.
 final decksProvider = FutureProvider<List<Deck>>(
   (ref) => ref.watch(wordRepositoryProvider).getDecks(),
+  retry: (retryCount, error) => null,
 );
 
 /// The key of the picked deck id in the [KeyValueStore].
