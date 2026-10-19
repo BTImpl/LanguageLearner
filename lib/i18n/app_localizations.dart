@@ -697,6 +697,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not practiced yet'**
   String get deckNotPracticed;
+
+  /// Text under the app name on the sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with the Google account your teacher added.'**
+  String get signInPrompt;
+
+  /// Main button of the sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get signInButton;
+
+  /// Shown under the sign-in button when the sign-in failed or was cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sign in. Try again.'**
+  String get signInFailed;
+
+  /// Replaces the sign-in text when the backend does not know the signed-in account.
+  ///
+  /// In en, this message translates to:
+  /// **'We can\'t find a word list for this account. Ask your teacher to add you, or sign in with another account.'**
+  String get signInStudentNotFound;
+
+  /// Label of the sign-in button after the account was not found.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with another account'**
+  String get signInOtherAccount;
 }
 
 class _AppLocalizationsDelegate

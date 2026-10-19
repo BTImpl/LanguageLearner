@@ -382,4 +382,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deckNotPracticed => 'Not practiced yet';
+
+  @override
+  String get signInPrompt =>
+      'Sign in with the Google account your teacher added.';
+
+  @override
+  String get signInButton => 'Sign in with Google';
+
+  @override
+  String get signInFailed => 'Could not sign in. Try again.';
+
+  @override
+  String get signInStudentNotFound =>
+      'We can\'t find a word list for this account. Ask your teacher to add you, or sign in with another account.';
+
+  @override
+  String get signInOtherAccount => 'Sign in with another account';
 }

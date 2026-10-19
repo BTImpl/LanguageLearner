@@ -1,7 +1,11 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/app/shell/app_shell.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
+import 'package:languagelearner/features/auth/auth_state.dart';
+import 'package:languagelearner/features/auth/sign_in_screen.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
 import 'package:languagelearner/features/play/flashcards/flashcards_screen.dart';
 import 'package:languagelearner/features/play/matching/matching_screen.dart';
@@ -16,21 +20,63 @@ import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
 
 /// The app router. Tests override it to start on another route.
+///
+/// Nobody gets past the sign-in screen without signing in: every route goes
+/// there while nobody is signed in, and the sign-in screen goes to the home
+/// screen once somebody is.
 final routerProvider = Provider<GoRouter>((ref) {
-  final router = createAppRouter();
-  ref.onDispose(router.dispose);
+  final authChanges = _AuthChanges();
+  ref.listen(authControllerProvider, (_, _) => authChanges.notify());
+  final router = createAppRouter(
+    refreshListenable: authChanges,
+    redirect: (context, state) =>
+        signInRedirect(ref.read(authControllerProvider), state.uri.path),
+  );
+  ref.onDispose(() {
+    router.dispose();
+    authChanges.dispose();
+  });
   return router;
 });
+
+/// Where to send the student, `null` to stay at [location].
+@visibleForTesting
+String? signInRedirect(AuthState auth, String location) {
+  final onSignIn = location == AppRoutes.signIn;
+  return switch (auth) {
+    SignedOut() => onSignIn ? null : AppRoutes.signIn,
+    SignedIn() => onSignIn ? AppRoutes.home : null,
+  };
+}
+
+/// Tells the router to check its redirect again when the sign-in changes.
+class _AuthChanges extends ChangeNotifier {
+  void notify() => notifyListeners();
+}
 
 /// Builds the route tree.
 ///
 /// - Three tabs with the bottom navigation: Learn, Statistics, Settings. Each
 ///   tab keeps its own navigation state while another tab is open.
-/// - The game routes are outside the tabs, so they have no bottom navigation.
-GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
+/// - The game routes and the sign-in are outside the tabs, so they have no
+///   bottom navigation.
+///
+/// Without a [redirect] every route can be opened, which is what most tests
+/// want.
+GoRouter createAppRouter({
+  String initialLocation = AppRoutes.home,
+  GoRouterRedirect? redirect,
+  Listenable? refreshListenable,
+}) {
   return GoRouter(
     initialLocation: initialLocation,
+    redirect: redirect,
+    refreshListenable: refreshListenable,
     routes: [
+      GoRoute(
+        path: AppRoutes.signIn,
+        builder: (context, state) => const SignInScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),

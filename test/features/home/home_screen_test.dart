@@ -7,6 +7,8 @@ import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/core/services/clock.dart';
+import 'package:languagelearner/features/auth/account.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/round/word_outcome.dart';
 import 'package:languagelearner/features/stats/data/attempt_record.dart';
@@ -14,6 +16,7 @@ import 'package:languagelearner/features/stats/data/attempt_store.dart';
 import 'package:languagelearner/features/stats/data/stats_providers.dart';
 
 final _now = DateTime(2026, 10, 14, 15, 30);
+const _student = Account(name: 'Kiss Anna', email: 'kiss.anna@example.com');
 
 Future<GoRouter> _openHome(
   WidgetTester tester, {
@@ -31,6 +34,7 @@ Future<GoRouter> _openHome(
     ProviderScope(
       overrides: [
         routerProvider.overrideWithValue(router),
+        accountProvider.overrideWithValue(_student),
         appLocaleProvider.overrideWithValue(locale),
         clockProvider.overrideWithValue(() => _now),
         if (attempts != null) attemptStoreProvider.overrideWithValue(attempts),

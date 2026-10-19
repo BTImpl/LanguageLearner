@@ -9,7 +9,7 @@ import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/core/widgets/icon_square_button.dart';
-import 'package:languagelearner/features/auth/account.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// Logo and app name on the left, refresh button and the account monogram
@@ -91,7 +91,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
                 dimension: AppSizes.touchTarget,
                 child: Center(
                   child: Text(
-                    account.monogram,
+                    account?.monogram ?? '?',
                     style: TextStyle(
                       fontFamily: headingFontFamily,
                       fontSize: 16,

@@ -2,6 +2,7 @@ import 'package:languagelearner/features/play/play_mode.dart';
 
 /// Route paths of the app.
 abstract final class AppRoutes {
+  static const String signIn = '/sign-in';
   static const String home = '/';
   static const String stats = '/stats';
   static const String settings = '/settings';

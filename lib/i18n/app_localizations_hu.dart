@@ -352,4 +352,21 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get deckNotPracticed => 'Még nem gyakoroltad';
+
+  @override
+  String get signInPrompt =>
+      'Lépj be azzal a Google-fiókkal, amelyet a tanárod felvett.';
+
+  @override
+  String get signInButton => 'Belépés Google-fiókkal';
+
+  @override
+  String get signInFailed => 'Nem sikerült belépni. Próbáld újra.';
+
+  @override
+  String get signInStudentNotFound =>
+      'Ezzel a fiókkal nem találunk szólistát. Kérd meg a tanárodat, hogy vegyen fel, vagy lépj be másik fiókkal.';
+
+  @override
+  String get signInOtherAccount => 'Belépés másik fiókkal';
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
@@ -5,7 +7,7 @@ import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/widgets/app_card.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
-import 'package:languagelearner/features/auth/account.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The signed-in student: round monogram, name, e-mail address (cut off when
@@ -17,6 +19,9 @@ class AccountCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final account = ref.watch(accountProvider);
+    if (account == null) {
+      return const SizedBox.shrink();
+    }
     return AppCard(
       borderRadius: AppRadii.card,
       child: Row(
@@ -70,8 +75,8 @@ class AccountCard extends ConsumerWidget {
             label: context.i18n.signOut,
             compact: true,
             color: c.background,
-            // Signing out comes with the Google sign-in (card LL-27).
-            onPressed: () {},
+            onPressed: () =>
+                unawaited(ref.read(authControllerProvider.notifier).signOut()),
           ),
         ],
       ),
