@@ -308,11 +308,17 @@ abstract class AppLocalizations {
   /// **'Not refreshed yet'**
   String get lastRefreshedNever;
 
-  /// Message shown when refreshing the word list failed.
+  /// Message shown when refreshing the word list failed; the saved word list stays.
   ///
   /// In en, this message translates to:
-  /// **'Could not refresh the word list.'**
+  /// **'Could not refresh. You still see the earlier word list.'**
   String get refreshFailed;
+
+  /// Accessibility label of the spinner on the home screen while the first word list is downloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading words…'**
+  String get loadingWords;
 
   /// Headline of the home screen.
   ///

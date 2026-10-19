@@ -25,6 +25,9 @@ import 'package:languagelearner/features/settings/settings_providers.dart';
 
 /// One deck with long, multi-word texts.
 class _LongWordsRepository implements WordRepository {
+  @override
+  Future<void> clearLocal() async {}
+
   static final words = [
     WordPair.fromCells(
       id: 'long-1',

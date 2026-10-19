@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,9 +8,14 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
+import 'package:languagelearner/core/data/fake_word_repository.dart';
+import 'package:languagelearner/core/data/word_providers.dart';
+import 'package:languagelearner/core/data/word_repository.dart';
+import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/features/auth/account.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
+import 'package:languagelearner/features/home/widgets/deck_card.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/round/word_outcome.dart';
 import 'package:languagelearner/features/stats/data/attempt_record.dart';
@@ -46,6 +53,22 @@ Future<GoRouter> _openHome(
   return router;
 }
 
+/// A repository whose first answer arrives when the test says so.
+class _SlowRepository implements WordRepository {
+  _SlowRepository(this.answer);
+
+  final Future<List<Deck>> answer;
+
+  @override
+  Future<List<Deck>> getDecks() => answer;
+
+  @override
+  Future<void> refresh() async {}
+
+  @override
+  Future<void> clearLocal() async {}
+}
+
 String _path(GoRouter router) =>
     router.routerDelegate.currentConfiguration.uri.path;
 
@@ -71,6 +94,42 @@ void main() {
     expect(find.text('Mit gyakorolunk ma?'), findsOneWidget);
     expect(find.text('Keresd meg a párját'), findsOneWidget);
     expect(find.text('Még nem gyakoroltad'), findsOneWidget);
+  });
+
+  testWidgets('shows a spinner until the first word list arrives', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final answer = Completer<List<Deck>>();
+    final router = createAppRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          routerProvider.overrideWithValue(router),
+          accountProvider.overrideWithValue(_student),
+          appLocaleProvider.overrideWithValue(const Locale('en')),
+          clockProvider.overrideWithValue(() => _now),
+          wordRepositoryProvider.overrideWithValue(
+            _SlowRepository(answer.future),
+          ),
+        ],
+        child: const LanguageLearnerApp(),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(DeckCard), findsNothing);
+    expect(find.text('Mix'), findsOneWidget);
+
+    answer.complete(await FakeWordRepository().getDecks());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byType(DeckCard), findsOneWidget);
   });
 
   group('deck progress', () {

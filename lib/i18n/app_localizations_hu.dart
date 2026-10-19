@@ -136,7 +136,11 @@ class AppLocalizationsHu extends AppLocalizations {
   String get lastRefreshedNever => 'Még nem frissítve';
 
   @override
-  String get refreshFailed => 'Nem sikerült frissíteni a szólistát.';
+  String get refreshFailed =>
+      'Nem sikerült frissíteni. A korábbi szólistát látod.';
+
+  @override
+  String get loadingWords => 'Szavak betöltése…';
 
   @override
   String get homeHeadline => 'Mit gyakorolunk ma?';

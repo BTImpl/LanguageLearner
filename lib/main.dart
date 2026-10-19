@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/app_config.dart';
 import 'package:languagelearner/app/word_repository_wiring.dart';
+import 'package:languagelearner/core/data/deck_cache.dart';
 import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/database/app_database.dart';
@@ -33,7 +34,11 @@ Future<void> main() async {
         wordRepositoryProvider.overrideWith(
           (ref) => AppConfig.useFakeData
               ? FakeWordRepository(now: ref.watch(clockProvider))
-              : createApiWordRepository(ref),
+              : createCachedWordRepository(
+                  ref,
+                  remote: createApiWordRepository(ref),
+                  cache: DriftDeckCache(database),
+                ),
         ),
         initialAuthStateProvider.overrideWithValue(
           await _restoreSignIn(authRepository),

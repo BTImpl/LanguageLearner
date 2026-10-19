@@ -19,6 +19,9 @@ class FakeWordRepository implements WordRepository {
   Future<void> refresh() async {
     _updatedAt = _now().toUtc();
   }
+
+  @override
+  Future<void> clearLocal() async {}
 }
 
 // A few words have a second accepted Hungarian text or an example sentence,

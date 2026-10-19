@@ -61,6 +61,11 @@ class AuthController extends Notifier<AuthState> {
       // The student leaves the app even if Google cannot be reached.
     }
     // The next student must not see the words of this one.
+    try {
+      await ref.read(wordRepositoryProvider).clearLocal();
+    } on Exception {
+      // The sign-out goes on; the words are replaced at the next sign-in.
+    }
     ref.invalidate(decksProvider);
     state = SignedOut(studentNotFound: studentNotFound);
     _signingOut = false;

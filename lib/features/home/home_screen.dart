@@ -14,14 +14,16 @@ import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The start screen: the selected deck and the practice modes.
 ///
-/// Loading and error states come with card LL-31; until then the deck card is
-/// simply hidden while there is no deck.
+/// While the very first word list is downloaded a spinner takes the place of
+/// the deck card. Error and empty states come with card LL-31; until then the
+/// deck card is simply hidden while there is no deck.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deck = ref.watch(selectedDeckProvider).value;
+    final decks = ref.watch(selectedDeckProvider);
+    final deck = decks.value;
     return Scaffold(
       backgroundColor: context.colors.background,
       body: SafeArea(
@@ -48,7 +50,9 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              if (deck != null) ...[
+              if (deck == null && decks.isLoading)
+                const _LoadingDeck()
+              else if (deck != null) ...[
                 DeckCard(
                   deck: deck,
                   onTap: () => unawaited(showDeckPicker(context)),
@@ -58,6 +62,23 @@ class HomeScreen extends ConsumerWidget {
               const ModeTiles(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The spinner shown instead of the deck card until the first download ends.
+class _LoadingDeck extends StatelessWidget {
+  const _LoadingDeck();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Center(
+        child: CircularProgressIndicator(
+          semanticsLabel: context.i18n.loadingWords,
         ),
       ),
     );

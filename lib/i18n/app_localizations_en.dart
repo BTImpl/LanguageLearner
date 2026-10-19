@@ -136,7 +136,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastRefreshedNever => 'Not refreshed yet';
 
   @override
-  String get refreshFailed => 'Could not refresh the word list.';
+  String get refreshFailed =>
+      'Could not refresh. You still see the earlier word list.';
+
+  @override
+  String get loadingWords => 'Loading words…';
 
   @override
   String get homeHeadline => 'What shall we practice today?';

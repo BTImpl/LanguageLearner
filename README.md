@@ -98,6 +98,23 @@ seconds for the answer.
   timeout, word list unavailable, server error) for the screens to explain
   (card LL-31). `decksProvider` does not retry on its own.
 
+### Offline word list
+
+`CachedWordRepository` sits on top of `ApiWordRepository` and keeps the last
+downloaded decks in the local SQLite database (`cached_deck`, `cached_word`),
+so the app starts and every mode works without a network.
+
+- `getDecks()` answers from the saved decks at once. If they are older than 15
+  minutes, they are downloaded again in the background and the screens reload
+  when that brought something new. Only the very first start (nothing saved)
+  waits for the network.
+- `refresh()` always asks the backend and replaces the saved decks. A failed
+  download never touches them.
+- Signing out forgets the saved decks, so the next student does not see them.
+
+The tables are generated code: after changing `lib/core/database/app_database.dart`
+run `dart run build_runner build --delete-conflicting-outputs`.
+
 Build-time settings (`--dart-define`):
 
 | Name | Default | Meaning |

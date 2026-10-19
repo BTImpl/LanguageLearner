@@ -9,6 +9,9 @@ import 'package:languagelearner/core/services/key_value_store.dart';
 import '../../helpers/in_memory_key_value_store.dart';
 
 class _StubRepository implements WordRepository {
+  @override
+  Future<void> clearLocal() async {}
+
   _StubRepository(this.decks);
 
   final List<Deck> decks;
