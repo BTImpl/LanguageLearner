@@ -414,7 +414,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noConnectionTitle => 'No internet connection';
 
   @override
-  String get noConnectionMessage => 'The first download of the word list needs internet.';
+  String get noConnectionMessage =>
+      'The first download of the word list needs internet.';
 
   @override
   String get noDecksTitle => 'No word list yet';
@@ -423,7 +424,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noDecksMessage => 'Ask your teacher, then refresh.';
 
   @override
-  String get wordsUnavailableTitle => 'The word list is not available right now';
+  String get wordsUnavailableTitle =>
+      'The word list is not available right now';
 
   @override
   String get wordsUnavailableMessage => 'Please try again a little later.';
@@ -432,7 +434,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wordsLoadFailedTitle => 'Could not download the word list';
 
   @override
-  String get wordsLoadFailedMessage => 'Something went wrong. Please try again.';
+  String get wordsLoadFailedMessage =>
+      'Something went wrong. Please try again.';
 
   @override
   String get deckNoWords => 'This deck has no words';

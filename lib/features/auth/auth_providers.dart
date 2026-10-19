@@ -3,6 +3,7 @@ import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/features/auth/account.dart';
 import 'package:languagelearner/features/auth/auth_repository.dart';
 import 'package:languagelearner/features/auth/auth_state.dart';
+import 'package:languagelearner/features/stats/data/attempt_sync_providers.dart';
 
 /// The Google sign-in. `main` overrides this; so do tests, with a fake.
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -28,6 +29,9 @@ final accountProvider = Provider<Account?>(
     SignedOut() => null,
   },
 );
+
+/// How long a sign-out waits for the last upload of the answers.
+const _signOutSyncTimeout = Duration(seconds: 5);
 
 class AuthController extends Notifier<AuthState> {
   @override
@@ -55,6 +59,16 @@ class AuthController extends Notifier<AuthState> {
       return;
     }
     _signingOut = true;
+    // Upload the waiting answers while the student still has a token. The
+    // answers stay on the phone either way; see `claimAttempts`.
+    try {
+      await ref
+          .read(attemptSyncServiceProvider)
+          .sync()
+          .timeout(_signOutSyncTimeout);
+    } on Object {
+      // A slow or failing upload never keeps the student from signing out.
+    }
     try {
       await ref.read(authRepositoryProvider).signOut();
     } on Exception {

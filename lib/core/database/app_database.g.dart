@@ -80,6 +80,21 @@ class $AttemptsTable extends Attempts
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _syncRejectedMeta = const VerificationMeta(
+    'syncRejected',
+  );
+  @override
+  late final GeneratedColumn<bool> syncRejected = GeneratedColumn<bool>(
+    'sync_rejected',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("sync_rejected" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -89,6 +104,7 @@ class $AttemptsTable extends Attempts
     outcome,
     answeredAt,
     synced,
+    syncRejected,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -153,6 +169,15 @@ class $AttemptsTable extends Attempts
         synced.isAcceptableOrUnknown(data['synced']!, _syncedMeta),
       );
     }
+    if (data.containsKey('sync_rejected')) {
+      context.handle(
+        _syncRejectedMeta,
+        syncRejected.isAcceptableOrUnknown(
+          data['sync_rejected']!,
+          _syncRejectedMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -190,6 +215,10 @@ class $AttemptsTable extends Attempts
         DriftSqlType.bool,
         data['${effectivePrefix}synced'],
       )!,
+      syncRejected: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}sync_rejected'],
+      )!,
     );
   }
 
@@ -213,6 +242,11 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
 
   /// Whether the backend already has the row (set by the sync, card LL-30).
   final bool synced;
+
+  /// Whether the backend refused the row as invalid (HTTP 400). Such a row is
+  /// never sent again, so it cannot block the rows behind it; it stays in the
+  /// local statistics.
+  final bool syncRejected;
   const AttemptRow({
     required this.id,
     required this.deckId,
@@ -221,6 +255,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
     required this.outcome,
     required this.answeredAt,
     required this.synced,
+    required this.syncRejected,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -232,6 +267,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
     map['outcome'] = Variable<String>(outcome);
     map['answered_at'] = Variable<DateTime>(answeredAt);
     map['synced'] = Variable<bool>(synced);
+    map['sync_rejected'] = Variable<bool>(syncRejected);
     return map;
   }
 
@@ -244,6 +280,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
       outcome: Value(outcome),
       answeredAt: Value(answeredAt),
       synced: Value(synced),
+      syncRejected: Value(syncRejected),
     );
   }
 
@@ -260,6 +297,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
       outcome: serializer.fromJson<String>(json['outcome']),
       answeredAt: serializer.fromJson<DateTime>(json['answeredAt']),
       synced: serializer.fromJson<bool>(json['synced']),
+      syncRejected: serializer.fromJson<bool>(json['syncRejected']),
     );
   }
   @override
@@ -273,6 +311,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
       'outcome': serializer.toJson<String>(outcome),
       'answeredAt': serializer.toJson<DateTime>(answeredAt),
       'synced': serializer.toJson<bool>(synced),
+      'syncRejected': serializer.toJson<bool>(syncRejected),
     };
   }
 
@@ -284,6 +323,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
     String? outcome,
     DateTime? answeredAt,
     bool? synced,
+    bool? syncRejected,
   }) => AttemptRow(
     id: id ?? this.id,
     deckId: deckId ?? this.deckId,
@@ -292,6 +332,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
     outcome: outcome ?? this.outcome,
     answeredAt: answeredAt ?? this.answeredAt,
     synced: synced ?? this.synced,
+    syncRejected: syncRejected ?? this.syncRejected,
   );
   AttemptRow copyWithCompanion(AttemptsCompanion data) {
     return AttemptRow(
@@ -304,6 +345,9 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
           ? data.answeredAt.value
           : this.answeredAt,
       synced: data.synced.present ? data.synced.value : this.synced,
+      syncRejected: data.syncRejected.present
+          ? data.syncRejected.value
+          : this.syncRejected,
     );
   }
 
@@ -316,14 +360,23 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
           ..write('mode: $mode, ')
           ..write('outcome: $outcome, ')
           ..write('answeredAt: $answeredAt, ')
-          ..write('synced: $synced')
+          ..write('synced: $synced, ')
+          ..write('syncRejected: $syncRejected')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, deckId, wordId, mode, outcome, answeredAt, synced);
+  int get hashCode => Object.hash(
+    id,
+    deckId,
+    wordId,
+    mode,
+    outcome,
+    answeredAt,
+    synced,
+    syncRejected,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -334,7 +387,8 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
           other.mode == this.mode &&
           other.outcome == this.outcome &&
           other.answeredAt == this.answeredAt &&
-          other.synced == this.synced);
+          other.synced == this.synced &&
+          other.syncRejected == this.syncRejected);
 }
 
 class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
@@ -345,6 +399,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
   final Value<String> outcome;
   final Value<DateTime> answeredAt;
   final Value<bool> synced;
+  final Value<bool> syncRejected;
   final Value<int> rowid;
   const AttemptsCompanion({
     this.id = const Value.absent(),
@@ -354,6 +409,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
     this.outcome = const Value.absent(),
     this.answeredAt = const Value.absent(),
     this.synced = const Value.absent(),
+    this.syncRejected = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AttemptsCompanion.insert({
@@ -364,6 +420,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
     required String outcome,
     required DateTime answeredAt,
     this.synced = const Value.absent(),
+    this.syncRejected = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        deckId = Value(deckId),
@@ -379,6 +436,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
     Expression<String>? outcome,
     Expression<DateTime>? answeredAt,
     Expression<bool>? synced,
+    Expression<bool>? syncRejected,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -389,6 +447,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
       if (outcome != null) 'outcome': outcome,
       if (answeredAt != null) 'answered_at': answeredAt,
       if (synced != null) 'synced': synced,
+      if (syncRejected != null) 'sync_rejected': syncRejected,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -401,6 +460,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
     Value<String>? outcome,
     Value<DateTime>? answeredAt,
     Value<bool>? synced,
+    Value<bool>? syncRejected,
     Value<int>? rowid,
   }) {
     return AttemptsCompanion(
@@ -411,6 +471,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
       outcome: outcome ?? this.outcome,
       answeredAt: answeredAt ?? this.answeredAt,
       synced: synced ?? this.synced,
+      syncRejected: syncRejected ?? this.syncRejected,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -439,6 +500,9 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
     if (synced.present) {
       map['synced'] = Variable<bool>(synced.value);
     }
+    if (syncRejected.present) {
+      map['sync_rejected'] = Variable<bool>(syncRejected.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -455,6 +519,7 @@ class AttemptsCompanion extends UpdateCompanion<AttemptRow> {
           ..write('outcome: $outcome, ')
           ..write('answeredAt: $answeredAt, ')
           ..write('synced: $synced, ')
+          ..write('syncRejected: $syncRejected, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1385,6 +1450,7 @@ typedef $$AttemptsTableCreateCompanionBuilder = AttemptsCompanion Function({
   required String outcome,
   required DateTime answeredAt,
   Value<bool> synced,
+  Value<bool> syncRejected,
   Value<int> rowid,
 });
 typedef $$AttemptsTableUpdateCompanionBuilder = AttemptsCompanion Function({
@@ -1395,6 +1461,7 @@ typedef $$AttemptsTableUpdateCompanionBuilder = AttemptsCompanion Function({
   Value<String> outcome,
   Value<DateTime> answeredAt,
   Value<bool> synced,
+  Value<bool> syncRejected,
   Value<int> rowid,
 });
 
@@ -1439,6 +1506,11 @@ class $$AttemptsTableFilterComposer
 
   ColumnFilters<bool> get synced => $composableBuilder(
     column: $table.synced,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get syncRejected => $composableBuilder(
+    column: $table.syncRejected,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1486,6 +1558,11 @@ class $$AttemptsTableOrderingComposer
     column: $table.synced,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get syncRejected => $composableBuilder(
+    column: $table.syncRejected,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AttemptsTableAnnotationComposer
@@ -1519,6 +1596,11 @@ class $$AttemptsTableAnnotationComposer
 
   GeneratedColumn<bool> get synced =>
       $composableBuilder(column: $table.synced, builder: (column) => column);
+
+  GeneratedColumn<bool> get syncRejected => $composableBuilder(
+    column: $table.syncRejected,
+    builder: (column) => column,
+  );
 }
 
 class $$AttemptsTableTableManager
@@ -1559,6 +1641,7 @@ class $$AttemptsTableTableManager
                 Value<String> outcome = const Value.absent(),
                 Value<DateTime> answeredAt = const Value.absent(),
                 Value<bool> synced = const Value.absent(),
+                Value<bool> syncRejected = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AttemptsCompanion(
                 id: id,
@@ -1568,6 +1651,7 @@ class $$AttemptsTableTableManager
                 outcome: outcome,
                 answeredAt: answeredAt,
                 synced: synced,
+                syncRejected: syncRejected,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1579,6 +1663,7 @@ class $$AttemptsTableTableManager
                 required String outcome,
                 required DateTime answeredAt,
                 Value<bool> synced = const Value.absent(),
+                Value<bool> syncRejected = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AttemptsCompanion.insert(
                 id: id,
@@ -1588,6 +1673,7 @@ class $$AttemptsTableTableManager
                 outcome: outcome,
                 answeredAt: answeredAt,
                 synced: synced,
+                syncRejected: syncRejected,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

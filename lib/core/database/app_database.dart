@@ -28,6 +28,11 @@ class Attempts extends Table {
   /// Whether the backend already has the row (set by the sync, card LL-30).
   BoolColumn get synced => boolean().withDefault(const Constant(false))();
 
+  /// Whether the backend refused the row as invalid (HTTP 400). Such a row is
+  /// never sent again, so it cannot block the rows behind it; it stays in the
+  /// local statistics.
+  BoolColumn get syncRejected => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column<Object>> get primaryKey => {id};
 }
@@ -92,7 +97,7 @@ class AppDatabase extends _$AppDatabase {
       AppDatabase(driftDatabase(name: 'languagelearner'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -101,6 +106,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 2) {
         await migrator.createTable(cachedDecks);
         await migrator.createTable(cachedWords);
+      }
+      if (from < 3) {
+        await migrator.addColumn(attempts, attempts.syncRejected);
       }
     },
   );

@@ -384,7 +384,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get noConnectionTitle => 'Nincs internetkapcsolat';
 
   @override
-  String get noConnectionMessage => 'A szólista első letöltéséhez netre van szükség.';
+  String get noConnectionMessage =>
+      'A szólista első letöltéséhez netre van szükség.';
 
   @override
   String get noDecksTitle => 'Még nincs szólistád';

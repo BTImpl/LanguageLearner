@@ -126,6 +126,27 @@ Build-time settings (`--dart-define`):
 flutter run --dart-define=USE_FAKE_DATA=true
 ```
 
+### Statistics sync
+
+Every answered word is saved in the local `attempt` table first, so the local
+statistics work offline. `AttemptSyncService` uploads the rows that are not
+`synced` to `POST /api/v1/attempts` (the endpoint is idempotent by the id the
+phone generated, so sending a row twice is harmless):
+
+- batches of at most 200 rows, the oldest first; a row is marked `synced` only
+  after its batch was accepted;
+- it runs after a round is saved, at app start, when a student signs in and
+  when the app returns to the foreground; only one run at a time;
+- a network problem, a timeout or a 5xx answer stops the run silently, and the
+  next trigger tries again; the student never sees an error;
+- a 400 answer marks the rows of that batch `sync_rejected`, logs it and goes
+  on, so a bad row cannot block the queue; rejected rows stay in the local
+  statistics;
+- on sign-out the waiting rows are uploaded first (at most 5 seconds). The rows
+  stay on the phone; they are deleted only when a *different* student signs in
+  (`claimAttempts`), so an automatic sign-out loses nothing and no row is ever
+  uploaded under another account.
+
 ## Git hook
 
 A pre-commit hook runs the formatting check before every commit, the same

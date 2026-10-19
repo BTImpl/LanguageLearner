@@ -5,6 +5,7 @@ import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/app/theme/theme_mode.dart';
 import 'package:languagelearner/features/play/round/prompt_language_providers.dart';
+import 'package:languagelearner/features/stats/attempt_sync_trigger.dart';
 import 'package:languagelearner/i18n/app_localizations.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -14,17 +15,19 @@ class LanguageLearnerApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(promptLanguageResetProvider);
-    return MaterialApp.router(
-      onGenerateTitle: (context) => context.i18n.appTitle,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ref.watch(appThemeModeProvider),
-      locale: ref.watch(appLocaleProvider),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localeResolutionCallback: resolveAppLocale,
-      routerConfig: ref.watch(routerProvider),
+    return AttemptSyncTrigger(
+      child: MaterialApp.router(
+        onGenerateTitle: (context) => context.i18n.appTitle,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ref.watch(appThemeModeProvider),
+        locale: ref.watch(appLocaleProvider),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localeResolutionCallback: resolveAppLocale,
+        routerConfig: ref.watch(routerProvider),
+      ),
     );
   }
 }
