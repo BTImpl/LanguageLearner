@@ -18,6 +18,7 @@ import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
 import 'package:languagelearner/features/stats/data/attempt_store.dart';
+import 'package:languagelearner/features/stats/data/attempt_sync_providers.dart';
 import 'package:languagelearner/features/stats/data/stats_providers.dart';
 
 Future<void> main() async {
@@ -48,6 +49,8 @@ Future<void> main() async {
           await _loadSelectedDeckId(),
         ),
         attemptStoreProvider.overrideWithValue(DriftAttemptStore(database)),
+        if (!AppConfig.useFakeData)
+          attemptUploaderProvider.overrideWith(createApiAttemptUploader),
       ],
       child: const LanguageLearnerApp(),
     ),

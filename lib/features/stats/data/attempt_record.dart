@@ -26,6 +26,17 @@ class AttemptRecord {
   /// Whether the backend already has this row.
   final bool synced;
 
+  /// The same row with another [synced] flag.
+  AttemptRecord copyWith({bool? synced}) => AttemptRecord(
+    id: id,
+    deckId: deckId,
+    wordId: wordId,
+    mode: mode,
+    outcome: outcome,
+    answeredAt: answeredAt,
+    synced: synced ?? this.synced,
+  );
+
   @override
   bool operator ==(Object other) =>
       other is AttemptRecord &&
