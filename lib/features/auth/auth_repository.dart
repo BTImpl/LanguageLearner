@@ -40,8 +40,10 @@ abstract interface class AuthRepository {
   Future<Account> signIn();
 
   /// A valid ID token of the signed-in student, renewed silently shortly
-  /// before it expires. Throws [AuthException] when no token can be given.
-  Future<String> idToken();
+  /// before it expires. With [forceRefresh] a new one is asked for even if the
+  /// current one has not expired, e.g. after the backend refused it. Throws
+  /// [AuthException] when no token can be given.
+  Future<String> idToken({bool forceRefresh = false});
 
   /// Signs the student out of the app and of the Google session.
   Future<void> signOut();

@@ -83,6 +83,37 @@ void main() {
     expect((state as SignedOut).studentNotFound, isTrue);
   });
 
+  test(
+    'signing out twice at once signs out once, for the first reason',
+    () async {
+      final c = container(initial: const SignedIn(testAccount));
+      final notifier = c.read(authControllerProvider.notifier);
+
+      await Future.wait([
+        notifier.signOutStudentNotFound(),
+        notifier.signOut(),
+      ]);
+
+      expect(repository.signOutCalls, 1);
+      expect(
+        (c.read(authControllerProvider) as SignedOut).studentNotFound,
+        isTrue,
+      );
+    },
+  );
+
+  test('signing out while signed out does nothing', () async {
+    final c = container(initial: const SignedOut(studentNotFound: true));
+
+    await c.read(authControllerProvider.notifier).signOut();
+
+    expect(repository.signOutCalls, 0);
+    expect(
+      (c.read(authControllerProvider) as SignedOut).studentNotFound,
+      isTrue,
+    );
+  });
+
   test('signing in again clears the explanation', () async {
     final c = container(initial: const SignedOut(studentNotFound: true));
 

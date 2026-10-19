@@ -23,6 +23,12 @@ class FakeAuthRepository implements AuthRepository {
   Exception? signOutError;
 
   var token = 'id-token';
+
+  /// The `forceRefresh` flag of every [idToken] call.
+  final idTokenCalls = <bool>[];
+
+  /// When set, [idToken] throws it.
+  AuthException? idTokenError;
   var signInCalls = 0;
   var signOutCalls = 0;
 
@@ -41,7 +47,14 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<String> idToken() async => token;
+  Future<String> idToken({bool forceRefresh = false}) async {
+    idTokenCalls.add(forceRefresh);
+    final error = idTokenError;
+    if (error != null) {
+      throw error;
+    }
+    return token;
+  }
 
   @override
   Future<void> signOut() async {

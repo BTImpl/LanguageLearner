@@ -122,6 +122,16 @@ void main() {
     expect(client.restoreCalls, 1);
   });
 
+  test('forceRefresh renews a token that has not expired', () async {
+    client.authenticated = _identity(validFor: const Duration(hours: 1));
+    await repository.signIn();
+    final fresh = _identity(validFor: const Duration(hours: 2));
+    client.restored = fresh;
+
+    expect(await repository.idToken(forceRefresh: true), fresh.idToken);
+    expect(client.restoreCalls, 1);
+  });
+
   test('calls that arrive together share one renewal', () async {
     client.authenticated = _identity(validFor: const Duration(minutes: 1));
     await repository.signIn();

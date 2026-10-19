@@ -46,7 +46,15 @@ class AuthController extends Notifier<AuthState> {
   /// screen then explains it (card LL-28 calls this on a 403 answer).
   Future<void> signOutStudentNotFound() => _signOut(studentNotFound: true);
 
+  var _signingOut = false;
+
   Future<void> _signOut({required bool studentNotFound}) async {
+    // Several failing requests may ask for it at once; the first one decides
+    // why the student is signed out.
+    if (state is SignedOut || _signingOut) {
+      return;
+    }
+    _signingOut = true;
     try {
       await ref.read(authRepositoryProvider).signOut();
     } on Exception {
@@ -55,5 +63,6 @@ class AuthController extends Notifier<AuthState> {
     // The next student must not see the words of this one.
     ref.invalidate(decksProvider);
     state = SignedOut(studentNotFound: studentNotFound);
+    _signingOut = false;
   }
 }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/app_config.dart';
+import 'package:languagelearner/app/word_repository_wiring.dart';
+import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/database/app_database.dart';
+import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/auth/auth_repository.dart';
@@ -27,6 +30,11 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         authRepositoryProvider.overrideWithValue(authRepository),
+        wordRepositoryProvider.overrideWith(
+          (ref) => AppConfig.useFakeData
+              ? FakeWordRepository(now: ref.watch(clockProvider))
+              : createApiWordRepository(ref),
+        ),
         initialAuthStateProvider.overrideWithValue(
           await _restoreSignIn(authRepository),
         ),
