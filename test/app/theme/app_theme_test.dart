@@ -5,7 +5,11 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/app/theme/theme_mode.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
+import 'package:languagelearner/features/auth/auth_state.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
+
+import '../../helpers/fake_auth_repository.dart';
 
 void main() {
   const expectedByMode = <(ThemeMode, Color)>[
@@ -17,7 +21,12 @@ void main() {
     testWidgets('${mode.name} mode uses the design background', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [appThemeModeProvider.overrideWithValue(mode)],
+          overrides: [
+            appThemeModeProvider.overrideWithValue(mode),
+            initialAuthStateProvider.overrideWithValue(
+              const SignedIn(testAccount),
+            ),
+          ],
           child: const LanguageLearnerApp(),
         ),
       );

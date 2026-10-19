@@ -5,11 +5,14 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/theme/theme_mode.dart';
 import 'package:languagelearner/core/services/key_value_store.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
+import 'package:languagelearner/features/auth/auth_state.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
 
+import '../../helpers/fake_auth_repository.dart';
 import '../../helpers/in_memory_key_value_store.dart';
 
 /// Starts the settings from what [store] holds, like `main` does at app start.
@@ -124,6 +127,9 @@ void main() {
           overrides: [
             keyValueStoreProvider.overrideWithValue(store),
             initialSettingsProvider.overrideWithValue(initial),
+            initialAuthStateProvider.overrideWithValue(
+              const SignedIn(testAccount),
+            ),
           ],
           child: const LanguageLearnerApp(),
         ),

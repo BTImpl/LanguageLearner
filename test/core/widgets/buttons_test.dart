@@ -49,6 +49,29 @@ void main() {
         expect(button.enabled, isFalse);
       });
 
+      testWidgets('PrimaryButton shows progress and keeps its color while '
+          'loading', (tester) async {
+        var taps = 0;
+        await pumpThemed(
+          tester,
+          PrimaryButton(label: 'Start', loading: true, onPressed: () => taps++),
+          mode: mode,
+        );
+
+        final button = tester.widget<FilledButton>(find.byType(FilledButton));
+        final context = tester.element(find.byType(PrimaryButton));
+        expect(button.enabled, isFalse);
+        expect(
+          button.style?.backgroundColor?.resolve({WidgetState.disabled}),
+          context.colors.primary,
+        );
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.text('Start'), findsNothing);
+
+        await tester.tap(find.byType(PrimaryButton), warnIfMissed: false);
+        expect(taps, 0);
+      });
+
       testWidgets('SecondaryButton is 56 high and tappable', (tester) async {
         var taps = 0;
         await pumpThemed(

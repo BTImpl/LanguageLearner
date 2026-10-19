@@ -502,5 +502,25 @@
   "deckNotPracticed": "Not practiced yet",
   "@deckNotPracticed": {
     "description": "Shown on the deck card while no word of the deck was answered."
+  },
+  "signInPrompt": "Sign in with the Google account your teacher added.",
+  "@signInPrompt": {
+    "description": "Text under the app name on the sign-in screen."
+  },
+  "signInButton": "Sign in with Google",
+  "@signInButton": {
+    "description": "Main button of the sign-in screen."
+  },
+  "signInFailed": "Could not sign in. Try again.",
+  "@signInFailed": {
+    "description": "Shown under the sign-in button when the sign-in failed or was cancelled."
+  },
+  "signInStudentNotFound": "We can't find a word list for this account. Ask your teacher to add you, or sign in with another account.",
+  "@signInStudentNotFound": {
+    "description": "Replaces the sign-in text when the backend does not know the signed-in account."
+  },
+  "signInOtherAccount": "Sign in with another account",
+  "@signInOtherAccount": {
+    "description": "Label of the sign-in button after the account was not found."
   }
 }

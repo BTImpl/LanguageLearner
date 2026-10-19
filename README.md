@@ -62,6 +62,27 @@ To add a string:
 Commit the generated `lib/i18n/app_localizations*.dart` files. A test fails if
 the two ARB files have different keys.
 
+## Google sign-in
+
+Students sign in with the Google account their teacher added to the
+spreadsheet (`google_sign_in` 7.x). The app asks only for the basic profile
+(name, e-mail); the backend reads the spreadsheet itself. The ID token goes to
+the backend as a bearer token and is renewed silently shortly before it
+expires (`AuthRepository.idToken()`).
+
+Configuration, none of it secret:
+
+- `ios/Runner/Info.plist`: `GIDClientID` (the iOS OAuth client) and the
+  reversed client id as a URL scheme.
+- `AppConfig.googleServerClientId`: the web OAuth client, the audience the
+  backend checks in the ID token (the backend's `AUTH_GOOGLE_CLIENT_ID`). The
+  default is the production client; use another project with
+  `--dart-define=GOOGLE_SERVER_CLIENT_ID=<web client id>`.
+
+On start the app tries to sign in silently (5 seconds at most). Without a
+signed-in student every route leads to the sign-in screen
+(`signInRedirect` in `lib/app/router.dart`).
+
 ## Git hook
 
 A pre-commit hook runs the formatting check before every commit, the same

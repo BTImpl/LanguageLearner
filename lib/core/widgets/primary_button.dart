@@ -15,6 +15,7 @@ class PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.loading = false,
     super.key,
   });
 
@@ -24,6 +25,10 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData? icon;
 
+  /// Shows a progress indicator instead of the label and disables the button,
+  /// while keeping its color.
+  final bool loading;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
@@ -31,11 +36,27 @@ class PrimaryButton extends StatelessWidget {
       minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
       backgroundColor: c.primary,
       foregroundColor: c.onPrimary,
-      disabledBackgroundColor: c.surfaceRaised,
-      disabledForegroundColor: c.textMuted,
+      disabledBackgroundColor: loading ? c.primary : c.surfaceRaised,
+      disabledForegroundColor: loading ? c.onPrimary : c.textMuted,
       shape: const RoundedRectangleBorder(borderRadius: AppRadii.button),
       textStyle: _buttonTextStyle,
     );
+    if (loading) {
+      return FilledButton(
+        onPressed: null,
+        style: style,
+        child: Semantics(
+          label: label,
+          child: SizedBox.square(
+            dimension: 24,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.5,
+              color: c.onPrimary,
+            ),
+          ),
+        ),
+      );
+    }
     if (icon == null) {
       return FilledButton(
         onPressed: onPressed,

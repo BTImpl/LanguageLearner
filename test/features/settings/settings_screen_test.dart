@@ -6,6 +6,8 @@ import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/services/key_value_store.dart';
+import 'package:languagelearner/features/auth/account.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
@@ -14,6 +16,7 @@ import 'package:languagelearner/features/settings/settings_screen.dart';
 import '../../helpers/in_memory_key_value_store.dart';
 
 final _now = DateTime(2026, 10, 14, 15, 30);
+const _student = Account(name: 'Kiss Anna', email: 'kiss.anna@example.com');
 
 /// Opens the settings tab of the app with [saved] as the stored settings.
 Future<(InMemoryKeyValueStore, ProviderContainer)> _openSettings(
@@ -36,6 +39,7 @@ Future<(InMemoryKeyValueStore, ProviderContainer)> _openSettings(
         keyValueStoreProvider.overrideWithValue(store),
         initialSettingsProvider.overrideWithValue(saved),
         routerProvider.overrideWithValue(router),
+        accountProvider.overrideWithValue(_student),
         clockProvider.overrideWithValue(() => _now),
       ],
       child: const LanguageLearnerApp(),
