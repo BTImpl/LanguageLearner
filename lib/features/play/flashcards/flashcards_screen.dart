@@ -122,7 +122,7 @@ class _FlashcardsScreenState extends ConsumerState<FlashcardsScreen> {
     FlashcardFace face(PromptLanguage language, String text) => FlashcardFace(
       language: language,
       text: text,
-      onReadAloud: () => _readAloud(session, word),
+      onReadAloud: ref.canReadAloud ? () => _readAloud(session, word) : null,
     );
 
     return GameScaffold(

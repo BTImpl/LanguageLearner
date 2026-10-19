@@ -5,7 +5,8 @@ import 'package:languagelearner/core/services/tts_service.dart';
 /// voice, American otherwise.
 ///
 /// A device problem (no voice, engine error) never reaches the caller: the
-/// word is just not read aloud.
+/// word is just not read aloud. [isAvailable] tells the screens beforehand
+/// whether the device has an English voice at all.
 class EnglishTtsService implements TtsService {
   EnglishTtsService(this._engine);
 
@@ -15,6 +16,7 @@ class EnglishTtsService implements TtsService {
   final TtsEngine _engine;
   Future<void>? _ready;
   var _latestRequest = 0;
+  var _hasEnglishVoice = true;
 
   @override
   Future<void> speak(String text) async {
@@ -25,6 +27,9 @@ class EnglishTtsService implements TtsService {
     final request = ++_latestRequest;
     try {
       await _prepare();
+      if (!_hasEnglishVoice) {
+        return;
+      }
       if (request != _latestRequest) {
         // A newer tap came in while the engine was getting ready.
         return;
@@ -33,6 +38,16 @@ class EnglishTtsService implements TtsService {
       await _engine.speak(trimmed);
     } on Exception {
       // Not read aloud; see the class documentation.
+    }
+  }
+
+  @override
+  Future<bool> isAvailable() async {
+    try {
+      await _prepare();
+      return _hasEnglishVoice;
+    } on Exception {
+      return false;
     }
   }
 
@@ -56,9 +71,11 @@ class EnglishTtsService implements TtsService {
 
   Future<void> _setUp() async {
     await _engine.prepare();
-    final language = await _engine.isLanguageAvailable(preferredLanguage)
-        ? preferredLanguage
-        : fallbackLanguage;
-    await _engine.setLanguage(language);
+    final british = await _engine.isLanguageAvailable(preferredLanguage);
+    _hasEnglishVoice =
+        british || await _engine.isLanguageAvailable(fallbackLanguage);
+    if (_hasEnglishVoice) {
+      await _engine.setLanguage(british ? preferredLanguage : fallbackLanguage);
+    }
   }
 }

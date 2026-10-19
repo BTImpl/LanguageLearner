@@ -16,6 +16,7 @@ import 'package:languagelearner/features/play/quiz/quiz_screen.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
 import 'package:languagelearner/features/play/typing/typing_screen.dart';
+import 'package:languagelearner/features/play/widgets/game_gate.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
 
@@ -59,7 +60,8 @@ class _AuthChanges extends ChangeNotifier {
 /// - Three tabs with the bottom navigation: Learn, Statistics, Settings. Each
 ///   tab keeps its own navigation state while another tab is open.
 /// - The game routes and the sign-in are outside the tabs, so they have no
-///   bottom navigation.
+///   bottom navigation. A game route opened without a deck that fits the mode
+///   goes back to the home screen (see `GameGate`).
 ///
 /// Without a [redirect] every route can be opened, which is what most tests
 /// want.
@@ -110,13 +112,16 @@ GoRouter createAppRouter({
       for (final mode in PlayMode.values) ...[
         GoRoute(
           path: AppRoutes.play(mode),
-          builder: (context, state) => switch (mode) {
-            PlayMode.flashcards => const FlashcardsScreen(),
-            PlayMode.matching => const MatchingScreen(),
-            PlayMode.quiz => const QuizScreen(),
-            PlayMode.typing => const TypingScreen(),
-            PlayMode.mix => const MixScreen(),
-          },
+          builder: (context, state) => GameGate(
+            mode: mode,
+            child: switch (mode) {
+              PlayMode.flashcards => const FlashcardsScreen(),
+              PlayMode.matching => const MatchingScreen(),
+              PlayMode.quiz => const QuizScreen(),
+              PlayMode.typing => const TypingScreen(),
+              PlayMode.mix => const MixScreen(),
+            },
+          ),
         ),
         // Not a sub-route of the game: going back to the game must build a
         // new screen (a new round), not reveal the finished one below.

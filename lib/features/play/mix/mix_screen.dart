@@ -154,6 +154,7 @@ class _MixScreenState extends ConsumerState<MixScreen> {
       counter: '$solved / ${game.total}',
       progress: solved / game.total,
       onBack: goHome,
+      confirmLeave: solved > 0,
       child: AnimatedSwitcher(
         duration: _fade,
         layoutBuilder: (current, previous) =>

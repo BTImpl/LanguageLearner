@@ -148,6 +148,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       counter: '${game.index + 1} / ${game.total}',
       progress: (game.index + 1) / game.total,
       onBack: goHome,
+      confirmLeave: game.index > 0,
       action: IconSquareButton(
         icon: Icons.swap_horiz,
         semanticLabel: i18n.switchQuestionLanguage,

@@ -16,6 +16,10 @@ abstract interface class TtsService {
 
   /// Stops the running read-aloud, if any.
   Future<void> stop();
+
+  /// Whether the device can read English aloud at all. When it cannot, the
+  /// screens hide the read-aloud button.
+  Future<bool> isAvailable();
 }
 
 /// The read-aloud service. Override it in tests with a fake.
@@ -24,3 +28,14 @@ final ttsServiceProvider = Provider<TtsService>((ref) {
   ref.onDispose(() => unawaited(service.stop()));
   return service;
 });
+
+/// Whether the read-aloud button is worth showing. It is `null` until the
+/// device is asked: a screen hides the button only on a definite `false`.
+final readAloudAvailableProvider = FutureProvider<bool>(
+  (ref) => ref.watch(ttsServiceProvider).isAvailable(),
+);
+
+/// Whether a screen should offer the read-aloud button.
+extension ReadAloudAvailability on WidgetRef {
+  bool get canReadAloud => watch(readAloudAvailableProvider).value != false;
+}

@@ -44,7 +44,7 @@ class QuizContent extends ConsumerWidget {
                 ? i18n.quizQuestionToHungarian
                 : i18n.quizQuestionToEnglish,
             text: session.promptText(word),
-            onReadAloud: session.promptIsEnglishFor(word)
+            onReadAloud: session.promptIsEnglishFor(word) && ref.canReadAloud
                 ? () =>
                       ref.read(ttsServiceProvider).speak(word.english).ignore()
                 : null,

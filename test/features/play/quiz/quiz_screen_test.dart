@@ -8,6 +8,7 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
+import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/data/fake_word_repository.dart';
 import 'package:languagelearner/core/data/word_providers.dart';
 import 'package:languagelearner/core/data/word_repository.dart';
@@ -23,6 +24,7 @@ import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
+import 'package:languagelearner/i18n/app_localizations.dart';
 
 import '../../../helpers/fake_tts_service.dart';
 
@@ -67,6 +69,8 @@ Future<_Harness> _open(
   Locale locale = const Locale('en'),
   Size size = const Size(390, 1000),
   WordRepository? repository,
+  bool ttsAvailable = true,
+  bool directly = false,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -74,8 +78,10 @@ Future<_Harness> _open(
 
   final deck = (await (repository ?? FakeWordRepository()).getDecks()).first;
   final words = RoundSession.shuffled(deck.words, Random(1));
-  final tts = FakeTtsService();
-  final router = createAppRouter();
+  final tts = FakeTtsService()..available = ttsAvailable;
+  final router = createAppRouter(
+    initialLocation: directly ? AppRoutes.play(PlayMode.quiz) : AppRoutes.home,
+  );
   addTearDown(router.dispose);
 
   await tester.pumpWidget(
@@ -95,8 +101,10 @@ Future<_Harness> _open(
     ),
   );
   await tester.pumpAndSettle();
-  router.go(AppRoutes.play(PlayMode.quiz));
-  await tester.pumpAndSettle();
+  if (!directly) {
+    router.go(AppRoutes.play(PlayMode.quiz));
+    await tester.pumpAndSettle();
+  }
   return _Harness(router, tts, words);
 }
 
@@ -274,22 +282,91 @@ void main() {
     expect(find.byType(ChoiceTile), findsNWidgets(4));
   });
 
-  testWidgets('a deck with fewer than four words shows a message', (
+  testWidgets('a deck with fewer than four words goes back to the home', (
     tester,
   ) async {
-    final h = await _open(tester, repository: _Repository(_plainWords(3)));
-
-    expect(
-      find.text('This mode needs at least 4 words in the deck.'),
-      findsOneWidget,
+    final h = await _open(
+      tester,
+      repository: _Repository(_plainWords(3)),
+      directly: true,
     );
-    expect(find.byType(ChoiceTile), findsNothing);
 
-    await tester.tap(find.text('Back to home'));
+    expect(h.path, AppRoutes.home);
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(ChoiceTile), findsNothing);
+    expect(find.text('At least 4 words needed'), findsOneWidget);
+  });
+
+  testWidgets('leaving before the first answer needs no confirmation', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsNothing);
+    expect(h.path, AppRoutes.home);
+  });
+
+  testWidgets('leaving a round with progress asks first', (tester) async {
+    final h = await _open(tester);
+    await _answerRight(tester, h.words.first.hungarian);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsOneWidget);
+    expect(find.text('Your result so far will not be saved.'), findsOneWidget);
+    expect(h.path, AppRoutes.play(PlayMode.quiz));
+
+    await tester.tap(find.text('Keep playing'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsNothing);
+    expect(h.path, AppRoutes.play(PlayMode.quiz));
+    expect(find.text('2 / 12'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Leave'));
     await tester.pumpAndSettle();
 
     expect(h.path, AppRoutes.home);
     expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('the system back asks the same question', (tester) async {
+    final h = await _open(tester);
+    await _answerRight(tester, h.words.first.hungarian);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsOneWidget);
+    expect(h.path, AppRoutes.play(PlayMode.quiz));
+  });
+
+  testWidgets('the leave question is in Hungarian', (tester) async {
+    final h = await _open(tester, locale: const Locale('hu'));
+    await _answerRight(tester, h.words.first.hungarian);
+
+    await tester.tap(find.byTooltip('Vissza'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kilépsz a körből?'), findsOneWidget);
+    expect(find.text('Az eddigi eredmény nem mentődik.'), findsOneWidget);
+    expect(find.text('Folytatom'), findsOneWidget);
+    expect(find.text('Kilépek'), findsOneWidget);
+  });
+
+  testWidgets('without a voice on the device there is no read-aloud button', (
+    tester,
+  ) async {
+    await _open(tester, ttsAvailable: false);
+
+    expect(find.byTooltip('Read aloud'), findsNothing);
+    expect(find.byType(ChoiceTile), findsNWidgets(4));
   });
 
   testWidgets('has Hungarian texts', (tester) async {
@@ -458,8 +535,30 @@ void main() {
   testWidgets('the switch button is not shown for a too small deck', (
     tester,
   ) async {
-    await _open(tester, repository: _Repository(_plainWords(3)));
+    // The screen itself, without the guard of the route, which would send
+    // the student home before the screen is ever shown.
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          wordRepositoryProvider.overrideWithValue(_Repository(_plainWords(3))),
+          ttsServiceProvider.overrideWithValue(FakeTtsService()),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.dark,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: const QuizScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
 
+    expect(
+      find.text('This mode needs at least 4 words in the deck.'),
+      findsOneWidget,
+    );
+    expect(find.byType(ChoiceTile), findsNothing);
     expect(find.byTooltip('Switch the question language'), findsNothing);
   });
 

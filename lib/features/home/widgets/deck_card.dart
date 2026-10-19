@@ -76,7 +76,9 @@ class DeckCard extends ConsumerWidget {
           AppProgressBar(value: total == 0 ? 0 : known / total),
           const SizedBox(height: 8),
           Text(
-            practiced
+            total == 0
+                ? context.i18n.deckNoWords
+                : practiced
                 ? context.i18n.firstTimeCorrect(known)
                 : context.i18n.deckNotPracticed,
             style: TextStyle(

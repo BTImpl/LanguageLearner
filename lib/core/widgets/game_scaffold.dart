@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
@@ -9,6 +11,9 @@ import 'package:languagelearner/i18n/context_i18n.dart';
 /// Common frame of the game screens: back button, the mode name in the
 /// middle, a counter (e.g. "7 / 12") on the right, a progress bar below, then
 /// the [child] with the screen margin.
+///
+/// With [confirmLeave] the back button and the system back gesture first ask
+/// whether to leave the round, because its result is not saved.
 class GameScaffold extends StatelessWidget {
   const GameScaffold({
     required this.title,
@@ -17,6 +22,7 @@ class GameScaffold extends StatelessWidget {
     required this.child,
     this.action,
     this.onBack,
+    this.confirmLeave = false,
     super.key,
   });
 
@@ -34,13 +40,57 @@ class GameScaffold extends StatelessWidget {
   /// Defaults to popping the current route.
   final VoidCallback? onBack;
 
+  /// Whether leaving needs the student's confirmation: set it while a round
+  /// has progress that would be lost.
+  final bool confirmLeave;
+
+  Future<void> _leave(BuildContext context) async {
+    if (confirmLeave) {
+      final leave = await _askToLeave(context);
+      if (!leave || !context.mounted) {
+        return;
+      }
+    }
+    final back = onBack;
+    if (back != null) {
+      back();
+    } else if (confirmLeave) {
+      // `maybePop` would be stopped by the PopScope below.
+      Navigator.of(context).pop();
+    } else {
+      unawaited(Navigator.maybePop(context));
+    }
+  }
+
+  Future<bool> _askToLeave(BuildContext context) async {
+    final i18n = context.i18n;
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(i18n.leaveRoundTitle),
+        content: Text(i18n.leaveRoundMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(i18n.leaveRoundCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(i18n.leaveRoundConfirm),
+          ),
+        ],
+      ),
+    );
+    return leave ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final back = IconSquareButton(
       icon: Icons.chevron_left,
       semanticLabel: context.i18n.back,
-      onPressed: onBack ?? () => Navigator.maybePop(context),
+      onPressed: () => unawaited(_leave(context)),
     );
     final titleText = Text(
       title,
@@ -66,7 +116,7 @@ class GameScaffold extends StatelessWidget {
         ),
       ),
     );
-    return Scaffold(
+    final scaffold = Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -130,6 +180,18 @@ class GameScaffold extends StatelessWidget {
           ),
         ),
       ),
+    );
+    // Always wrapped, so the tree keeps its shape when [confirmLeave] changes
+    // in the middle of a round (the screen below must not be rebuilt from
+    // scratch after the first answer).
+    return PopScope(
+      canPop: !confirmLeave,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          unawaited(_leave(context));
+        }
+      },
+      child: scaffold,
     );
   }
 }

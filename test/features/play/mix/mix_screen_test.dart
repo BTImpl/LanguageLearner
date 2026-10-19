@@ -300,4 +300,38 @@ void main() {
     expect(h.path, AppRoutes.summary(PlayMode.mix));
     expect(find.text('Mix újrakezdése'), findsOneWidget);
   });
+
+  testWidgets('leaving before any progress needs no confirmation', (
+    tester,
+  ) async {
+    final h = await _open(tester);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsNothing);
+    expect(h.path, AppRoutes.home);
+  });
+
+  testWidgets('leaving a round with progress asks first', (tester) async {
+    final h = await _open(tester);
+    await _solveStep(tester, h.words, 0);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Leave the round?'), findsOneWidget);
+    expect(h.path, AppRoutes.play(PlayMode.mix));
+
+    await tester.tap(find.text('Keep playing'));
+    await tester.pumpAndSettle();
+    expect(h.path, AppRoutes.play(PlayMode.mix));
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Leave'));
+    await tester.pumpAndSettle();
+
+    expect(h.path, AppRoutes.home);
+  });
 }

@@ -43,6 +43,7 @@ Future<_Harness> _open(
   WidgetTester tester, {
   PromptLanguage promptLanguage = PromptLanguage.english,
   Locale locale = const Locale('en'),
+  bool ttsAvailable = true,
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1;
@@ -50,7 +51,7 @@ Future<_Harness> _open(
 
   final deck = (await FakeWordRepository().getDecks()).first;
   final words = RoundSession.shuffled(deck.words, Random(1));
-  final tts = FakeTtsService();
+  final tts = FakeTtsService()..available = ttsAvailable;
   final clock = _Clock();
   final router = createAppRouter(initialLocation: AppRoutes.home);
   addTearDown(router.dispose);
@@ -238,6 +239,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(h.path, AppRoutes.play(PlayMode.flashcards));
+    expect(find.text('1 / 12'), findsOneWidget);
+  });
+
+  testWidgets('without a voice on the device there is no read-aloud button', (
+    tester,
+  ) async {
+    await _open(tester, ttsAvailable: false);
+
+    expect(find.byTooltip('Read aloud'), findsNothing);
     expect(find.text('1 / 12'), findsOneWidget);
   });
 
