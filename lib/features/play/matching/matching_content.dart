@@ -77,17 +77,23 @@ class _MatchingContentState extends State<MatchingContent> {
               children: [
                 for (var i = 0; i < _englishSlots.length; i++) ...[
                   if (i > 0) const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _slot(_englishSlots[i], MatchSide.english),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _slot(_hungarianSlots[i], MatchSide.hungarian),
-                      ),
-                    ],
+                  // The row is as high as its taller tile and both tiles fill it.
+                  // The height comes from the real tiles, and a pair that is
+                  // gone still draws its tile (invisibly), so a row never
+                  // changes its height while the page lasts.
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: _slot(_englishSlots[i], MatchSide.english),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _slot(_hungarianSlots[i], MatchSide.hungarian),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ],
@@ -125,14 +131,15 @@ class _MatchingContentState extends State<MatchingContent> {
         key: matchTileKey(word, side),
         label: label,
         state: state,
+        reserveIconSpace: true,
         onTap: canTap ? () => _onTap(word, side) : null,
       ),
     );
   }
 }
 
-/// The empty place of a pair that is gone. It is as high as the tile was, so
-/// the tiles around it stay where they are.
+/// The empty place of a pair that is gone: the same tile as before, drawn
+/// invisibly, so the row keeps the height the real tiles gave it.
 class _GoneTile extends StatelessWidget {
   const _GoneTile({required this.label});
 
@@ -144,20 +151,7 @@ class _GoneTile extends StatelessWidget {
       child: IgnorePointer(
         child: Opacity(
           opacity: 0,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 64),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-              child: Text(
-                label,
-                style: const TextStyle(
-                  fontFamily: bodyFontFamily,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
+          child: ChoiceTile(label: label, reserveIconSpace: true),
         ),
       ),
     );

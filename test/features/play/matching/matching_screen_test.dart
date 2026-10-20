@@ -15,6 +15,7 @@ import 'package:languagelearner/core/models/deck.dart';
 import 'package:languagelearner/core/models/word_pair.dart';
 import 'package:languagelearner/core/widgets/choice_tile.dart';
 import 'package:languagelearner/features/play/matching/match_tile.dart';
+import 'package:languagelearner/features/play/matching/matching_content.dart';
 import 'package:languagelearner/features/play/matching/matching_screen.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
@@ -295,7 +296,7 @@ void main() {
       pairsPerPage: 3,
       // Narrow like a small phone, tall enough that wrapped tiles stay on
       // screen and can be tapped.
-      size: const Size(320, 900),
+      size: const Size(320, 1400),
       repository: _LongWordsRepository(),
     );
     final long = _LongWordsRepository.words.first;
@@ -312,6 +313,104 @@ void main() {
     await _pair(tester, long, long);
     expect(_state(tester, long, _hun), ChoiceState.correct);
     expect(h.words, hasLength(3));
+  });
+
+  group('stable row height', () {
+    // The two columns are shuffled on their own, so a row holds an English and
+    // a Hungarian tile of two different words.
+    List<Rect> rows(WidgetTester tester) => [
+      for (final row
+          in find
+              .descendant(
+                of: find.byType(MatchingContent),
+                matching: find.byType(IntrinsicHeight),
+              )
+              .evaluate())
+        tester.getRect(find.byWidget(row.widget)),
+    ];
+
+    Future<_Harness> openLong(WidgetTester tester) => _open(
+      tester,
+      pairsPerPage: 3,
+      size: const Size(320, 1400),
+      repository: _LongWordsRepository(),
+    );
+
+    testWidgets('both tiles of a row fill the height of the row', (
+      tester,
+    ) async {
+      await openLong(tester);
+
+      final rowRects = rows(tester);
+      expect(rowRects, hasLength(3));
+      // The long Hungarian text makes one row clearly taller than the rest.
+      expect(rowRects.map((r) => r.height).reduce(max), greaterThan(100));
+      final tiles = find.descendant(
+        of: find.byType(MatchingContent),
+        matching: find.byWidgetPredicate((w) => w is ChoiceTile),
+      );
+      expect(tiles, findsNWidgets(6));
+      for (final tile in tiles.evaluate()) {
+        final rect = tester.getRect(find.byWidget(tile.widget));
+        final row = rowRects.singleWhere((r) => r.contains(rect.center));
+        expect(rect.top, row.top);
+        expect(rect.height, row.height);
+      }
+    });
+
+    testWidgets('rows keep their place when pairs are gone', (tester) async {
+      final h = await openLong(tester);
+      final before = rows(tester);
+
+      // Each pair empties a place in two different rows, so some rows have
+      // only one tile left, and others none.
+      await _solve(tester, [h.words.first]);
+      expect(rows(tester), before);
+      await _solve(tester, [h.words[1]]);
+      expect(rows(tester), before);
+    });
+
+    testWidgets('selected and wrong states do not change the rows', (
+      tester,
+    ) async {
+      final h = await openLong(tester);
+      final long = _LongWordsRepository.words.first;
+      final short = _LongWordsRepository.words[1];
+      final before = rows(tester);
+
+      await _tap(tester, long, _eng);
+      expect(rows(tester), before);
+      await _tap(tester, short, _hun);
+      expect(_state(tester, long, _eng), ChoiceState.wrong);
+      expect(rows(tester), before);
+      expect(h.words, hasLength(3));
+    });
+
+    testWidgets('stays stable at a large text scale', (tester) async {
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(tester.platformDispatcher.clearAllTestValues);
+      // The frame around the game (header, bottom bar) does not fit this scale
+      // on a narrow screen yet; only the rows are of interest here.
+      final onError = FlutterError.onError;
+      FlutterError.onError = (details) {
+        if (details.exceptionAsString().contains('overflowed')) return;
+        onError?.call(details);
+      };
+      addTearDown(() => FlutterError.onError = onError);
+
+      final h = await _open(
+        tester,
+        pairsPerPage: 3,
+        size: const Size(320, 3000),
+        repository: _LongWordsRepository(),
+      );
+      final before = rows(tester);
+      expect(before, hasLength(3));
+
+      await _solve(tester, [h.words.first]);
+
+      expect(rows(tester), before);
+    });
   });
 
   testWidgets('has Hungarian texts', (tester) async {

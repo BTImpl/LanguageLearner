@@ -16,8 +16,11 @@ class ChoiceTile extends StatelessWidget {
     required this.label,
     this.state = ChoiceState.idle,
     this.onTap,
+    this.reserveIconSpace = false,
     super.key,
   });
+
+  static const double _iconSize = 24;
 
   /// Key of the tile's surface, for tests.
   static const Key surfaceKey = Key('choice-tile-surface');
@@ -27,6 +30,11 @@ class ChoiceTile extends StatelessWidget {
 
   /// `null` makes the tile non-interactive (e.g. already matched).
   final VoidCallback? onTap;
+
+  /// Keeps the room of the state icon even while there is none, so the text
+  /// wraps the same way in every state and the tile does not change its height
+  /// when it turns green or red.
+  final bool reserveIconSpace;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +100,10 @@ class ChoiceTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (icon != null) Icon(icon, color: foreground),
+                  if (icon != null)
+                    Icon(icon, color: foreground)
+                  else if (reserveIconSpace)
+                    const SizedBox(width: _iconSize),
                 ],
               ),
             ),
