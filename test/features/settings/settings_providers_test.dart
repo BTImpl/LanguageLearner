@@ -40,7 +40,7 @@ void main() {
       expect(container.read(settingsProvider).pairsPerPage, 7);
     });
 
-    test('all four settings survive a restart', () async {
+    test('all five settings survive a restart', () async {
       final store = InMemoryKeyValueStore();
       final first = await _start(store);
       final notifier = first.read(settingsProvider.notifier);
@@ -49,6 +49,7 @@ void main() {
       await notifier.setPairsPerPage(8);
       await notifier.setThemeChoice(ThemeChoice.light);
       await notifier.setAppLanguage(AppLanguage.hu);
+      await notifier.setTypingAttempts(7);
 
       final restarted = await _start(store);
       expect(
@@ -58,8 +59,23 @@ void main() {
           pairsPerPage: 8,
           themeChoice: ThemeChoice.light,
           appLanguage: AppLanguage.hu,
+          typingAttempts: 7,
         ),
       );
+    });
+
+    test('typingAttempts cannot go below 1 or above 10', () async {
+      final container = await _start(InMemoryKeyValueStore());
+      final notifier = container.read(settingsProvider.notifier);
+
+      await notifier.setTypingAttempts(0);
+      expect(container.read(settingsProvider).typingAttempts, 1);
+
+      await notifier.setTypingAttempts(11);
+      expect(container.read(settingsProvider).typingAttempts, 10);
+
+      await notifier.setTypingAttempts(-5);
+      expect(container.read(settingsProvider).typingAttempts, 1);
     });
 
     test('pairsPerPage cannot go below 3 or above 8', () async {

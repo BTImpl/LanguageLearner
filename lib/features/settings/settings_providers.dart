@@ -35,6 +35,16 @@ class SettingsNotifier extends Notifier<AppSettings> {
     ),
   );
 
+  /// Values outside 1..10 are brought into that range.
+  Future<void> setTypingAttempts(int value) => _update(
+    state.copyWith(
+      typingAttempts: value.clamp(
+        AppSettings.minTypingAttempts,
+        AppSettings.maxTypingAttempts,
+      ),
+    ),
+  );
+
   Future<void> setThemeChoice(ThemeChoice value) =>
       _update(state.copyWith(themeChoice: value));
 

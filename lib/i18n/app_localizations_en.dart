@@ -111,6 +111,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pairsMore => 'More pairs';
 
   @override
+  String get typingAttemptsTitle => 'Wrong attempts when typing';
+
+  @override
+  String get typingAttemptsHint =>
+      'After this many wrong answers it shows the right one and moves on.';
+
+  @override
+  String get typingAttemptsFewer => 'Fewer attempts';
+
+  @override
+  String get typingAttemptsMore => 'More attempts';
+
+  @override
   String get appearanceTitle => 'Appearance';
 
   @override

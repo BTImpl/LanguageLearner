@@ -12,6 +12,7 @@ import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
+import 'package:languagelearner/features/settings/widgets/settings_cards.dart';
 
 import '../../helpers/in_memory_key_value_store.dart';
 
@@ -57,12 +58,15 @@ Color _background(WidgetTester tester) =>
     Theme.of(tester.element(find.byType(SettingsScreen)))
         .scaffoldBackgroundColor;
 
+/// The plus or minus button with this tooltip (there are two steppers).
 IconButton _stepper(WidgetTester tester, String tooltip) =>
     tester.widget<IconButton>(
-      find.widgetWithIcon(
-        IconButton,
-        tooltip == 'More pairs' ? Icons.add : Icons.remove,
-      ),
+      find
+          .ancestor(
+            of: find.byTooltip(tooltip),
+            matching: find.byType(IconButton),
+          )
+          .first,
     );
 
 void main() {
@@ -79,6 +83,13 @@ void main() {
     expect(find.text('Pairs per page'), findsOneWidget);
     expect(find.text('In matching, between 3 and 8'), findsOneWidget);
     expect(find.text('5'), findsOneWidget);
+    expect(find.text('Wrong attempts when typing'), findsOneWidget);
+    expect(
+      find.text(
+        'After this many wrong answers it shows the right one and moves on.',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Appearance'), findsOneWidget);
     expect(find.text('Refresh word list'), findsOneWidget);
     expect(find.text('btimpl.eu'), findsOneWidget);
@@ -162,9 +173,47 @@ void main() {
       await tester.pumpAndSettle();
     }
     expect(pairs(), 3);
-    expect(find.text('3'), findsOneWidget);
+    // The typing attempts card shows 3 as well, so look only in this card.
+    expect(
+      find.descendant(
+        of: find.byType(PairsPerPageCard),
+        matching: find.text('3'),
+      ),
+      findsOneWidget,
+    );
     expect(_stepper(tester, 'Fewer pairs').onPressed, isNull);
     expect(_stepper(tester, 'More pairs').onPressed, isNotNull);
+  });
+
+  testWidgets('the typing attempts stepper stops at 1 and 10', (tester) async {
+    final (store, container) = await _openSettings(tester);
+    int attempts() => container.read(settingsProvider).typingAttempts;
+    Finder number(int n) => find.descendant(
+      of: find.byType(TypingAttemptsCard),
+      matching: find.text('$n'),
+    );
+    expect(attempts(), 3);
+    expect(number(3), findsOneWidget);
+
+    for (var i = 0; i < 7; i++) {
+      await tester.tap(find.byTooltip('More attempts'));
+      await tester.pumpAndSettle();
+    }
+    expect(attempts(), 10);
+    expect(number(10), findsOneWidget);
+    expect(_stepper(tester, 'More attempts').onPressed, isNull);
+    expect(_stepper(tester, 'Fewer attempts').onPressed, isNotNull);
+    expect((await StoreSettingsRepository(store).load()).typingAttempts, 10);
+
+    for (var i = 0; i < 9; i++) {
+      await tester.tap(find.byTooltip('Fewer attempts'));
+      await tester.pumpAndSettle();
+    }
+    expect(attempts(), 1);
+    expect(number(1), findsOneWidget);
+    expect(_stepper(tester, 'Fewer attempts').onPressed, isNull);
+    expect(_stepper(tester, 'More attempts').onPressed, isNotNull);
+    expect((await StoreSettingsRepository(store).load()).typingAttempts, 1);
   });
 
   testWidgets('the theme is switched at once', (tester) async {
@@ -196,6 +245,7 @@ void main() {
         pairsPerPage: 7,
         themeChoice: ThemeChoice.light,
         appLanguage: AppLanguage.hu,
+        typingAttempts: 9,
       ),
     );
 
@@ -205,6 +255,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('7'), findsOneWidget);
+    expect(find.text('Hibás próbálkozások leíráskor'), findsOneWidget);
+    expect(find.text('9'), findsOneWidget);
     expect(_background(tester), const Color(0xFFF2F4FB));
   });
 

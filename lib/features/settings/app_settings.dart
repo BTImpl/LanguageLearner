@@ -36,14 +36,25 @@ class AppSettings {
     this.pairsPerPage = defaultPairsPerPage,
     this.themeChoice = ThemeChoice.dark,
     this.appLanguage = AppLanguage.system,
+    this.typingAttempts = defaultTypingAttempts,
   }) : assert(
          pairsPerPage >= minPairsPerPage && pairsPerPage <= maxPairsPerPage,
          'pairsPerPage must be between $minPairsPerPage and $maxPairsPerPage',
+       ),
+       assert(
+         typingAttempts >= minTypingAttempts &&
+             typingAttempts <= maxTypingAttempts,
+         'typingAttempts must be between $minTypingAttempts and '
+         '$maxTypingAttempts',
        );
 
   static const int minPairsPerPage = 3;
   static const int maxPairsPerPage = 8;
   static const int defaultPairsPerPage = 5;
+
+  static const int minTypingAttempts = 1;
+  static const int maxTypingAttempts = 10;
+  static const int defaultTypingAttempts = 3;
 
   /// Which language the app asks in. Default: English.
   final PromptLanguage promptLanguage;
@@ -58,17 +69,24 @@ class AppSettings {
   /// The interface language. Default: follow the device.
   final AppLanguage appLanguage;
 
+  /// How many wrong answers a written question accepts before the game shows
+  /// the right one and moves on, between [minTypingAttempts] and
+  /// [maxTypingAttempts]. Default: 3. (The game uses it from card LL-42.)
+  final int typingAttempts;
+
   AppSettings copyWith({
     PromptLanguage? promptLanguage,
     int? pairsPerPage,
     ThemeChoice? themeChoice,
     AppLanguage? appLanguage,
+    int? typingAttempts,
   }) {
     return AppSettings(
       promptLanguage: promptLanguage ?? this.promptLanguage,
       pairsPerPage: pairsPerPage ?? this.pairsPerPage,
       themeChoice: themeChoice ?? this.themeChoice,
       appLanguage: appLanguage ?? this.appLanguage,
+      typingAttempts: typingAttempts ?? this.typingAttempts,
     );
   }
 
@@ -78,14 +96,20 @@ class AppSettings {
       other.promptLanguage == promptLanguage &&
       other.pairsPerPage == pairsPerPage &&
       other.themeChoice == themeChoice &&
-      other.appLanguage == appLanguage;
+      other.appLanguage == appLanguage &&
+      other.typingAttempts == typingAttempts;
 
   @override
-  int get hashCode =>
-      Object.hash(promptLanguage, pairsPerPage, themeChoice, appLanguage);
+  int get hashCode => Object.hash(
+    promptLanguage,
+    pairsPerPage,
+    themeChoice,
+    appLanguage,
+    typingAttempts,
+  );
 
   @override
   String toString() =>
       'AppSettings($promptLanguage, $pairsPerPage pairs, $themeChoice, '
-      '$appLanguage)';
+      '$appLanguage, $typingAttempts attempts)';
 }
