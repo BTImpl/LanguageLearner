@@ -18,6 +18,7 @@ void main() {
       pairsPerPage: 7,
       themeChoice: ThemeChoice.light,
       appLanguage: AppLanguage.hu,
+      typingAttempts: 6,
     );
 
     await StoreSettingsRepository(store).save(settings);
@@ -31,6 +32,8 @@ void main() {
       AppSettings(pairsPerPage: 8),
       AppSettings(themeChoice: ThemeChoice.light),
       AppSettings(appLanguage: AppLanguage.en),
+      AppSettings(typingAttempts: 1),
+      AppSettings(typingAttempts: 10),
     ]) {
       final store = InMemoryKeyValueStore();
       await StoreSettingsRepository(store).save(settings);
@@ -66,5 +69,33 @@ void main() {
     expect(await load(9), 8);
     expect(await load(100), 8);
     expect(await load(6), 6);
+  });
+
+  test('a saved typingAttempts outside 1..10 is brought into range', () async {
+    Future<int> load(int stored) async {
+      final repository = StoreSettingsRepository(
+        InMemoryKeyValueStore({
+          StoreSettingsRepository.typingAttemptsKey: stored,
+        }),
+      );
+      return (await repository.load()).typingAttempts;
+    }
+
+    expect(await load(0), 1);
+    expect(await load(-4), 1);
+    expect(await load(11), 10);
+    expect(await load(100), 10);
+    expect(await load(4), 4);
+  });
+
+  test('a setting saved by an older version has the default', () async {
+    final repository = StoreSettingsRepository(
+      InMemoryKeyValueStore({StoreSettingsRepository.pairsPerPageKey: 6}),
+    );
+
+    final settings = await repository.load();
+
+    expect(settings.pairsPerPage, 6);
+    expect(settings.typingAttempts, AppSettings.defaultTypingAttempts);
   });
 }

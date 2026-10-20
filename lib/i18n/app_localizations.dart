@@ -266,6 +266,30 @@ abstract class AppLocalizations {
   /// **'More pairs'**
   String get pairsMore;
 
+  /// Title of the setting for how many wrong answers a written question accepts before it moves on.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong attempts when typing'**
+  String get typingAttemptsTitle;
+
+  /// Explains the setting for the number of wrong attempts when typing.
+  ///
+  /// In en, this message translates to:
+  /// **'After this many wrong answers it shows the right one and moves on.'**
+  String get typingAttemptsHint;
+
+  /// Screen reader label of the minus button of the typing attempts setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer attempts'**
+  String get typingAttemptsFewer;
+
+  /// Screen reader label of the plus button of the typing attempts setting.
+  ///
+  /// In en, this message translates to:
+  /// **'More attempts'**
+  String get typingAttemptsMore;
+
   /// Title of the dark/light theme setting.
   ///
   /// In en, this message translates to:

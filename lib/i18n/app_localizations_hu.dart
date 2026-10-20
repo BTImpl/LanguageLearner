@@ -111,6 +111,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get pairsMore => 'Több pár';
 
   @override
+  String get typingAttemptsTitle => 'Hibás próbálkozások leíráskor';
+
+  @override
+  String get typingAttemptsHint =>
+      'Ennyi hibás válasz után mutatja meg a helyeset, és lép tovább.';
+
+  @override
+  String get typingAttemptsFewer => 'Kevesebb próbálkozás';
+
+  @override
+  String get typingAttemptsMore => 'Több próbálkozás';
+
+  @override
   String get appearanceTitle => 'Megjelenés';
 
   @override

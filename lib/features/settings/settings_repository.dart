@@ -18,6 +18,7 @@ class StoreSettingsRepository implements SettingsRepository {
   static const pairsPerPageKey = 'settings.pairsPerPage';
   static const themeChoiceKey = 'settings.themeChoice';
   static const appLanguageKey = 'settings.appLanguage';
+  static const typingAttemptsKey = 'settings.typingAttempts';
 
   final KeyValueStore _store;
 
@@ -25,6 +26,7 @@ class StoreSettingsRepository implements SettingsRepository {
   Future<AppSettings> load() async {
     const defaults = AppSettings();
     final pairsPerPage = await _store.getInt(pairsPerPageKey);
+    final typingAttempts = await _store.getInt(typingAttemptsKey);
     return AppSettings(
       promptLanguage: _byName(
         PromptLanguage.values,
@@ -45,6 +47,10 @@ class StoreSettingsRepository implements SettingsRepository {
         await _store.getString(appLanguageKey),
         defaults.appLanguage,
       ),
+      typingAttempts: (typingAttempts ?? defaults.typingAttempts).clamp(
+        AppSettings.minTypingAttempts,
+        AppSettings.maxTypingAttempts,
+      ),
     );
   }
 
@@ -54,6 +60,7 @@ class StoreSettingsRepository implements SettingsRepository {
     await _store.setInt(pairsPerPageKey, settings.pairsPerPage);
     await _store.setString(themeChoiceKey, settings.themeChoice.name);
     await _store.setString(appLanguageKey, settings.appLanguage.name);
+    await _store.setInt(typingAttemptsKey, settings.typingAttempts);
   }
 
   static T _byName<T extends Enum>(List<T> values, String? name, T fallback) {

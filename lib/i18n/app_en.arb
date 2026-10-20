@@ -135,6 +135,22 @@
   "@pairsMore": {
     "description": "Screen reader label of the plus button of the pairs per page setting."
   },
+  "typingAttemptsTitle": "Wrong attempts when typing",
+  "@typingAttemptsTitle": {
+    "description": "Title of the setting for how many wrong answers a written question accepts before it moves on."
+  },
+  "typingAttemptsHint": "After this many wrong answers it shows the right one and moves on.",
+  "@typingAttemptsHint": {
+    "description": "Explains the setting for the number of wrong attempts when typing."
+  },
+  "typingAttemptsFewer": "Fewer attempts",
+  "@typingAttemptsFewer": {
+    "description": "Screen reader label of the minus button of the typing attempts setting."
+  },
+  "typingAttemptsMore": "More attempts",
+  "@typingAttemptsMore": {
+    "description": "Screen reader label of the plus button of the typing attempts setting."
+  },
   "appearanceTitle": "Appearance",
   "@appearanceTitle": {
     "description": "Title of the dark/light theme setting."

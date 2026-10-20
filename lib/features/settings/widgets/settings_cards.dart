@@ -84,7 +84,6 @@ class PairsPerPageCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final i18n = context.i18n;
-    final c = context.colors;
     final pairs = ref.watch(settingsProvider.select((s) => s.pairsPerPage));
     final notifier = ref.read(settingsProvider.notifier);
     return SettingsSection(
@@ -93,40 +92,94 @@ class PairsPerPageCard extends ConsumerWidget {
         AppSettings.minPairsPerPage,
         AppSettings.maxPairsPerPage,
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconSquareButton(
-            icon: Icons.remove,
-            semanticLabel: i18n.pairsFewer,
-            backgroundColor: c.background,
-            onPressed: pairs > AppSettings.minPairsPerPage
-                ? () => unawaited(notifier.setPairsPerPage(pairs - 1))
-                : null,
-          ),
-          SizedBox(
-            width: 40,
-            child: Text(
-              '$pairs',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: headingFontFamily,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                color: c.text,
-              ),
+      trailing: _CountStepper(
+        value: pairs,
+        min: AppSettings.minPairsPerPage,
+        max: AppSettings.maxPairsPerPage,
+        fewerLabel: i18n.pairsFewer,
+        moreLabel: i18n.pairsMore,
+        onChanged: (value) => unawaited(notifier.setPairsPerPage(value)),
+      ),
+    );
+  }
+}
+
+/// How many wrong answers a written question accepts before it moves on.
+class TypingAttemptsCard extends ConsumerWidget {
+  const TypingAttemptsCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final i18n = context.i18n;
+    final attempts = ref.watch(
+      settingsProvider.select((s) => s.typingAttempts),
+    );
+    final notifier = ref.read(settingsProvider.notifier);
+    return SettingsSection(
+      title: i18n.typingAttemptsTitle,
+      hint: i18n.typingAttemptsHint,
+      trailing: _CountStepper(
+        value: attempts,
+        min: AppSettings.minTypingAttempts,
+        max: AppSettings.maxTypingAttempts,
+        fewerLabel: i18n.typingAttemptsFewer,
+        moreLabel: i18n.typingAttemptsMore,
+        onChanged: (value) => unawaited(notifier.setTypingAttempts(value)),
+      ),
+    );
+  }
+}
+
+/// A number with a minus and a plus button, stopping at [min] and [max].
+class _CountStepper extends StatelessWidget {
+  const _CountStepper({
+    required this.value,
+    required this.min,
+    required this.max,
+    required this.fewerLabel,
+    required this.moreLabel,
+    required this.onChanged,
+  });
+
+  final int value;
+  final int min;
+  final int max;
+  final String fewerLabel;
+  final String moreLabel;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconSquareButton(
+          icon: Icons.remove,
+          semanticLabel: fewerLabel,
+          backgroundColor: c.background,
+          onPressed: value > min ? () => onChanged(value - 1) : null,
+        ),
+        SizedBox(
+          width: 40,
+          child: Text(
+            '$value',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: headingFontFamily,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: c.text,
             ),
           ),
-          IconSquareButton(
-            icon: Icons.add,
-            semanticLabel: i18n.pairsMore,
-            backgroundColor: c.background,
-            onPressed: pairs < AppSettings.maxPairsPerPage
-                ? () => unawaited(notifier.setPairsPerPage(pairs + 1))
-                : null,
-          ),
-        ],
-      ),
+        ),
+        IconSquareButton(
+          icon: Icons.add,
+          semanticLabel: moreLabel,
+          backgroundColor: c.background,
+          onPressed: value < max ? () => onChanged(value + 1) : null,
+        ),
+      ],
     );
   }
 }
