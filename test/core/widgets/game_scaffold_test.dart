@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:languagelearner/core/widgets/app_progress_bar.dart';
+import 'package:languagelearner/core/widgets/confirm_dialog.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
 import 'package:languagelearner/core/widgets/icon_square_button.dart';
 
@@ -181,6 +182,19 @@ void main() {
         findsOneWidget,
       );
       expect(events, isEmpty);
+    });
+
+    testWidgets('uses the shared confirm dialog with the large texts', (
+      tester,
+    ) async {
+      await pumpConfirming(tester);
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ConfirmDialog), findsOneWidget);
+      final title = tester.widget<Text>(find.text('Leave the round?'));
+      expect(title.style!.fontSize, greaterThanOrEqualTo(22));
     });
 
     testWidgets('Keep playing stays', (tester) async {
