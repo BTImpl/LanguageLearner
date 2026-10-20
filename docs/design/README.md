@@ -90,8 +90,11 @@ runtime, so the app works offline (card LL-04).
 
 ## Logo
 
-`assets/branding/icon-512.png` (512 × 512). For the iOS app icon a 1024 × 1024
-source without transparency or rounded corners is needed (card LL-32).
+- App logo (home header, sign-in screen, app icon): `assets/branding/app-icon-512.png`
+  (UI) and `app-icon-1024.png` / `app-icon.svg` (iOS icon source, no transparency
+  or rounded corners). The mark alone on a transparent background is
+  `logo-mark.png` / `logo-mark.svg`.
+- btimpl brand logo (settings footer only): `assets/branding/icon-512.png`.
 
 ## Screens
 

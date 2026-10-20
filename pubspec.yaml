@@ -35,6 +35,7 @@ flutter:
 
   assets:
     - assets/branding/icon-512.png
+    - assets/branding/app-icon-512.png
 
   fonts:
     - family: BricolageGrotesque

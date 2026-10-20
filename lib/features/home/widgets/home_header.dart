@@ -50,7 +50,7 @@ class _HomeHeaderState extends ConsumerState<HomeHeader> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
-              'assets/branding/icon-512.png',
+              'assets/branding/app-icon-512.png',
               width: 40,
               height: 40,
             ),
