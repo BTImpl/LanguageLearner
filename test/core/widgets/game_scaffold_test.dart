@@ -149,6 +149,41 @@ void main() {
     expect(find.text('12 / 12'), findsOneWidget);
   });
 
+  for (final withAction in [false, true]) {
+    testWidgets('the header fits a narrow screen at a large text size'
+        '${withAction ? ' (with an action)' : ''}', (tester) async {
+      tester.view.physicalSize = const Size(320, 568);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(() {
+        tester.view.reset();
+        tester.platformDispatcher.clearAllTestValues();
+      });
+
+      await pumpThemed(
+        tester,
+        GameScaffold(
+          title: 'Matching',
+          counter: 'Page 1 of 3',
+          progress: 0.5,
+          action: withAction
+              ? IconSquareButton(
+                  icon: Icons.swap_horiz,
+                  semanticLabel: 'Switch',
+                  onPressed: () {},
+                )
+              : null,
+          child: const SizedBox.shrink(),
+        ),
+        asScreen: true,
+      );
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('Page 1 of 3'), findsOneWidget);
+      expect(find.byTooltip('Back'), findsOneWidget);
+    });
+  }
+
   group('confirmLeave', () {
     Future<List<String>> pumpConfirming(
       WidgetTester tester, {

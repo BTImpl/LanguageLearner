@@ -22,7 +22,7 @@ class AppBottomNav extends StatelessWidget {
     super.key,
   });
 
-  /// The height of the tabs, without the bottom safe area.
+  /// The minimum height of the tabs, without the bottom safe area.
   static const double contentHeight = 50;
 
   final List<AppNavItem> items;
@@ -42,19 +42,24 @@ class AppBottomNav extends StatelessWidget {
         type: MaterialType.transparency,
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomInset),
-          child: SizedBox(
-            height: contentHeight,
-            child: Row(
-              children: [
-                for (var i = 0; i < items.length; i++)
-                  Expanded(
-                    child: _NavTab(
-                      item: items[i],
-                      selected: i == currentIndex,
-                      onTap: () => onSelected(i),
+          // At least [contentHeight], and higher when a large text size needs
+          // more room for the labels.
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: contentHeight),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var i = 0; i < items.length; i++)
+                    Expanded(
+                      child: _NavTab(
+                        item: items[i],
+                        selected: i == currentIndex,
+                        onTap: () => onSelected(i),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

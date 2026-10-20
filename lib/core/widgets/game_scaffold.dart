@@ -117,12 +117,25 @@ class GameScaffold extends StatelessWidget {
             children: [
               const SizedBox(height: 12),
               if (action == null)
-                Row(
-                  children: [
-                    back,
-                    Expanded(child: titleText),
-                    counterText,
-                  ],
+                LayoutBuilder(
+                  builder: (context, box) => Row(
+                    children: [
+                      back,
+                      Expanded(child: titleText),
+                      // With a large text size the counter shrinks to at most
+                      // 40% of the width instead of overflowing.
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: box.maxWidth * 0.4,
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: counterText,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               else
                 LayoutBuilder(

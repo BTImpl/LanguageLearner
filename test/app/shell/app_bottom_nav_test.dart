@@ -78,6 +78,26 @@ void main() {
     expect(tester.getSize(find.byType(AppBottomNav)).height, 84);
   });
 
+  testWidgets('grows with a large text size instead of overflowing', (
+    tester,
+  ) async {
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.platformDispatcher.clearAllTestValues);
+    await pumpThemed(
+      tester,
+      AppBottomNav(items: _items, currentIndex: 0, onSelected: (_) {}),
+    );
+
+    expect(tester.takeException(), isNull);
+    expect(
+      tester.getSize(find.byType(AppBottomNav)).height,
+      greaterThan(AppBottomNav.contentHeight),
+    );
+    for (final item in _items) {
+      expect(find.text(item.label), findsOneWidget);
+    }
+  });
+
   testWidgets('the tabs are labeled and big enough to tap', (tester) async {
     final handle = tester.ensureSemantics();
     await pumpThemed(
