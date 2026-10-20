@@ -33,6 +33,27 @@ class _TypingContentState extends ConsumerState<TypingContent> {
   /// Whether the last check was wrong and the text has not been edited since.
   var _mismatch = false;
 
+  // The word the input belongs to. When the game moves on by itself (the
+  // attempts ran out), the input has to be emptied here.
+  String? _wordId;
+
+  @override
+  void initState() {
+    super.initState();
+    _wordId = widget.game.current?.id;
+  }
+
+  @override
+  void didUpdateWidget(TypingContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final id = widget.game.current?.id;
+    if (id != _wordId) {
+      _wordId = id;
+      _controller.clear();
+      _mismatch = false;
+    }
+  }
+
   /// "Check" and the send key of the keyboard: checks the answer, or moves on
   /// when it is already right.
   void _submit() {
@@ -48,6 +69,8 @@ class _TypingContentState extends ConsumerState<TypingContent> {
         setState(() => _mismatch = false);
       case SubmitResult.wrong:
         HapticFeedback.heavyImpact().ignore();
+        // The text stays as it was typed, so the mistake can be seen (and
+        // corrected) until the attempts run out.
         setState(() => _mismatch = true);
       case SubmitResult.ignored:
         break;
@@ -78,10 +101,11 @@ class _TypingContentState extends ConsumerState<TypingContent> {
     final i18n = context.i18n;
     final session = game.session;
     final solved = game.isSolved;
+    final givenUp = game.isGivenUp;
     final isLast = game.index == game.total - 1;
     final fieldState = solved
         ? _FieldState.correct
-        : (_mismatch ? _FieldState.wrong : _FieldState.idle);
+        : (_mismatch || givenUp ? _FieldState.wrong : _FieldState.idle);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,6 +134,7 @@ class _TypingContentState extends ConsumerState<TypingContent> {
                   controller: _controller,
                   focusNode: _focus,
                   state: fieldState,
+                  locked: givenUp,
                   onChanged: (_) {
                     if (_mismatch) {
                       setState(() => _mismatch = false);
@@ -118,7 +143,14 @@ class _TypingContentState extends ConsumerState<TypingContent> {
                   onSubmit: _submit,
                 ),
                 const SizedBox(height: 12),
-                _MismatchHint(visible: fieldState == _FieldState.wrong),
+                _MismatchHint(
+                  visible: fieldState == _FieldState.wrong,
+                  text: givenUp
+                      ? i18n.typingGaveUp
+                      : (game.isLastAttempt
+                            ? i18n.typingMismatchLast
+                            : i18n.typingMismatch),
+                ),
                 if (game.helpVisible) ...[
                   const SizedBox(height: 12),
                   _HelpBox(
@@ -139,7 +171,7 @@ class _TypingContentState extends ConsumerState<TypingContent> {
               child: SecondaryButton(
                 label: i18n.typingHelp,
                 icon: Icons.visibility_outlined,
-                onPressed: solved ? null : game.requestHelp,
+                onPressed: solved || givenUp ? null : game.requestHelp,
               ),
             ),
             const SizedBox(width: 12),
@@ -148,7 +180,7 @@ class _TypingContentState extends ConsumerState<TypingContent> {
                 label: solved
                     ? (isLast ? i18n.finish : i18n.next)
                     : i18n.typingCheck,
-                onPressed: _submit,
+                onPressed: givenUp ? null : _submit,
               ),
             ),
           ],
@@ -168,6 +200,7 @@ class _AnswerField extends StatelessWidget {
     required this.controller,
     required this.focusNode,
     required this.state,
+    required this.locked,
     required this.onChanged,
     required this.onSubmit,
   });
@@ -175,6 +208,9 @@ class _AnswerField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final _FieldState state;
+
+  /// The attempts are used up: the text cannot be edited any more.
+  final bool locked;
   final ValueChanged<String> onChanged;
   final VoidCallback onSubmit;
 
@@ -212,7 +248,7 @@ class _AnswerField extends StatelessWidget {
       // A solved answer cannot be edited, but the field stays connected to the
       // keyboard, so its send key can still move on to the next word.
       inputFormatters: [
-        if (state == _FieldState.correct)
+        if (state == _FieldState.correct || locked)
           TextInputFormatter.withFunction((oldValue, newValue) => oldValue),
       ],
       autocorrect: false,
@@ -261,9 +297,10 @@ class _AnswerField extends StatelessWidget {
 /// "Doesn't match" under the input. It always takes its place, so nothing
 /// jumps when it appears.
 class _MismatchHint extends StatelessWidget {
-  const _MismatchHint({required this.visible});
+  const _MismatchHint({required this.visible, required this.text});
 
   final bool visible;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +311,7 @@ class _MismatchHint extends StatelessWidget {
           ? Semantics(
               liveRegion: true,
               child: Text(
-                context.i18n.typingMismatch,
+                text,
                 style: TextStyle(
                   fontFamily: bodyFontFamily,
                   fontSize: 16,

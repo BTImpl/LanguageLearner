@@ -56,6 +56,7 @@ class _MixScreenState extends ConsumerState<MixScreen> {
       _game = MixGame(
         session: session,
         pairsPerPage: settings.pairsPerPage,
+        typingAttempts: settings.typingAttempts,
         random: random,
       )..addListener(_onChanged);
     }

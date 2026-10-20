@@ -438,6 +438,14 @@
   "@typingMismatch": {
     "description": "Shown under the input after a wrong answer."
   },
+  "typingMismatchLast": "Doesn't match. Last try!",
+  "@typingMismatchLast": {
+    "description": "Shown under the input after a wrong answer when only one more attempt is allowed."
+  },
+  "typingGaveUp": "Out of tries. Here is the answer.",
+  "@typingGaveUp": {
+    "description": "Shown under the input when the attempts ran out, while the right answer is shown and the game moves on."
+  },
   "typingHelpCountdown": "{seconds} s left",
   "@typingHelpCountdown": {
     "description": "Countdown in the help box, e.g. \"2 s left\".",

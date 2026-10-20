@@ -91,6 +91,8 @@
   "typingHelp": "Segítség",
   "typingCheck": "Ellenőrzés",
   "typingMismatch": "Nem egyezik. Próbáld újra!",
+  "typingMismatchLast": "Nem egyezik. Utolsó próba!",
+  "typingGaveUp": "Elfogytak a próbák. Itt a válasz.",
   "typingHelpCountdown": "még {seconds} mp látszik",
   "statCorrectFirst": "elsőre jó",
   "statWithHelp": "segítséggel",

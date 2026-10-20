@@ -9,7 +9,9 @@ enum SubmitResult {
   /// The answer was right; the student can go on with [TypingGame.next].
   correct,
 
-  /// The answer was wrong; the student can try again.
+  /// The answer was wrong; the student can try again. It was the last
+  /// allowed attempt when [TypingGame.isGivenUp] is true: the game shows the
+  /// right answer and moves on by itself.
   wrong,
 
   /// Nothing happened: the text was empty, the word is already solved or the
@@ -24,8 +26,11 @@ enum TypingFeedback { none, wrong, correct }
 ///
 /// The words of the [session] are asked one by one; the answer is typed and
 /// compared with [AnswerMatcher] to every accepted answer of the word. A wrong
-/// answer can be corrected as often as needed; after the right one the
-/// student moves on with [next].
+/// answer can be corrected, but only [maxAttempts] wrong answers are allowed
+/// for a word: after the last one the game shows the right answer for
+/// [helpDuration] and then moves on to the next word by itself, so a word that
+/// cannot be typed (for example because of a hidden character) never blocks
+/// the round. After the right answer the student moves on with [next].
 ///
 /// [requestHelp] shows the right answer for [helpDuration] and can be used
 /// again and again. The first thing that happens to a word decides its
@@ -37,9 +42,18 @@ class TypingGame {
     required this.session,
     Schedule? schedule,
     this.helpDuration = const Duration(seconds: 3),
-  }) : _schedule = schedule ?? timerSchedule;
+    this.maxAttempts = defaultMaxAttempts,
+  }) : assert(maxAttempts >= 1, 'At least one attempt is needed.'),
+       _schedule = schedule ?? timerSchedule;
+
+  /// How many wrong answers a word accepts by default.
+  static const defaultMaxAttempts = 3;
 
   final RoundSession session;
+
+  /// How many wrong answers the current word accepts before the game shows
+  /// the right one and moves on.
+  final int maxAttempts;
 
   /// How long the help shows the right answer.
   final Duration helpDuration;
@@ -51,6 +65,8 @@ class TypingGame {
   var _helpVisible = false;
   var _helpRevision = 0;
   var _feedback = TypingFeedback.none;
+  var _wrongAttempts = 0;
+  var _givenUp = false;
   var _disposed = false;
 
   /// The word that is asked, `null` when the round is finished.
@@ -68,6 +84,21 @@ class TypingGame {
 
   /// What to show under the input.
   TypingFeedback get feedback => _feedback;
+
+  /// How many wrong answers the current word has had.
+  int get wrongAttempts => _wrongAttempts;
+
+  /// How many wrong answers the current word still accepts.
+  int get attemptsLeft => maxAttempts - _wrongAttempts;
+
+  /// Whether the next wrong answer is the last one (and only if there is more
+  /// than one attempt, so the student has already been warned by a miss).
+  bool get isLastAttempt =>
+      !_solved && !_givenUp && maxAttempts > 1 && attemptsLeft == 1;
+
+  /// Whether the attempts of the current word are used up: the right answer
+  /// shows and the game moves on by itself when the help runs out.
+  bool get isGivenUp => _givenUp;
 
   /// Whether the help is showing the right answer now.
   bool get helpVisible => _helpVisible;
@@ -95,6 +126,7 @@ class TypingGame {
     final word = current;
     if (_disposed ||
         _solved ||
+        _givenUp ||
         word == null ||
         AnswerMatcher.normalize(input).isEmpty) {
       return SubmitResult.ignored;
@@ -107,6 +139,10 @@ class TypingGame {
       _feedback = TypingFeedback.correct;
     } else {
       _feedback = TypingFeedback.wrong;
+      _wrongAttempts++;
+      if (_wrongAttempts >= maxAttempts) {
+        _giveUp();
+      }
     }
     _notify();
     return correct ? SubmitResult.correct : SubmitResult.wrong;
@@ -116,7 +152,7 @@ class TypingGame {
   /// Asking again keeps it showing for another [helpDuration].
   void requestHelp() {
     final word = current;
-    if (_disposed || _solved || word == null) {
+    if (_disposed || _solved || _givenUp || word == null) {
       return;
     }
     session.recordHelp(word);
@@ -158,9 +194,30 @@ class TypingGame {
     _listeners.clear();
   }
 
+  /// The attempts are used up: shows the right answer like the help does,
+  /// and moves on when it has been shown for [helpDuration]. The outcome of
+  /// the word stays what the first thing that happened to it made it.
+  void _giveUp() {
+    _givenUp = true;
+    _helpRevision++;
+    _cancelHelp?.call();
+    _helpVisible = true;
+    _cancelHelp = _schedule(helpDuration, () {
+      _cancelHelp = null;
+      if (_disposed) {
+        return;
+      }
+      _reset();
+      session.advance();
+      _notify();
+    });
+  }
+
   void _reset() {
     _hideHelp();
     _solved = false;
+    _givenUp = false;
+    _wrongAttempts = 0;
     _feedback = TypingFeedback.none;
   }
 

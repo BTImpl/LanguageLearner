@@ -40,6 +40,7 @@ Future<_Harness> _open(
   PromptLanguage promptLanguage = PromptLanguage.english,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
+  int typingAttempts = AppSettings.defaultTypingAttempts,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -59,7 +60,10 @@ Future<_Harness> _open(
         roundRandomProvider.overrideWithValue(Random(1)),
         ttsServiceProvider.overrideWithValue(tts),
         initialSettingsProvider.overrideWithValue(
-          AppSettings(promptLanguage: promptLanguage),
+          AppSettings(
+            promptLanguage: promptLanguage,
+            typingAttempts: typingAttempts,
+          ),
         ),
       ],
       child: const LanguageLearnerApp(),
@@ -619,5 +623,118 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(h.path, AppRoutes.home);
+  });
+
+  group('wrong attempts', () {
+    Future<void> check(WidgetTester tester, String text) async {
+      await _type(tester, text);
+      await _tapButton(tester, 'Check');
+    }
+
+    testWidgets('the second wrong answer warns that the next is the last', (
+      tester,
+    ) async {
+      await _open(tester);
+
+      await check(tester, 'nope');
+      expect(find.text("Doesn't match. Try again!"), findsOneWidget);
+      expect(find.text("Doesn't match. Last try!"), findsNothing);
+
+      await check(tester, 'nope2');
+      expect(find.text("Doesn't match. Last try!"), findsOneWidget);
+      expect(find.text("Doesn't match. Try again!"), findsNothing);
+    });
+
+    testWidgets('the third wrong answer shows the answer, then moves on', (
+      tester,
+    ) async {
+      final h = await _open(tester);
+      final first = h.words.first;
+
+      await check(tester, 'nope');
+      await check(tester, 'nope2');
+      await check(tester, 'nope3');
+
+      expect(find.text('Out of tries. Here is the answer.'), findsOneWidget);
+      expect(find.text(first.hungarian), findsOneWidget);
+      expect(find.text('1 / 12'), findsOneWidget);
+      // The input is locked and the buttons cannot be used meanwhile.
+      await tester.enterText(_field, 'more');
+      await tester.pump();
+      expect(_typed, 'nope3');
+      final checkButton = tester.widget<ButtonStyleButton>(
+        find.ancestor(
+          of: find.text('Check'),
+          matching: find.bySubtype<ButtonStyleButton>(),
+        ),
+      );
+      expect(checkButton.onPressed, isNull);
+
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump();
+
+      expect(find.text('2 / 12'), findsOneWidget);
+      expect(find.text(h.words[1].english), findsOneWidget);
+      expect(find.text('Out of tries. Here is the answer.'), findsNothing);
+      expect(_typed, isEmpty);
+      expect(find.text('Check'), findsOneWidget);
+    });
+
+    testWidgets('the next word starts with its own attempts', (tester) async {
+      await _open(tester);
+      await check(tester, 'nope');
+      await check(tester, 'nope2');
+      await check(tester, 'nope3');
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump();
+
+      await check(tester, 'nope');
+
+      expect(find.text("Doesn't match. Try again!"), findsOneWidget);
+      expect(find.text('2 / 12'), findsOneWidget);
+    });
+
+    testWidgets('with one attempt the first wrong answer moves on', (
+      tester,
+    ) async {
+      final h = await _open(tester, typingAttempts: 1);
+
+      await check(tester, 'nope');
+
+      expect(find.text('Out of tries. Here is the answer.'), findsOneWidget);
+      expect(find.text(h.words.first.hungarian), findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump();
+      expect(find.text('2 / 12'), findsOneWidget);
+    });
+
+    testWidgets('the setting decides how many wrong answers are allowed', (
+      tester,
+    ) async {
+      await _open(tester, typingAttempts: 5);
+
+      for (var i = 0; i < 4; i++) {
+        await check(tester, 'nope$i');
+        expect(find.text('Out of tries. Here is the answer.'), findsNothing);
+      }
+      expect(find.text("Doesn't match. Last try!"), findsOneWidget);
+
+      await check(tester, 'nope4');
+      expect(find.text('Out of tries. Here is the answer.'), findsOneWidget);
+    });
+
+    testWidgets('a right answer within the attempts moves on as before', (
+      tester,
+    ) async {
+      final h = await _open(tester);
+
+      await check(tester, 'nope');
+      await check(tester, 'nope2');
+      await check(tester, h.words.first.hungarian);
+
+      expect(find.text('Next'), findsOneWidget);
+      expect(find.text('Out of tries. Here is the answer.'), findsNothing);
+    });
   });
 }

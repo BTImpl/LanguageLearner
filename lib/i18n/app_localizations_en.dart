@@ -338,6 +338,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typingMismatch => 'Doesn\'t match. Try again!';
 
   @override
+  String get typingMismatchLast => 'Doesn\'t match. Last try!';
+
+  @override
+  String get typingGaveUp => 'Out of tries. Here is the answer.';
+
+  @override
   String typingHelpCountdown(int seconds) {
     return '$seconds s left';
   }
