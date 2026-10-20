@@ -389,15 +389,6 @@ void main() {
     testWidgets('stays stable at a large text scale', (tester) async {
       tester.platformDispatcher.textScaleFactorTestValue = 2;
       addTearDown(tester.platformDispatcher.clearAllTestValues);
-      // The frame around the game (header, bottom bar) does not fit this scale
-      // on a narrow screen yet; only the rows are of interest here.
-      final onError = FlutterError.onError;
-      FlutterError.onError = (details) {
-        if (details.exceptionAsString().contains('overflowed')) return;
-        onError?.call(details);
-      };
-      addTearDown(() => FlutterError.onError = onError);
-
       final h = await _open(
         tester,
         pairsPerPage: 3,
@@ -409,6 +400,7 @@ void main() {
 
       await _solve(tester, [h.words.first]);
 
+      expect(tester.takeException(), isNull);
       expect(rows(tester), before);
     });
   });
