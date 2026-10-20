@@ -5,6 +5,7 @@ import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/widgets/app_progress_bar.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
+import 'package:languagelearner/core/widgets/confirm_dialog.dart';
 import 'package:languagelearner/core/widgets/icon_square_button.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -62,26 +63,15 @@ class GameScaffold extends StatelessWidget {
     }
   }
 
-  Future<bool> _askToLeave(BuildContext context) async {
+  Future<bool> _askToLeave(BuildContext context) {
     final i18n = context.i18n;
-    final leave = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(i18n.leaveRoundTitle),
-        content: Text(i18n.leaveRoundMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(i18n.leaveRoundCancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(i18n.leaveRoundConfirm),
-          ),
-        ],
-      ),
+    return showConfirmDialog(
+      context,
+      title: i18n.leaveRoundTitle,
+      message: i18n.leaveRoundMessage,
+      confirmLabel: i18n.leaveRoundConfirm,
+      cancelLabel: i18n.leaveRoundCancel,
     );
-    return leave ?? false;
   }
 
   @override
