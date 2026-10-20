@@ -91,10 +91,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(28),
-                                border: Border.all(color: c.line),
                               ),
                               child: Image.asset(
-                                'assets/branding/icon-512.png',
+                                'assets/branding/app-icon-512.png',
                                 fit: BoxFit.cover,
                               ),
                             ),
