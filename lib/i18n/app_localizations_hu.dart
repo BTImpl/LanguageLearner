@@ -320,6 +320,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get typingMismatch => 'Nem egyezik. Próbáld újra!';
 
   @override
+  String get typingMismatchLast => 'Nem egyezik. Utolsó próba!';
+
+  @override
+  String get typingGaveUp => 'Elfogytak a próbák. Itt a válasz.';
+
+  @override
   String typingHelpCountdown(int seconds) {
     return 'még $seconds mp látszik';
   }

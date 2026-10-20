@@ -45,6 +45,7 @@ class MixGame {
   MixGame({
     required this.session,
     required this.pairsPerPage,
+    this.typingAttempts = TypingGame.defaultMaxAttempts,
     Random? random,
     Schedule? schedule,
   }) : assert(pairsPerPage >= 2, 'A matching step needs at least two pairs.'),
@@ -56,6 +57,9 @@ class MixGame {
 
   final RoundSession session;
   final int pairsPerPage;
+
+  /// How many wrong answers a typing step accepts before it moves on.
+  final int typingAttempts;
 
   final Random _random;
   final Schedule _schedule;
@@ -161,8 +165,11 @@ class MixGame {
     }
     switch (type) {
       case MixStepType.typing:
-        _typing = TypingGame(session: session, schedule: _schedule)
-          ..addListener(_onStepChanged);
+        _typing = TypingGame(
+          session: session,
+          schedule: _schedule,
+          maxAttempts: typingAttempts,
+        )..addListener(_onStepChanged);
       case MixStepType.quiz:
         _quiz = QuizGame(session: session, random: _random, schedule: _schedule)
           ..addListener(_onStepChanged);

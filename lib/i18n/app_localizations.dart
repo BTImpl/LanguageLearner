@@ -644,6 +644,18 @@ abstract class AppLocalizations {
   /// **'Doesn\'t match. Try again!'**
   String get typingMismatch;
 
+  /// Shown under the input after a wrong answer when only one more attempt is allowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Doesn\'t match. Last try!'**
+  String get typingMismatchLast;
+
+  /// Shown under the input when the attempts ran out, while the right answer is shown and the game moves on.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of tries. Here is the answer.'**
+  String get typingGaveUp;
+
   /// Countdown in the help box, e.g. "2 s left".
   ///
   /// In en, this message translates to:

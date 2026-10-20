@@ -15,6 +15,7 @@ import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/typing/typing_content.dart';
 import 'package:languagelearner/features/play/typing/typing_game.dart';
+import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/stats/data/record_round.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -40,7 +41,10 @@ class _TypingScreenState extends ConsumerState<TypingScreen> {
         random: ref.read(roundRandomProvider),
         now: ref.read(clockProvider),
       );
-      _game = TypingGame(session: session)..addListener(_onChanged);
+      _game = TypingGame(
+        session: session,
+        maxAttempts: ref.read(settingsProvider).typingAttempts,
+      )..addListener(_onChanged);
     }
     return _game;
   }
