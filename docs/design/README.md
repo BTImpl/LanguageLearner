@@ -120,6 +120,28 @@ to the Hungarian canvas titles used on the Trello cards.
 | `14-settings.png` | Beállítások | LL-06, LL-09, LL-27, LL-29 |
 | `15-sign-in.png` | Belépés | LL-27 |
 | `16-deck-picker.png` | Pakliválasztó | LL-11, LL-25 |
+| `17-photo-quiz-home.png` | Fotó-kvíz: kezdőlap, új belépési pont | LL-49 |
+| `18-photo-quiz-home-light.png` | Fotó-kvíz: kezdőlap, új belépési pont, világos mód | LL-49 |
+| `19-photo-quiz-capture.png` | Fotó-kvíz: fotó készítése | LL-49 |
+| `20-photo-quiz-capture-light.png` | Fotó-kvíz: fotó készítése, világos mód | LL-49 |
+| `21-photo-quiz-processing.png` | Fotó-kvíz: feldolgozás | LL-49 |
+| `22-photo-quiz-processing-light.png` | Fotó-kvíz: feldolgozás, világos mód | LL-49 |
+| `23-photo-quiz-review.png` | Fotó-kvíz: áttekintés | LL-52 |
+| `24-photo-quiz-review-light.png` | Fotó-kvíz: áttekintés, világos mód | LL-52 |
+| `25-photo-quiz-fill.png` | Fotó-kvíz: kitöltés | LL-53 |
+| `26-photo-quiz-fill-light.png` | Fotó-kvíz: kitöltés, világos mód | LL-53 |
+| `27-photo-quiz-summary.png` | Fotó-kvíz: beküldés előtt | LL-55 |
+| `28-photo-quiz-summary-light.png` | Fotó-kvíz: beküldés előtt, világos mód | LL-55 |
+| `29-photo-quiz-error-no-questions.png` | Fotó-kvíz: hiba, nincs felismert kérdés | LL-49, LL-57 |
+| `30-photo-quiz-error-no-questions-light.png` | Fotó-kvíz: hiba, nincs felismert kérdés, világos mód | LL-49, LL-57 |
+| `31-photo-quiz-error-offline.png` | Fotó-kvíz: hiba, nincs hálózat | LL-49, LL-57 |
+| `32-photo-quiz-error-offline-light.png` | Fotó-kvíz: hiba, nincs hálózat, világos mód | LL-49, LL-57 |
+| `33-photo-quiz-error-daily-limit.png` | Fotó-kvíz: hiba, napi limit | LL-49, LL-57 |
+| `34-photo-quiz-error-daily-limit-light.png` | Fotó-kvíz: hiba, napi limit, világos mód | LL-49, LL-57 |
+| `35-photo-quiz-error-no-teacher-email.png` | Fotó-kvíz: hiba, nincs tanári e-mail | LL-55 |
+| `36-photo-quiz-error-no-teacher-email-light.png` | Fotó-kvíz: hiba, nincs tanári e-mail, világos mód | LL-55 |
+| `37-photo-quiz-settings.png` | Fotó-kvíz: beállítások, tanár e-mail-címe | LL-55 |
+| `38-photo-quiz-settings-light.png` | Fotó-kvíz: beállítások, tanár e-mail-címe, világos mód | LL-55 |
 
 The settings screen design (`14-settings.png`) predates the "App language"
 card. It is built in card LL-09 in the style of the "Appearance" card: a title,
@@ -127,3 +149,11 @@ a hint line ("The language of the menus and labels.") and a three-way toggle
 (System / English / Magyar). The language names are not translated. The screen
 texts in the designs are Hungarian; the English translations are in the
 localization files (card LL-37).
+
+The photo-quiz screens (`17`–`38`, card LL-47) are exported in Hungarian, in
+dark and light mode. The English versions of the same screens, in both modes,
+are on the canvas. `37-photo-quiz-settings.png` is taller than the other
+screens (390 x 1000) because it shows the whole settings list with the new
+"Teacher's e-mail address" card; the older `14-settings.png` stays as it is.
+Photo-quiz questions come from the photo, so the questions and answers on
+these screens are English text in both languages.
