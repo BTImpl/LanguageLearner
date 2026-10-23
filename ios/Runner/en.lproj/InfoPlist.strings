@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "The camera is used to photograph a worksheet, so the app can make a quiz from it.";
+"NSPhotoLibraryUsageDescription" = "Choose a photo of a worksheet, so the app can make a quiz from it.";

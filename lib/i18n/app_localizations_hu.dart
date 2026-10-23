@@ -455,4 +455,17 @@ class AppLocalizationsHu extends AppLocalizations {
   String needsWords(int count) {
     return 'Legalább $count szó kell';
   }
+
+  @override
+  String get photoPermissionCameraTitle => 'Nincs hozzáférés a kamerához';
+
+  @override
+  String get photoPermissionPhotosTitle => 'Nincs hozzáférés a fotóidhoz';
+
+  @override
+  String get photoPermissionMessage =>
+      'Engedélyezd a Beállításokban, hogy fotóból kvízt készíthess.';
+
+  @override
+  String get photoPermissionOpenSettings => 'Megnyitás a Beállításokban';
 }
