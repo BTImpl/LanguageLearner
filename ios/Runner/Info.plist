@@ -79,6 +79,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera is used to photograph a worksheet, so the app can make a quiz from it.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose a photo of a worksheet, so the app can make a quiz from it.</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>

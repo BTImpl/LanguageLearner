@@ -889,6 +889,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{At least 1 word needed} other{At least {count} words needed}}'**
   String needsWords(int count);
+
+  /// Title of the message shown when the app may not use the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'No access to the camera'**
+  String get photoPermissionCameraTitle;
+
+  /// Title of the message shown when the app may not use the photos.
+  ///
+  /// In en, this message translates to:
+  /// **'No access to your photos'**
+  String get photoPermissionPhotosTitle;
+
+  /// Explains how to give the app access to the camera or the photos again.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow it in Settings to make a quiz from a photo.'**
+  String get photoPermissionMessage;
+
+  /// Button that opens the system settings of the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get photoPermissionOpenSettings;
 }
 
 class _AppLocalizationsDelegate
