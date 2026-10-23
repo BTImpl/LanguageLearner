@@ -131,5 +131,9 @@
   "leaveRoundMessage": "Az eddigi eredmény nem mentődik.",
   "leaveRoundConfirm": "Kilépek",
   "leaveRoundCancel": "Folytatom",
-  "needsWords": "Legalább {count} szó kell"
+  "needsWords": "Legalább {count} szó kell",
+  "photoPermissionCameraTitle": "Nincs hozzáférés a kamerához",
+  "photoPermissionPhotosTitle": "Nincs hozzáférés a fotóidhoz",
+  "photoPermissionMessage": "Engedélyezd a Beállításokban, hogy fotóból kvízt készíthess.",
+  "photoPermissionOpenSettings": "Megnyitás a Beállításokban"
 }

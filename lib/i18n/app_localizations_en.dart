@@ -494,4 +494,17 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get photoPermissionCameraTitle => 'No access to the camera';
+
+  @override
+  String get photoPermissionPhotosTitle => 'No access to your photos';
+
+  @override
+  String get photoPermissionMessage =>
+      'Allow it in Settings to make a quiz from a photo.';
+
+  @override
+  String get photoPermissionOpenSettings => 'Open Settings';
 }

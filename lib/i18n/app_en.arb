@@ -635,5 +635,21 @@
         "type": "int"
       }
     }
+  },
+  "photoPermissionCameraTitle": "No access to the camera",
+  "@photoPermissionCameraTitle": {
+    "description": "Title of the message shown when the app may not use the camera."
+  },
+  "photoPermissionPhotosTitle": "No access to your photos",
+  "@photoPermissionPhotosTitle": {
+    "description": "Title of the message shown when the app may not use the photos."
+  },
+  "photoPermissionMessage": "Allow it in Settings to make a quiz from a photo.",
+  "@photoPermissionMessage": {
+    "description": "Explains how to give the app access to the camera or the photos again."
+  },
+  "photoPermissionOpenSettings": "Open Settings",
+  "@photoPermissionOpenSettings": {
+    "description": "Button that opens the system settings of the app."
   }
 }
