@@ -37,6 +37,7 @@ class AppSettings {
     this.themeChoice = ThemeChoice.dark,
     this.appLanguage = AppLanguage.system,
     this.typingAttempts = defaultTypingAttempts,
+    this.teacherEmail = '',
   }) : assert(
          pairsPerPage >= minPairsPerPage && pairsPerPage <= maxPairsPerPage,
          'pairsPerPage must be between $minPairsPerPage and $maxPairsPerPage',
@@ -74,12 +75,18 @@ class AppSettings {
   /// [maxTypingAttempts]. Default: 3. (The game uses it from card LL-42.)
   final int typingAttempts;
 
+  /// The e-mail address the filled-in photo quizzes are sent to; empty when
+  /// the student has not set one. A non-empty value is a valid address (see
+  /// `isValidEmail`). Default: empty.
+  final String teacherEmail;
+
   AppSettings copyWith({
     PromptLanguage? promptLanguage,
     int? pairsPerPage,
     ThemeChoice? themeChoice,
     AppLanguage? appLanguage,
     int? typingAttempts,
+    String? teacherEmail,
   }) {
     return AppSettings(
       promptLanguage: promptLanguage ?? this.promptLanguage,
@@ -87,6 +94,7 @@ class AppSettings {
       themeChoice: themeChoice ?? this.themeChoice,
       appLanguage: appLanguage ?? this.appLanguage,
       typingAttempts: typingAttempts ?? this.typingAttempts,
+      teacherEmail: teacherEmail ?? this.teacherEmail,
     );
   }
 
@@ -97,7 +105,8 @@ class AppSettings {
       other.pairsPerPage == pairsPerPage &&
       other.themeChoice == themeChoice &&
       other.appLanguage == appLanguage &&
-      other.typingAttempts == typingAttempts;
+      other.typingAttempts == typingAttempts &&
+      other.teacherEmail == teacherEmail;
 
   @override
   int get hashCode => Object.hash(
@@ -106,10 +115,12 @@ class AppSettings {
     themeChoice,
     appLanguage,
     typingAttempts,
+    teacherEmail,
   );
 
   @override
   String toString() =>
       'AppSettings($promptLanguage, $pairsPerPage pairs, $themeChoice, '
-      '$appLanguage, $typingAttempts attempts)';
+      '$appLanguage, $typingAttempts attempts, teacher e-mail: '
+      '${teacherEmail.isEmpty ? 'none' : teacherEmail})';
 }

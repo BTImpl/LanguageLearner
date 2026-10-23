@@ -308,6 +308,30 @@ abstract class AppLocalizations {
   /// **'Light'**
   String get themeLight;
 
+  /// Title of the setting for the e-mail address the filled-in photo quizzes are sent to.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher e-mail address'**
+  String get teacherEmailTitle;
+
+  /// Explains the teacher e-mail address setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled-in quizzes go here.'**
+  String get teacherEmailHint;
+
+  /// Label of the text field of the teacher e-mail address setting; shown inside the empty field and read out by screen readers.
+  ///
+  /// In en, this message translates to:
+  /// **'E-mail address'**
+  String get teacherEmailLabel;
+
+  /// Error under the teacher e-mail address field when the text is not an e-mail address.
+  ///
+  /// In en, this message translates to:
+  /// **'This does not look like a valid e-mail address.'**
+  String get teacherEmailError;
+
   /// Row that reads the word list again from the teacher's spreadsheet.
   ///
   /// In en, this message translates to:

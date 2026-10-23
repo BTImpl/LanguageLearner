@@ -133,6 +133,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeLight => 'Light';
 
   @override
+  String get teacherEmailTitle => 'Teacher e-mail address';
+
+  @override
+  String get teacherEmailHint => 'Filled-in quizzes go here.';
+
+  @override
+  String get teacherEmailLabel => 'E-mail address';
+
+  @override
+  String get teacherEmailError =>
+      'This does not look like a valid e-mail address.';
+
+  @override
   String get refreshWordsTitle => 'Refresh word list';
 
   @override

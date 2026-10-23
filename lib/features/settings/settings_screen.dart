@@ -9,7 +9,7 @@ import 'package:languagelearner/features/settings/widgets/settings_cards.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The settings: account, languages, pairs per page, typing attempts,
-/// appearance and the word list refresh.
+/// appearance, the teacher's e-mail address and the word list refresh.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -47,6 +47,7 @@ class SettingsScreen extends StatelessWidget {
                   PairsPerPageCard(),
                   TypingAttemptsCard(),
                   AppearanceCard(),
+                  TeacherEmailCard(),
                   RefreshWordsCard(),
                 ],
               ),

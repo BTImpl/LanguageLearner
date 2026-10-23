@@ -40,7 +40,7 @@ void main() {
       expect(container.read(settingsProvider).pairsPerPage, 7);
     });
 
-    test('all five settings survive a restart', () async {
+    test('all six settings survive a restart', () async {
       final store = InMemoryKeyValueStore();
       final first = await _start(store);
       final notifier = first.read(settingsProvider.notifier);
@@ -50,6 +50,7 @@ void main() {
       await notifier.setThemeChoice(ThemeChoice.light);
       await notifier.setAppLanguage(AppLanguage.hu);
       await notifier.setTypingAttempts(7);
+      await notifier.setTeacherEmail('tanar@example.com');
 
       final restarted = await _start(store);
       expect(
@@ -60,7 +61,45 @@ void main() {
           themeChoice: ThemeChoice.light,
           appLanguage: AppLanguage.hu,
           typingAttempts: 7,
+          teacherEmail: 'tanar@example.com',
         ),
+      );
+    });
+
+    test(
+      'setTeacherEmail trims the text and an empty text clears it',
+      () async {
+        final store = InMemoryKeyValueStore();
+        final container = await _start(store);
+        final notifier = container.read(settingsProvider.notifier);
+
+        await notifier.setTeacherEmail('  tanar@example.com ');
+        expect(
+          container.read(settingsProvider).teacherEmail,
+          'tanar@example.com',
+        );
+
+        await notifier.setTeacherEmail('   ');
+        expect(container.read(settingsProvider).teacherEmail, '');
+        expect((await StoreSettingsRepository(store).load()).teacherEmail, '');
+      },
+    );
+
+    test('setTeacherEmail refuses a text that is not an address', () async {
+      final store = InMemoryKeyValueStore();
+      final container = await _start(store);
+      final notifier = container.read(settingsProvider.notifier);
+      await notifier.setTeacherEmail('tanar@example.com');
+
+      expect(() => notifier.setTeacherEmail('tanar@'), throwsArgumentError);
+
+      expect(
+        container.read(settingsProvider).teacherEmail,
+        'tanar@example.com',
+      );
+      expect(
+        (await StoreSettingsRepository(store).load()).teacherEmail,
+        'tanar@example.com',
       );
     });
 

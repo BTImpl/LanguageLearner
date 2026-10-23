@@ -16,6 +16,7 @@ void main() {
     expect(settings.themeChoice, ThemeChoice.dark);
     expect(settings.appLanguage, AppLanguage.system);
     expect(settings.typingAttempts, 3);
+    expect(settings.teacherEmail, '');
   });
 
   test('copyWith changes only the given setting', () {
@@ -28,7 +29,12 @@ void main() {
     expect(changed.themeChoice, settings.themeChoice);
     expect(changed.appLanguage, settings.appLanguage);
     expect(changed.typingAttempts, settings.typingAttempts);
+    expect(changed.teacherEmail, settings.teacherEmail);
     expect(settings.copyWith(typingAttempts: 5).typingAttempts, 5);
+    expect(
+      settings.copyWith(teacherEmail: 'tanar@example.com').teacherEmail,
+      'tanar@example.com',
+    );
   });
 
   test('settings with the same values are equal', () {
@@ -36,6 +42,14 @@ void main() {
     expect(const AppSettings().hashCode, const AppSettings().hashCode);
     expect(const AppSettings(), isNot(const AppSettings(pairsPerPage: 6)));
     expect(const AppSettings(), isNot(const AppSettings(typingAttempts: 4)));
+    expect(
+      const AppSettings(),
+      isNot(const AppSettings(teacherEmail: 'tanar@example.com')),
+    );
+    expect(
+      const AppSettings(teacherEmail: 'tanar@example.com').hashCode,
+      const AppSettings(teacherEmail: 'tanar@example.com').hashCode,
+    );
   });
 
   test('refuses a pairsPerPage outside 3..8', () {

@@ -291,4 +291,115 @@ void main() {
     await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
     handle.dispose();
   });
+
+  group('teacher e-mail card', () {
+    final field = find.byType(TextField);
+
+    testWidgets('shows the card, empty by default', (tester) async {
+      await _openSettings(tester);
+
+      expect(find.text('Teacher e-mail address'), findsOneWidget);
+      expect(find.text('Filled-in quizzes go here.'), findsOneWidget);
+      expect(find.text('E-mail address'), findsOneWidget); // field label
+      expect(tester.widget<TextField>(field).controller!.text, '');
+    });
+
+    testWidgets('shows the saved address', (tester) async {
+      await _openSettings(
+        tester,
+        saved: const AppSettings(teacherEmail: 'tanar@example.com'),
+      );
+
+      expect(find.text('tanar@example.com'), findsOneWidget);
+    });
+
+    testWidgets('a valid address is saved as it is typed', (tester) async {
+      final (store, container) = await _openSettings(tester);
+
+      await tester.enterText(field, 'tanar@example.com');
+      await tester.pumpAndSettle();
+
+      expect(
+        container.read(settingsProvider).teacherEmail,
+        'tanar@example.com',
+      );
+      expect(
+        (await StoreSettingsRepository(store).load()).teacherEmail,
+        'tanar@example.com',
+      );
+      expect(
+        find.text('This does not look like a valid e-mail address.'),
+        findsNothing,
+      );
+    });
+
+    testWidgets('no error while typing, but not saved either', (tester) async {
+      final (_, container) = await _openSettings(
+        tester,
+        saved: const AppSettings(teacherEmail: 'tanar@example.com'),
+      );
+
+      await tester.enterText(field, 'tanar@');
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('This does not look like a valid e-mail address.'),
+        findsNothing,
+      );
+      expect(
+        container.read(settingsProvider).teacherEmail,
+        'tanar@example.com',
+      );
+    });
+
+    testWidgets(
+      'after leaving the field the error shows and follows the text',
+      (tester) async {
+        final (_, container) = await _openSettings(tester);
+        const error = 'This does not look like a valid e-mail address.';
+
+        await tester.tap(field);
+        await tester.enterText(field, 'tanar@');
+        await tester.pumpAndSettle();
+        FocusManager.instance.primaryFocus!.unfocus();
+        await tester.pumpAndSettle();
+
+        expect(find.text(error), findsOneWidget);
+        expect(container.read(settingsProvider).teacherEmail, '');
+
+        await tester.enterText(field, 'tanar@example.com');
+        await tester.pumpAndSettle();
+
+        expect(find.text(error), findsNothing);
+        expect(
+          container.read(settingsProvider).teacherEmail,
+          'tanar@example.com',
+        );
+      },
+    );
+
+    testWidgets('clearing the field clears the saved address', (tester) async {
+      final (store, container) = await _openSettings(
+        tester,
+        saved: const AppSettings(teacherEmail: 'tanar@example.com'),
+      );
+
+      await tester.enterText(field, '');
+      await tester.pumpAndSettle();
+
+      expect(container.read(settingsProvider).teacherEmail, '');
+      expect((await StoreSettingsRepository(store).load()).teacherEmail, '');
+    });
+
+    testWidgets('is written in Hungarian too', (tester) async {
+      await _openSettings(
+        tester,
+        saved: const AppSettings(appLanguage: AppLanguage.hu),
+      );
+
+      expect(find.text('Tanár e-mail-címe'), findsOneWidget);
+      expect(find.text('Ide megy a kitöltött kvíz.'), findsOneWidget);
+      expect(find.text('E-mail-cím'), findsOneWidget);
+    });
+  });
 }

@@ -133,6 +133,18 @@ class AppLocalizationsHu extends AppLocalizations {
   String get themeLight => 'Világos';
 
   @override
+  String get teacherEmailTitle => 'Tanár e-mail-címe';
+
+  @override
+  String get teacherEmailHint => 'Ide megy a kitöltött kvíz.';
+
+  @override
+  String get teacherEmailLabel => 'E-mail-cím';
+
+  @override
+  String get teacherEmailError => 'Ez nem tűnik érvényes e-mail-címnek.';
+
+  @override
   String get refreshWordsTitle => 'Szólista frissítése';
 
   @override
