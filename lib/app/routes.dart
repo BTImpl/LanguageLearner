@@ -12,6 +12,7 @@ abstract final class AppRoutes {
   static const String photoQuiz = '/photo-quiz';
   static const String photoQuizProcessing = '/photo-quiz/processing';
   static const String photoQuizReview = '/photo-quiz/review';
+  static const String photoQuizFill = '/photo-quiz/fill';
 
   /// Full-screen game route, without the bottom navigation.
   static String play(PlayMode mode) => '/play/${mode.name}';

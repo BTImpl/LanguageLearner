@@ -1064,11 +1064,71 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Try again.'**
   String get photoQuizErrorGeneral;
 
-  /// How many questions were read from the photo; stands in for the review screen.
+  /// Headline of the review screen of a quiz read from a photo.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 question found} other{{count} questions found}}'**
-  String photoQuizQuestionsFound(int count);
+  /// **'Review the quiz'**
+  String get photoQuizReviewHeadline;
+
+  /// Text under the headline of the review screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete what was read wrongly, then you can start filling it in.'**
+  String get photoQuizReviewSubtitle;
+
+  /// Shown on the review screen when every question was deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions left. Take the photo again.'**
+  String get photoQuizReviewEmpty;
+
+  /// Button that deletes one question of the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get photoQuizDelete;
+
+  /// Action of the message shown after a question was deleted; puts the question back.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get photoQuizUndo;
+
+  /// Message shown after a question was deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question deleted'**
+  String get photoQuizQuestionDeleted;
+
+  /// Button on the review screen that goes back to take the photo again; the quiz is thrown away.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake photo'**
+  String get photoQuizRetake;
+
+  /// Button on the review screen that starts filling in the quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get photoQuizStart;
+
+  /// How many questions the quiz has.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question} other{{count} questions}}'**
+  String photoQuizQuestionCount(int count);
+
+  /// Note on the review screen: how many questions could not be read and were left out.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question could not be read} other{{count} questions could not be read}}'**
+  String photoQuizSkipped(int count);
+
+  /// Spoken label of the delete button of one question, so that the buttons can be told apart.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete question {number}'**
+  String photoQuizDeleteQuestion(int number);
 }
 
 class _AppLocalizationsDelegate

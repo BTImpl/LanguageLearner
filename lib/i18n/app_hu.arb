@@ -161,5 +161,15 @@
   "photoQuizErrorNoNetwork": "Nincs internetkapcsolat. Ellenőrizd, és próbáld újra.",
   "photoQuizErrorTimeout": "Túl sokáig tartott. Próbáld újra.",
   "photoQuizErrorGeneral": "Valami hiba történt. Próbáld újra.",
-  "photoQuizQuestionsFound": "{count} kérdés felismerve"
+  "photoQuizReviewHeadline": "Kvíz áttekintése",
+  "photoQuizReviewSubtitle": "Töröld, ami hibásan került be, majd indulhat a kitöltés.",
+  "photoQuizReviewEmpty": "Nem maradt kérdés. Fotózd le újra.",
+  "photoQuizDelete": "Törlés",
+  "photoQuizUndo": "Visszavonás",
+  "photoQuizQuestionDeleted": "Kérdés törölve",
+  "photoQuizRetake": "Újra fotózom",
+  "photoQuizStart": "Kezdés",
+  "photoQuizQuestionCount": "{count} kérdés",
+  "photoQuizSkipped": "{count} kérdést nem sikerült kiolvasni",
+  "photoQuizDeleteQuestion": "{number}. kérdés törlése"
 }

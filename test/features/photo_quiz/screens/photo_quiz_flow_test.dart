@@ -117,7 +117,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(path(), AppRoutes.photoQuizReview);
-    expect(find.text('4 questions found'), findsOneWidget);
+    expect(find.text('4 questions'), findsOneWidget);
     expect(photo.existsSync(), isFalse);
   });
 

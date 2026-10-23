@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/features/photo_quiz/data/photo_quiz_exception.dart';
 import 'package:languagelearner/features/photo_quiz/data/photo_quiz_providers.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz.dart';
+import 'package:languagelearner/features/photo_quiz/models/photo_quiz_question.dart';
 
 /// Where the making of a quiz from a photo stands.
 sealed class PhotoQuizState {
@@ -76,6 +77,26 @@ class PhotoQuizController extends Notifier<PhotoQuizState> {
     if (generation == _generation && ref.mounted) {
       _photo = null;
       state = result;
+    }
+  }
+
+  /// Drops the question at [index] from the ready quiz (a position in its
+  /// questions). Does nothing while there is no ready quiz.
+  void removeQuestion(int index) {
+    final current = state;
+    if (current is PhotoQuizReady) {
+      state = PhotoQuizReady(current.quiz.withoutQuestionAt(index));
+    }
+  }
+
+  /// Puts [question] back at [index], the undo of [removeQuestion]. Does
+  /// nothing while there is no ready quiz.
+  void restoreQuestion(int index, PhotoQuizQuestion question) {
+    final current = state;
+    if (current is PhotoQuizReady) {
+      state = PhotoQuizReady(
+        current.quiz.withQuestionInserted(index, question),
+      );
     }
   }
 

@@ -752,11 +752,61 @@
   "@photoQuizErrorGeneral": {
     "description": "Shown for any other problem while reading the photo."
   },
-  "photoQuizQuestionsFound": "{count, plural, =1{1 question found} other{{count} questions found}}",
-  "@photoQuizQuestionsFound": {
-    "description": "How many questions were read from the photo; stands in for the review screen.",
+  "photoQuizReviewHeadline": "Review the quiz",
+  "@photoQuizReviewHeadline": {
+    "description": "Headline of the review screen of a quiz read from a photo."
+  },
+  "photoQuizReviewSubtitle": "Delete what was read wrongly, then you can start filling it in.",
+  "@photoQuizReviewSubtitle": {
+    "description": "Text under the headline of the review screen."
+  },
+  "photoQuizReviewEmpty": "No questions left. Take the photo again.",
+  "@photoQuizReviewEmpty": {
+    "description": "Shown on the review screen when every question was deleted."
+  },
+  "photoQuizDelete": "Delete",
+  "@photoQuizDelete": {
+    "description": "Button that deletes one question of the quiz."
+  },
+  "photoQuizUndo": "Undo",
+  "@photoQuizUndo": {
+    "description": "Action of the message shown after a question was deleted; puts the question back."
+  },
+  "photoQuizQuestionDeleted": "Question deleted",
+  "@photoQuizQuestionDeleted": {
+    "description": "Message shown after a question was deleted."
+  },
+  "photoQuizRetake": "Retake photo",
+  "@photoQuizRetake": {
+    "description": "Button on the review screen that goes back to take the photo again; the quiz is thrown away."
+  },
+  "photoQuizStart": "Start",
+  "@photoQuizStart": {
+    "description": "Button on the review screen that starts filling in the quiz."
+  },
+  "photoQuizQuestionCount": "{count, plural, =1{1 question} other{{count} questions}}",
+  "@photoQuizQuestionCount": {
+    "description": "How many questions the quiz has.",
     "placeholders": {
       "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizSkipped": "{count, plural, =1{1 question could not be read} other{{count} questions could not be read}}",
+  "@photoQuizSkipped": {
+    "description": "Note on the review screen: how many questions could not be read and were left out.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizDeleteQuestion": "Delete question {number}",
+  "@photoQuizDeleteQuestion": {
+    "description": "Spoken label of the delete button of one question, so that the buttons can be told apart.",
+    "placeholders": {
+      "number": {
         "type": "int"
       }
     }

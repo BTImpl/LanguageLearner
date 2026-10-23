@@ -53,6 +53,30 @@ class PhotoQuiz {
   /// How many questions could not be read completely and were left out.
   final int skippedQuestions;
 
+  /// A quiz without the question at [index] (a position in [questions]).
+  /// Title and [skippedQuestions] stay. Throws a [RangeError] for a position
+  /// that is not a question.
+  PhotoQuiz withoutQuestionAt(int index) {
+    RangeError.checkValidIndex(index, questions, 'index');
+    return PhotoQuiz(
+      title: title,
+      skippedQuestions: skippedQuestions,
+      questions: [...questions]..removeAt(index),
+    );
+  }
+
+  /// A quiz with [question] put in at [index], so that it is the question at
+  /// that position; the undo of [withoutQuestionAt]. Throws a [RangeError] for
+  /// a position outside 0 to the number of questions.
+  PhotoQuiz withQuestionInserted(int index, PhotoQuizQuestion question) {
+    RangeError.checkValueInInterval(index, 0, questions.length, 'index');
+    return PhotoQuiz(
+      title: title,
+      skippedQuestions: skippedQuestions,
+      questions: [...questions]..insert(index, question),
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       other is PhotoQuiz &&

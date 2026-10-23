@@ -545,7 +545,41 @@ class AppLocalizationsHu extends AppLocalizations {
   String get photoQuizErrorGeneral => 'Valami hiba történt. Próbáld újra.';
 
   @override
-  String photoQuizQuestionsFound(int count) {
-    return '$count kérdés felismerve';
+  String get photoQuizReviewHeadline => 'Kvíz áttekintése';
+
+  @override
+  String get photoQuizReviewSubtitle => 'Töröld, ami hibásan került be, majd indulhat a kitöltés.';
+
+  @override
+  String get photoQuizReviewEmpty => 'Nem maradt kérdés. Fotózd le újra.';
+
+  @override
+  String get photoQuizDelete => 'Törlés';
+
+  @override
+  String get photoQuizUndo => 'Visszavonás';
+
+  @override
+  String get photoQuizQuestionDeleted => 'Kérdés törölve';
+
+  @override
+  String get photoQuizRetake => 'Újra fotózom';
+
+  @override
+  String get photoQuizStart => 'Kezdés';
+
+  @override
+  String photoQuizQuestionCount(int count) {
+    return '$count kérdés';
+  }
+
+  @override
+  String photoQuizSkipped(int count) {
+    return '$count kérdést nem sikerült kiolvasni';
+  }
+
+  @override
+  String photoQuizDeleteQuestion(int number) {
+    return '$number. kérdés törlése';
   }
 }
