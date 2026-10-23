@@ -15,7 +15,8 @@ abstract final class AppConfig {
     defaultValue: 'https://languagelearner-backend-5rzfrbyqnq-ew.a.run.app',
   );
 
-  /// Use the built-in sample decks instead of the backend:
+  /// Use the built-in sample decks and the built-in sample photo quiz instead
+  /// of the backend:
   /// `--dart-define=USE_FAKE_DATA=true`.
   static const bool useFakeData = bool.fromEnvironment('USE_FAKE_DATA');
 }

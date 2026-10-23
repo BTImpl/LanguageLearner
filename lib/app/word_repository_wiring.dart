@@ -13,6 +13,8 @@ import 'package:languagelearner/core/data/word_repository.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/auth/auth_repository.dart';
+import 'package:languagelearner/features/photo_quiz/data/api_photo_quiz_repository.dart';
+import 'package:languagelearner/features/photo_quiz/data/photo_quiz_repository.dart';
 import 'package:languagelearner/features/stats/data/attempt_uploader.dart';
 
 /// The answer must start within this time of the connection.
@@ -52,6 +54,24 @@ AttemptUploader createApiAttemptUploader(Ref ref, {Dio? dio}) {
     idToken: _idTokenSource(ref),
     onUnauthorized: () =>
         unawaited(ref.read(authControllerProvider.notifier).signOut()),
+  );
+}
+
+/// The [PhotoQuizRepository] that sends the photos to the backend, signed in
+/// with the Google ID token of the student (card LL-51). A 401 answer that
+/// survives a new token signs the student out; a 403 answer signs the student
+/// out and explains it on the sign-in screen. [dio] is for tests.
+PhotoQuizRepository createApiPhotoQuizRepository(Ref ref, {Dio? dio}) {
+  final client = dio ?? _newClient();
+  ref.onDispose(client.close);
+  return ApiPhotoQuizRepository(
+    dio: client,
+    idToken: _idTokenSource(ref),
+    onUnauthorized: () =>
+        unawaited(ref.read(authControllerProvider.notifier).signOut()),
+    onStudentNotFound: () => unawaited(
+      ref.read(authControllerProvider.notifier).signOutStudentNotFound(),
+    ),
   );
 }
 

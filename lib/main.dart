@@ -14,6 +14,8 @@ import 'package:languagelearner/features/auth/auth_repository.dart';
 import 'package:languagelearner/features/auth/auth_state.dart';
 import 'package:languagelearner/features/auth/data/google_auth_repository.dart';
 import 'package:languagelearner/features/auth/data/google_sign_in_client.dart';
+import 'package:languagelearner/features/photo_quiz/data/fake_photo_quiz_repository.dart';
+import 'package:languagelearner/features/photo_quiz/data/photo_quiz_providers.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
@@ -40,6 +42,11 @@ Future<void> main() async {
                   remote: createApiWordRepository(ref),
                   cache: DriftDeckCache(database),
                 ),
+        ),
+        photoQuizRepositoryProvider.overrideWith(
+          (ref) => AppConfig.useFakeData
+              ? FakePhotoQuizRepository()
+              : createApiPhotoQuizRepository(ref),
         ),
         initialAuthStateProvider.overrideWithValue(
           await _restoreSignIn(authRepository),
