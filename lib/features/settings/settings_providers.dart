@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
+import 'package:languagelearner/features/settings/email_validator.dart';
 import 'package:languagelearner/features/settings/settings_repository.dart';
 
 final settingsRepositoryProvider = Provider<SettingsRepository>(
@@ -50,6 +51,20 @@ class SettingsNotifier extends Notifier<AppSettings> {
 
   Future<void> setAppLanguage(AppLanguage value) =>
       _update(state.copyWith(appLanguage: value));
+
+  /// The address the finished quizzes are sent to; an empty text clears it.
+  /// The whitespace around the text is dropped.
+  ///
+  /// Throws an [ArgumentError] at once, and changes and saves nothing, for a
+  /// text that is not an e-mail address: the settings screen checks first and
+  /// shows an error instead.
+  Future<void> setTeacherEmail(String value) {
+    final email = value.trim();
+    if (email.isNotEmpty && !isValidEmail(email)) {
+      throw ArgumentError.value(value, 'value', 'Not an e-mail address');
+    }
+    return _update(state.copyWith(teacherEmail: email));
+  }
 
   /// The screen updates at once; the returned future completes when the
   /// change is saved (or fails if saving fails).

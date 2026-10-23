@@ -163,6 +163,22 @@
   "@themeLight": {
     "description": "Option: light theme."
   },
+  "teacherEmailTitle": "Teacher e-mail address",
+  "@teacherEmailTitle": {
+    "description": "Title of the setting for the e-mail address the filled-in photo quizzes are sent to."
+  },
+  "teacherEmailHint": "Filled-in quizzes go here.",
+  "@teacherEmailHint": {
+    "description": "Explains the teacher e-mail address setting."
+  },
+  "teacherEmailLabel": "E-mail address",
+  "@teacherEmailLabel": {
+    "description": "Label of the text field of the teacher e-mail address setting; shown inside the empty field and read out by screen readers."
+  },
+  "teacherEmailError": "This does not look like a valid e-mail address.",
+  "@teacherEmailError": {
+    "description": "Error under the teacher e-mail address field when the text is not an e-mail address."
+  },
   "refreshWordsTitle": "Refresh word list",
   "@refreshWordsTitle": {
     "description": "Row that reads the word list again from the teacher's spreadsheet."

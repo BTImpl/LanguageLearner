@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
+import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/core/widgets/icon_square_button.dart';
 import 'package:languagelearner/core/widgets/segmented_toggle.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
+import 'package:languagelearner/features/settings/email_validator.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/widgets/settings_section.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
@@ -211,6 +213,126 @@ class AppearanceCard extends ConsumerWidget {
             icon: Icons.light_mode_outlined,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The e-mail address the filled-in photo quizzes are sent to.
+///
+/// An address (or no address) is saved as it is typed. While the text is not a
+/// valid address nothing is saved, so the earlier address stays. The error is
+/// shown once the student has left the field, so it does not appear in the
+/// middle of typing; from then on it follows every change.
+class TeacherEmailCard extends ConsumerStatefulWidget {
+  const TeacherEmailCard({super.key});
+
+  @override
+  ConsumerState<TeacherEmailCard> createState() => _TeacherEmailCardState();
+}
+
+class _TeacherEmailCardState extends ConsumerState<TeacherEmailCard> {
+  late final TextEditingController _controller;
+  final FocusNode _focusNode = FocusNode();
+  bool _hasLeftField = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: ref.read(settingsProvider).teacherEmail,
+    );
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void dispose() {
+    _focusNode
+      ..removeListener(_onFocusChanged)
+      ..dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  /// Empty is allowed: the quiz is then not sent (card LL-56).
+  bool get _isAcceptable {
+    final text = _controller.text.trim();
+    return text.isEmpty || isValidEmail(text);
+  }
+
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus && !_hasLeftField) {
+      setState(() => _hasLeftField = true);
+    }
+  }
+
+  void _onChanged(String text) {
+    // The error depends on the text.
+    setState(() {});
+    if (_isAcceptable) {
+      unawaited(ref.read(settingsProvider.notifier).setTeacherEmail(text));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final i18n = context.i18n;
+    final c = context.colors;
+    OutlineInputBorder border(Color color, double width) => OutlineInputBorder(
+      borderRadius: AppRadii.choice,
+      borderSide: BorderSide(color: color, width: width),
+    );
+    return SettingsSection(
+      title: i18n.teacherEmailTitle,
+      hint: i18n.teacherEmailHint,
+      child: TextField(
+        controller: _controller,
+        focusNode: _focusNode,
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.done,
+        autocorrect: false,
+        enableSuggestions: false,
+        textCapitalization: TextCapitalization.none,
+        onChanged: _onChanged,
+        style: TextStyle(
+          fontFamily: bodyFontFamily,
+          fontSize: 17,
+          fontWeight: FontWeight.w600,
+          color: c.text,
+        ),
+        cursorColor: c.highlight,
+        decoration: InputDecoration(
+          // Shown inside the empty field and read out by screen readers.
+          labelText: i18n.teacherEmailLabel,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          labelStyle: TextStyle(
+            fontFamily: bodyFontFamily,
+            fontSize: 17,
+            color: c.textMuted,
+          ),
+          errorText: _hasLeftField && !_isAcceptable
+              ? i18n.teacherEmailError
+              : null,
+          errorMaxLines: 2,
+          errorStyle: TextStyle(
+            fontFamily: bodyFontFamily,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: c.errorNumber,
+          ),
+          prefixIcon: Icon(Icons.mail_outline, color: c.textMuted),
+          filled: true,
+          fillColor: c.background,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+          border: border(c.line, 1),
+          enabledBorder: border(c.line, 1),
+          focusedBorder: border(c.highlight, 2),
+          errorBorder: border(c.errorBorder, 2),
+          focusedErrorBorder: border(c.errorBorder, 2),
+        ),
       ),
     );
   }

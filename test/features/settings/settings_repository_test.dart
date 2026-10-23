@@ -19,6 +19,7 @@ void main() {
       themeChoice: ThemeChoice.light,
       appLanguage: AppLanguage.hu,
       typingAttempts: 6,
+      teacherEmail: 'tanar@example.com',
     );
 
     await StoreSettingsRepository(store).save(settings);
@@ -34,6 +35,7 @@ void main() {
       AppSettings(appLanguage: AppLanguage.en),
       AppSettings(typingAttempts: 1),
       AppSettings(typingAttempts: 10),
+      AppSettings(teacherEmail: 'tanar@example.com'),
     ]) {
       final store = InMemoryKeyValueStore();
       await StoreSettingsRepository(store).save(settings);
@@ -98,4 +100,22 @@ void main() {
     expect(settings.pairsPerPage, 6);
     expect(settings.typingAttempts, AppSettings.defaultTypingAttempts);
   });
+
+  test(
+    'a saved teacher e-mail is trimmed, an invalid one is no address',
+    () async {
+      Future<String> load(String stored) async {
+        final repository = StoreSettingsRepository(
+          InMemoryKeyValueStore({
+            StoreSettingsRepository.teacherEmailKey: stored,
+          }),
+        );
+        return (await repository.load()).teacherEmail;
+      }
+
+      expect(await load(' tanar@example.com '), 'tanar@example.com');
+      expect(await load('not an address'), '');
+      expect(await load(''), '');
+    },
+  );
 }

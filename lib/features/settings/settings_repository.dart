@@ -1,5 +1,6 @@
 import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/features/settings/app_settings.dart';
+import 'package:languagelearner/features/settings/email_validator.dart';
 
 /// Loads and saves the [AppSettings].
 abstract interface class SettingsRepository {
@@ -19,6 +20,7 @@ class StoreSettingsRepository implements SettingsRepository {
   static const themeChoiceKey = 'settings.themeChoice';
   static const appLanguageKey = 'settings.appLanguage';
   static const typingAttemptsKey = 'settings.typingAttempts';
+  static const teacherEmailKey = 'settings.teacherEmail';
 
   final KeyValueStore _store;
 
@@ -27,6 +29,7 @@ class StoreSettingsRepository implements SettingsRepository {
     const defaults = AppSettings();
     final pairsPerPage = await _store.getInt(pairsPerPageKey);
     final typingAttempts = await _store.getInt(typingAttemptsKey);
+    final teacherEmail = (await _store.getString(teacherEmailKey))?.trim();
     return AppSettings(
       promptLanguage: _byName(
         PromptLanguage.values,
@@ -51,6 +54,11 @@ class StoreSettingsRepository implements SettingsRepository {
         AppSettings.minTypingAttempts,
         AppSettings.maxTypingAttempts,
       ),
+      // A saved text that is not an address (it cannot come from the app) is
+      // taken as no address.
+      teacherEmail: teacherEmail != null && isValidEmail(teacherEmail)
+          ? teacherEmail
+          : defaults.teacherEmail,
     );
   }
 
@@ -61,6 +69,7 @@ class StoreSettingsRepository implements SettingsRepository {
     await _store.setString(themeChoiceKey, settings.themeChoice.name);
     await _store.setString(appLanguageKey, settings.appLanguage.name);
     await _store.setInt(typingAttemptsKey, settings.typingAttempts);
+    await _store.setString(teacherEmailKey, settings.teacherEmail);
   }
 
   static T _byName<T extends Enum>(List<T> values, String? name, T fallback) {
