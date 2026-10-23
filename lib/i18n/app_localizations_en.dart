@@ -507,4 +507,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoPermissionOpenSettings => 'Open Settings';
+
+  @override
+  String get photoQuizTitle => 'Quiz from a photo';
+
+  @override
+  String get photoQuizHomeSubtitle => 'Photograph a worksheet';
+
+  @override
+  String get photoQuizNewBadge => 'New';
+
+  @override
+  String get photoQuizCaptureHeadline => 'Photograph the worksheet';
+
+  @override
+  String get photoQuizCaptureSubtitle => 'The app reads the questions and you fill in the quiz.';
+
+  @override
+  String get photoQuizTipStraight => 'Hold it straight, in good light, with the whole page.';
+
+  @override
+  String get photoQuizTipOnePage => 'One photo, one page.';
+
+  @override
+  String get photoQuizTipPrivacy => 'Preferably without a name or other personal data on it.';
+
+  @override
+  String get photoQuizTakePhoto => 'Take a photo';
+
+  @override
+  String get photoQuizChooseFromGallery => 'Choose from the gallery';
+
+  @override
+  String get photoQuizNoCamera => 'There is no camera to use on this device. Choose a photo from the gallery.';
+
+  @override
+  String get photoQuizUnusablePhoto => 'This photo cannot be read. Try another one.';
+
+  @override
+  String get photoQuizProcessingTitle => 'Reading the worksheet…';
+
+  @override
+  String get photoQuizProcessingHint => 'This can take 10-20 seconds. Stay in the app.';
+
+  @override
+  String get photoQuizCancel => 'Cancel';
+
+  @override
+  String get photoQuizNewPhoto => 'New photo';
+
+  @override
+  String get photoQuizErrorTitle => 'The quiz could not be made';
+
+  @override
+  String get photoQuizErrorNoQuestions => 'No questions found in the photo. Try a sharper, better lit photo.';
+
+  @override
+  String get photoQuizErrorTooLarge => 'The photo is too large. Try a smaller one.';
+
+  @override
+  String get photoQuizErrorUnsupported => 'This image format cannot be read. Use a JPEG or PNG photo.';
+
+  @override
+  String get photoQuizErrorDailyLimit => 'You have made all the quizzes allowed for today. Try again tomorrow.';
+
+  @override
+  String get photoQuizErrorUnavailable => 'Reading photos is not available now. Try again later.';
+
+  @override
+  String get photoQuizErrorNoNetwork => 'No internet connection. Check it and try again.';
+
+  @override
+  String get photoQuizErrorTimeout => 'It took too long. Try again.';
+
+  @override
+  String get photoQuizErrorGeneral => 'Something went wrong. Try again.';
+
+  @override
+  String photoQuizQuestionsFound(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions found',
+      one: '1 question found',
+    );
+    return '$_temp0';
+  }
 }

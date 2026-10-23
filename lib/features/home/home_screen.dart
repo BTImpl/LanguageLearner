@@ -10,6 +10,7 @@ import 'package:languagelearner/features/home/widgets/deck_card.dart';
 import 'package:languagelearner/features/home/widgets/deck_picker_sheet.dart';
 import 'package:languagelearner/features/home/widgets/home_header.dart';
 import 'package:languagelearner/features/home/widgets/mode_tiles.dart';
+import 'package:languagelearner/features/home/widgets/photo_quiz_tile.dart';
 import 'package:languagelearner/features/home/widgets/word_list_message.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
@@ -64,6 +65,8 @@ class HomeScreen extends ConsumerWidget {
                 WordListFailed(error: decks.error!)
               else
                 const NoDecksMessage(),
+              const SizedBox(height: 14),
+              const PhotoQuizTile(),
             ],
           ),
         ),

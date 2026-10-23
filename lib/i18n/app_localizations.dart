@@ -913,6 +913,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get photoPermissionOpenSettings;
+
+  /// Title of the quiz made from a photo: on the home screen and in the header of its screens.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz from a photo'**
+  String get photoQuizTitle;
+
+  /// Second line of the home screen entry of the quiz made from a photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph a worksheet'**
+  String get photoQuizHomeSubtitle;
+
+  /// Small badge on the home screen entry of the quiz made from a photo.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get photoQuizNewBadge;
+
+  /// Headline of the screen where a photo of a worksheet is taken or chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph the worksheet'**
+  String get photoQuizCaptureHeadline;
+
+  /// Explains what happens with the photo, under the headline of the capture screen.
+  ///
+  /// In en, this message translates to:
+  /// **'The app reads the questions and you fill in the quiz.'**
+  String get photoQuizCaptureSubtitle;
+
+  /// Tip on the capture screen about how to hold the worksheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold it straight, in good light, with the whole page.'**
+  String get photoQuizTipStraight;
+
+  /// Tip on the capture screen: one photo for one page.
+  ///
+  /// In en, this message translates to:
+  /// **'One photo, one page.'**
+  String get photoQuizTipOnePage;
+
+  /// Tip on the capture screen about personal data on the worksheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferably without a name or other personal data on it.'**
+  String get photoQuizTipPrivacy;
+
+  /// Button that opens the camera to photograph a worksheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get photoQuizTakePhoto;
+
+  /// Button that opens the photo gallery to choose the photo of a worksheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from the gallery'**
+  String get photoQuizChooseFromGallery;
+
+  /// Shown when the device has no camera that can be used.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no camera to use on this device. Choose a photo from the gallery.'**
+  String get photoQuizNoCamera;
+
+  /// Shown when the chosen photo cannot be read or made small enough.
+  ///
+  /// In en, this message translates to:
+  /// **'This photo cannot be read. Try another one.'**
+  String get photoQuizUnusablePhoto;
+
+  /// Title of the screen shown while the photo of a worksheet is read.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the worksheet…'**
+  String get photoQuizProcessingTitle;
+
+  /// Text under the title of the processing screen.
+  ///
+  /// In en, this message translates to:
+  /// **'This can take 10-20 seconds. Stay in the app.'**
+  String get photoQuizProcessingHint;
+
+  /// Button that gives up reading the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get photoQuizCancel;
+
+  /// Button that goes back to take or choose another photo after a failure.
+  ///
+  /// In en, this message translates to:
+  /// **'New photo'**
+  String get photoQuizNewPhoto;
+
+  /// Title shown when no quiz could be made from the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'The quiz could not be made'**
+  String get photoQuizErrorTitle;
+
+  /// Shown when no question could be read from the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found in the photo. Try a sharper, better lit photo.'**
+  String get photoQuizErrorNoQuestions;
+
+  /// Shown when the photo is larger than the server accepts.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is too large. Try a smaller one.'**
+  String get photoQuizErrorTooLarge;
+
+  /// Shown when the photo is neither a JPEG nor a PNG.
+  ///
+  /// In en, this message translates to:
+  /// **'This image format cannot be read. Use a JPEG or PNG photo.'**
+  String get photoQuizErrorUnsupported;
+
+  /// Shown when the student has made all the quizzes allowed for today.
+  ///
+  /// In en, this message translates to:
+  /// **'You have made all the quizzes allowed for today. Try again tomorrow.'**
+  String get photoQuizErrorDailyLimit;
+
+  /// Shown when the service that reads the photo is not available.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading photos is not available now. Try again later.'**
+  String get photoQuizErrorUnavailable;
+
+  /// Shown when there is no internet connection while reading the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Check it and try again.'**
+  String get photoQuizErrorNoNetwork;
+
+  /// Shown when reading the photo took too long.
+  ///
+  /// In en, this message translates to:
+  /// **'It took too long. Try again.'**
+  String get photoQuizErrorTimeout;
+
+  /// Shown for any other problem while reading the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Try again.'**
+  String get photoQuizErrorGeneral;
+
+  /// How many questions were read from the photo; stands in for the review screen.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question found} other{{count} questions found}}'**
+  String photoQuizQuestionsFound(int count);
 }
 
 class _AppLocalizationsDelegate

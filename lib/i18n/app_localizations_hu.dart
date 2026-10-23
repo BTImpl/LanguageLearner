@@ -468,4 +468,84 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoPermissionOpenSettings => 'Megnyitás a Beállításokban';
+
+  @override
+  String get photoQuizTitle => 'Kvíz fotóból';
+
+  @override
+  String get photoQuizHomeSubtitle => 'Fotózz le egy feladatlapot';
+
+  @override
+  String get photoQuizNewBadge => 'Új';
+
+  @override
+  String get photoQuizCaptureHeadline => 'Fotózd le a feladatlapot';
+
+  @override
+  String get photoQuizCaptureSubtitle => 'Az app kiolvassa a kérdéseket, te pedig kitöltöd a kvízt.';
+
+  @override
+  String get photoQuizTipStraight => 'Tartsd egyenesen, jó fényben, a teljes oldallal.';
+
+  @override
+  String get photoQuizTipOnePage => 'Egy fotó egy oldal.';
+
+  @override
+  String get photoQuizTipPrivacy => 'Lehetőleg ne legyen rajta név vagy más személyes adat.';
+
+  @override
+  String get photoQuizTakePhoto => 'Fotó készítése';
+
+  @override
+  String get photoQuizChooseFromGallery => 'Választás a galériából';
+
+  @override
+  String get photoQuizNoCamera => 'Ezen az eszközön nincs használható kamera. Válassz képet a galériából.';
+
+  @override
+  String get photoQuizUnusablePhoto => 'Ezt a képet nem lehet feldolgozni. Próbálj egy másikat.';
+
+  @override
+  String get photoQuizProcessingTitle => 'Beolvasom a feladatlapot…';
+
+  @override
+  String get photoQuizProcessingHint => 'Ez 10–20 másodpercig is eltarthat. Maradj az appban.';
+
+  @override
+  String get photoQuizCancel => 'Mégse';
+
+  @override
+  String get photoQuizNewPhoto => 'Új fotó';
+
+  @override
+  String get photoQuizErrorTitle => 'Nem sikerült a kvíz';
+
+  @override
+  String get photoQuizErrorNoQuestions => 'Nem találtam kérdést a képen. Próbálj élesebb, jobban megvilágított fotót.';
+
+  @override
+  String get photoQuizErrorTooLarge => 'A kép túl nagy. Próbálj egy kisebbet.';
+
+  @override
+  String get photoQuizErrorUnsupported => 'Ezt a képformátumot nem tudom olvasni. Használj JPEG vagy PNG képet.';
+
+  @override
+  String get photoQuizErrorDailyLimit => 'Mára elfogyott a keret. Holnap újra készíthetsz kvízt.';
+
+  @override
+  String get photoQuizErrorUnavailable => 'A beolvasás most nem érhető el. Próbáld újra később.';
+
+  @override
+  String get photoQuizErrorNoNetwork => 'Nincs internetkapcsolat. Ellenőrizd, és próbáld újra.';
+
+  @override
+  String get photoQuizErrorTimeout => 'Túl sokáig tartott. Próbáld újra.';
+
+  @override
+  String get photoQuizErrorGeneral => 'Valami hiba történt. Próbáld újra.';
+
+  @override
+  String photoQuizQuestionsFound(int count) {
+    return '$count kérdés felismerve';
+  }
 }
