@@ -7,6 +7,12 @@ abstract final class AppRoutes {
   static const String stats = '/stats';
   static const String settings = '/settings';
 
+  /// The quiz made from a photo, outside the tabs: where a photo is taken or
+  /// chosen, the screen while it is read, and the review of the quiz.
+  static const String photoQuiz = '/photo-quiz';
+  static const String photoQuizProcessing = '/photo-quiz/processing';
+  static const String photoQuizReview = '/photo-quiz/review';
+
   /// Full-screen game route, without the bottom navigation.
   static String play(PlayMode mode) => '/play/${mode.name}';
 

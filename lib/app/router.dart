@@ -7,6 +7,9 @@ import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/auth/auth_state.dart';
 import 'package:languagelearner/features/auth/sign_in_screen.dart';
 import 'package:languagelearner/features/home/home_screen.dart';
+import 'package:languagelearner/features/photo_quiz/screens/photo_capture_screen.dart';
+import 'package:languagelearner/features/photo_quiz/screens/photo_processing_screen.dart';
+import 'package:languagelearner/features/photo_quiz/screens/photo_review_placeholder_screen.dart';
 import 'package:languagelearner/features/play/flashcards/flashcards_screen.dart';
 import 'package:languagelearner/features/play/matching/matching_screen.dart';
 import 'package:languagelearner/features/play/mix/mix_screen.dart';
@@ -59,8 +62,8 @@ class _AuthChanges extends ChangeNotifier {
 ///
 /// - Three tabs with the bottom navigation: Learn, Statistics, Settings. Each
 ///   tab keeps its own navigation state while another tab is open.
-/// - The game routes and the sign-in are outside the tabs, so they have no
-///   bottom navigation. A game route opened without a deck that fits the mode
+/// - The photo-quiz routes, the game routes and the sign-in are outside the
+///   tabs, so they have no bottom navigation. A game route opened without a deck that fits the mode
 ///   goes back to the home screen (see `GameGate`).
 ///
 /// Without a [redirect] every route can be opened, which is what most tests
@@ -108,6 +111,18 @@ GoRouter createAppRouter({
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.photoQuiz,
+        builder: (context, state) => const PhotoCaptureScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.photoQuizProcessing,
+        builder: (context, state) => const PhotoProcessingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.photoQuizReview,
+        builder: (context, state) => const PhotoReviewPlaceholderScreen(),
       ),
       for (final mode in PlayMode.values) ...[
         GoRoute(

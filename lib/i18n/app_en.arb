@@ -651,5 +651,114 @@
   "photoPermissionOpenSettings": "Open Settings",
   "@photoPermissionOpenSettings": {
     "description": "Button that opens the system settings of the app."
+  },
+  "photoQuizTitle": "Quiz from a photo",
+  "@photoQuizTitle": {
+    "description": "Title of the quiz made from a photo: on the home screen and in the header of its screens."
+  },
+  "photoQuizHomeSubtitle": "Photograph a worksheet",
+  "@photoQuizHomeSubtitle": {
+    "description": "Second line of the home screen entry of the quiz made from a photo."
+  },
+  "photoQuizNewBadge": "New",
+  "@photoQuizNewBadge": {
+    "description": "Small badge on the home screen entry of the quiz made from a photo."
+  },
+  "photoQuizCaptureHeadline": "Photograph the worksheet",
+  "@photoQuizCaptureHeadline": {
+    "description": "Headline of the screen where a photo of a worksheet is taken or chosen."
+  },
+  "photoQuizCaptureSubtitle": "The app reads the questions and you fill in the quiz.",
+  "@photoQuizCaptureSubtitle": {
+    "description": "Explains what happens with the photo, under the headline of the capture screen."
+  },
+  "photoQuizTipStraight": "Hold it straight, in good light, with the whole page.",
+  "@photoQuizTipStraight": {
+    "description": "Tip on the capture screen about how to hold the worksheet."
+  },
+  "photoQuizTipOnePage": "One photo, one page.",
+  "@photoQuizTipOnePage": {
+    "description": "Tip on the capture screen: one photo for one page."
+  },
+  "photoQuizTipPrivacy": "Preferably without a name or other personal data on it.",
+  "@photoQuizTipPrivacy": {
+    "description": "Tip on the capture screen about personal data on the worksheet."
+  },
+  "photoQuizTakePhoto": "Take a photo",
+  "@photoQuizTakePhoto": {
+    "description": "Button that opens the camera to photograph a worksheet."
+  },
+  "photoQuizChooseFromGallery": "Choose from the gallery",
+  "@photoQuizChooseFromGallery": {
+    "description": "Button that opens the photo gallery to choose the photo of a worksheet."
+  },
+  "photoQuizNoCamera": "There is no camera to use on this device. Choose a photo from the gallery.",
+  "@photoQuizNoCamera": {
+    "description": "Shown when the device has no camera that can be used."
+  },
+  "photoQuizUnusablePhoto": "This photo cannot be read. Try another one.",
+  "@photoQuizUnusablePhoto": {
+    "description": "Shown when the chosen photo cannot be read or made small enough."
+  },
+  "photoQuizProcessingTitle": "Reading the worksheet…",
+  "@photoQuizProcessingTitle": {
+    "description": "Title of the screen shown while the photo of a worksheet is read."
+  },
+  "photoQuizProcessingHint": "This can take 10-20 seconds. Stay in the app.",
+  "@photoQuizProcessingHint": {
+    "description": "Text under the title of the processing screen."
+  },
+  "photoQuizCancel": "Cancel",
+  "@photoQuizCancel": {
+    "description": "Button that gives up reading the photo."
+  },
+  "photoQuizNewPhoto": "New photo",
+  "@photoQuizNewPhoto": {
+    "description": "Button that goes back to take or choose another photo after a failure."
+  },
+  "photoQuizErrorTitle": "The quiz could not be made",
+  "@photoQuizErrorTitle": {
+    "description": "Title shown when no quiz could be made from the photo."
+  },
+  "photoQuizErrorNoQuestions": "No questions found in the photo. Try a sharper, better lit photo.",
+  "@photoQuizErrorNoQuestions": {
+    "description": "Shown when no question could be read from the photo."
+  },
+  "photoQuizErrorTooLarge": "The photo is too large. Try a smaller one.",
+  "@photoQuizErrorTooLarge": {
+    "description": "Shown when the photo is larger than the server accepts."
+  },
+  "photoQuizErrorUnsupported": "This image format cannot be read. Use a JPEG or PNG photo.",
+  "@photoQuizErrorUnsupported": {
+    "description": "Shown when the photo is neither a JPEG nor a PNG."
+  },
+  "photoQuizErrorDailyLimit": "You have made all the quizzes allowed for today. Try again tomorrow.",
+  "@photoQuizErrorDailyLimit": {
+    "description": "Shown when the student has made all the quizzes allowed for today."
+  },
+  "photoQuizErrorUnavailable": "Reading photos is not available now. Try again later.",
+  "@photoQuizErrorUnavailable": {
+    "description": "Shown when the service that reads the photo is not available."
+  },
+  "photoQuizErrorNoNetwork": "No internet connection. Check it and try again.",
+  "@photoQuizErrorNoNetwork": {
+    "description": "Shown when there is no internet connection while reading the photo."
+  },
+  "photoQuizErrorTimeout": "It took too long. Try again.",
+  "@photoQuizErrorTimeout": {
+    "description": "Shown when reading the photo took too long."
+  },
+  "photoQuizErrorGeneral": "Something went wrong. Try again.",
+  "@photoQuizErrorGeneral": {
+    "description": "Shown for any other problem while reading the photo."
+  },
+  "photoQuizQuestionsFound": "{count, plural, =1{1 question found} other{{count} questions found}}",
+  "@photoQuizQuestionsFound": {
+    "description": "How many questions were read from the photo; stands in for the review screen.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }
