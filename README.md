@@ -120,7 +120,7 @@ Build-time settings (`--dart-define`):
 | Name | Default | Meaning |
 | --- | --- | --- |
 | `API_BASE_URL` | the Cloud Run service | the backend, e.g. `http://localhost:8080` for a local one |
-| `USE_FAKE_DATA` | `false` | `true` uses the built-in sample decks (the sign-in is still needed) |
+| `USE_FAKE_DATA` | `false` | `true` uses the built-in sample decks and the built-in sample photo quiz (the sign-in is still needed) |
 
 ```
 flutter run --dart-define=USE_FAKE_DATA=true
