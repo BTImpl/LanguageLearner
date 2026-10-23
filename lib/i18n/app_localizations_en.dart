@@ -584,13 +584,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoQuizErrorGeneral => 'Something went wrong. Try again.';
 
   @override
-  String photoQuizQuestionsFound(int count) {
+  String get photoQuizReviewHeadline => 'Review the quiz';
+
+  @override
+  String get photoQuizReviewSubtitle => 'Delete what was read wrongly, then you can start filling it in.';
+
+  @override
+  String get photoQuizReviewEmpty => 'No questions left. Take the photo again.';
+
+  @override
+  String get photoQuizDelete => 'Delete';
+
+  @override
+  String get photoQuizUndo => 'Undo';
+
+  @override
+  String get photoQuizQuestionDeleted => 'Question deleted';
+
+  @override
+  String get photoQuizRetake => 'Retake photo';
+
+  @override
+  String get photoQuizStart => 'Start';
+
+  @override
+  String photoQuizQuestionCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count questions found',
-      one: '1 question found',
+      other: '$count questions',
+      one: '1 question',
     );
     return '$_temp0';
+  }
+
+  @override
+  String photoQuizSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions could not be read',
+      one: '1 question could not be read',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String photoQuizDeleteQuestion(int number) {
+    return 'Delete question $number';
   }
 }

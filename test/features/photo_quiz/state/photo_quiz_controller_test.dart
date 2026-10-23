@@ -132,4 +132,44 @@ void main() {
 
     expect(state(), isA<PhotoQuizIdle>());
   });
+
+  group('the questions of a ready quiz', () {
+    Future<void> ready() async {
+      final done = controller().start(makePhoto(dir));
+      repository.succeed();
+      await done;
+    }
+
+    PhotoQuizReady current() => state() as PhotoQuizReady;
+
+    test('a question is removed and put back at its place', () async {
+      await ready();
+      final original = current().quiz;
+      final question = original.questions[2];
+
+      controller().removeQuestion(2);
+      expect(current().quiz.questions, hasLength(3));
+      expect(current().quiz.questions.map((q) => q.number), [1, 2, 4]);
+
+      controller().restoreQuestion(2, question);
+      expect(current().quiz, original);
+    });
+
+    test('all the questions can be removed', () async {
+      await ready();
+
+      for (var i = 0; i < 4; i++) {
+        controller().removeQuestion(0);
+      }
+
+      expect(current().quiz.questions, isEmpty);
+    });
+
+    test('without a ready quiz they do nothing', () {
+      controller().removeQuestion(0);
+      controller().restoreQuestion(0, samplePhotoQuiz().questions.first);
+
+      expect(state(), isA<PhotoQuizIdle>());
+    });
+  });
 }

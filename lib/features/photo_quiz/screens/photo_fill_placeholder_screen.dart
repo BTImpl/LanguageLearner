@@ -9,15 +9,11 @@ import 'package:languagelearner/features/photo_quiz/state/photo_quiz_controller.
 import 'package:languagelearner/features/photo_quiz/widgets/photo_quiz_header.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
-/// The place of the review screen (card LL-53): it only says how many
-/// questions were read. Without a ready quiz it goes back to the home screen.
-class PhotoReviewPlaceholderScreen extends ConsumerWidget {
-  const PhotoReviewPlaceholderScreen({super.key});
-
-  void _leave(BuildContext context, WidgetRef ref) {
-    ref.read(photoQuizControllerProvider.notifier).reset();
-    context.go(AppRoutes.home);
-  }
+/// The place of the screen where the quiz is filled in (card LL-54): it only
+/// says how many questions are left. Without a ready quiz it goes back to the
+/// home screen.
+class PhotoFillPlaceholderScreen extends ConsumerWidget {
+  const PhotoFillPlaceholderScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,12 +40,12 @@ class PhotoReviewPlaceholderScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               PhotoQuizHeader(
                 title: quiz.title ?? i18n.photoQuizTitle,
-                onBack: () => _leave(context, ref),
+                onBack: () => context.go(AppRoutes.photoQuizReview),
               ),
               Expanded(
                 child: Center(
                   child: Text(
-                    i18n.photoQuizQuestionsFound(quiz.questions.length),
+                    i18n.photoQuizQuestionCount(quiz.questions.length),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: headingFontFamily,

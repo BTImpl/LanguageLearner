@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:languagelearner/features/photo_quiz/data/fake_photo_quiz_repository.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz_option.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz_question.dart';
@@ -320,6 +321,54 @@ void main() {
           withFirstQuestion((question) => question['text'] = 'Other'),
         ),
         isNot(quiz),
+      );
+    });
+  });
+
+  group('dropping and putting back a question', () {
+    final quiz = samplePhotoQuiz(skippedQuestions: 2);
+
+    test('withoutQuestionAt leaves the others, the title and the count', () {
+      final shorter = quiz.withoutQuestionAt(1);
+
+      expect(shorter.questions.map((q) => q.number), [1, 3, 4]);
+      expect(shorter.title, quiz.title);
+      expect(shorter.skippedQuestions, 2);
+      expect(quiz.questions, hasLength(4)); // the quiz is not changed
+    });
+
+    test('withQuestionInserted undoes it', () {
+      final question = quiz.questions[1];
+
+      final back = quiz.withoutQuestionAt(1).withQuestionInserted(1, question);
+
+      expect(back, quiz);
+    });
+
+    test('the first, the last and the only question can go and come back', () {
+      for (final index in [0, quiz.questions.length - 1]) {
+        final question = quiz.questions[index];
+        expect(
+          quiz.withoutQuestionAt(index).withQuestionInserted(index, question),
+          quiz,
+        );
+      }
+      var empty = quiz;
+      while (empty.questions.isNotEmpty) {
+        empty = empty.withoutQuestionAt(0);
+      }
+      expect(empty.questions, isEmpty);
+      expect(empty.withQuestionInserted(0, quiz.questions.first).questions, [
+        quiz.questions.first,
+      ]);
+    });
+
+    test('a position that does not exist is refused', () {
+      expect(() => quiz.withoutQuestionAt(4), throwsRangeError);
+      expect(() => quiz.withoutQuestionAt(-1), throwsRangeError);
+      expect(
+        () => quiz.withQuestionInserted(5, quiz.questions.first),
+        throwsRangeError,
       );
     });
   });
