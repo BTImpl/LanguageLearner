@@ -181,5 +181,14 @@
   "photoQuizSubmit": "Beküldés a tanárnak",
   "photoQuizOpenQuestion": "{number}. kérdés megnyitása",
   "photoQuizLeaveTitle": "Kilépsz a kvízből?",
-  "photoQuizLeaveMessage": "A válaszaid nem mentődnek."
+  "photoQuizLeaveMessage": "A válaszaid nem mentődnek.",
+  "photoEmailStudent": "Diák: {name} ({email})",
+  "photoEmailDate": "Dátum: {date}",
+  "photoQuizNoTeacherEmail": "Előbb add meg a tanárod e-mail-címét a Beállításokban.",
+  "photoQuizOpenSettings": "Megnyitás a Beállításokban",
+  "photoQuizSendNoMailApp": "Nincs beállított levelezőalkalmazás a telefonon. Állíts be egyet, és próbáld újra. A válaszaid megmaradtak.",
+  "photoQuizSendFailed": "Nem sikerült megnyitni a levelezőt. Próbáld újra. A válaszaid megmaradtak.",
+  "photoQuizSentTitle": "Elküldve a levelezőnek",
+  "photoQuizSentMessage": "Ellenőrizd, hogy a levelezőben el is küldted-e a levelet. Az app nem tudja megerősíteni, hogy elment.",
+  "photoQuizSentDone": "Kész"
 }

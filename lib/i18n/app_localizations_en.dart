@@ -682,4 +682,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoQuizLeaveMessage => 'Your answers are not saved.';
+
+  @override
+  String photoEmailStudent(String name, String email) {
+    return 'Student: $name ($email)';
+  }
+
+  @override
+  String photoEmailDate(String date) {
+    return 'Date: $date';
+  }
+
+  @override
+  String get photoQuizNoTeacherEmail =>
+      'Add your teacher\'s e-mail address in the settings first.';
+
+  @override
+  String get photoQuizOpenSettings => 'Open Settings';
+
+  @override
+  String get photoQuizSendNoMailApp =>
+      'No mail app is set up on this phone. Set one up and try again. Your answers are kept.';
+
+  @override
+  String get photoQuizSendFailed =>
+      'The mail app could not be opened. Try again. Your answers are kept.';
+
+  @override
+  String get photoQuizSentTitle => 'Passed to your mail app';
+
+  @override
+  String get photoQuizSentMessage =>
+      'Make sure you send the e-mail in your mail app. This app cannot tell whether it went out.';
+
+  @override
+  String get photoQuizSentDone => 'Done';
 }

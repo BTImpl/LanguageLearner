@@ -868,5 +868,54 @@
   "photoQuizLeaveMessage": "Your answers are not saved.",
   "@photoQuizLeaveMessage": {
     "description": "Explanation under the question of the leave confirmation."
+  },
+  "photoEmailStudent": "Student: {name} ({email})",
+  "@photoEmailStudent": {
+    "description": "Line at the top of the e-mail to the teacher: who sends the answers.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "photoEmailDate": "Date: {date}",
+  "@photoEmailDate": {
+    "description": "Line at the top of the e-mail to the teacher: the day of sending.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "photoQuizNoTeacherEmail": "Add your teacher's e-mail address in the settings first.",
+  "@photoQuizNoTeacherEmail": {
+    "description": "Shown on the summary instead of the send button while the teacher's address is not set."
+  },
+  "photoQuizOpenSettings": "Open Settings",
+  "@photoQuizOpenSettings": {
+    "description": "Button that opens the settings to add the teacher's e-mail address."
+  },
+  "photoQuizSendNoMailApp": "No mail app is set up on this phone. Set one up and try again. Your answers are kept.",
+  "@photoQuizSendNoMailApp": {
+    "description": "Error under the send button when the phone has no mail app."
+  },
+  "photoQuizSendFailed": "The mail app could not be opened. Try again. Your answers are kept.",
+  "@photoQuizSendFailed": {
+    "description": "Error under the send button when the mail app could not be opened."
+  },
+  "photoQuizSentTitle": "Passed to your mail app",
+  "@photoQuizSentTitle": {
+    "description": "Title of the closing screen after the e-mail was handed to the mail app."
+  },
+  "photoQuizSentMessage": "Make sure you send the e-mail in your mail app. This app cannot tell whether it went out.",
+  "@photoQuizSentMessage": {
+    "description": "Text of the closing screen: the app cannot confirm the sending."
+  },
+  "photoQuizSentDone": "Done",
+  "@photoQuizSentDone": {
+    "description": "Button of the closing screen that goes back to the home screen."
   }
 }
