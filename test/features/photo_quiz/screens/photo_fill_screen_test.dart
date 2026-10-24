@@ -9,6 +9,8 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
+import 'package:languagelearner/core/services/clock.dart';
+import 'package:languagelearner/core/services/email_sender.dart';
 import 'package:languagelearner/core/widgets/choice_tile.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
 import 'package:languagelearner/features/auth/account.dart';
@@ -20,7 +22,11 @@ import 'package:languagelearner/features/photo_quiz/models/photo_quiz.dart';
 import 'package:languagelearner/features/photo_quiz/screens/photo_fill_screen.dart';
 import 'package:languagelearner/features/photo_quiz/state/photo_quiz_controller.dart';
 import 'package:languagelearner/features/photo_quiz/widgets/photo_fill_summary.dart';
+import 'package:languagelearner/features/settings/app_settings.dart';
+import 'package:languagelearner/features/settings/settings_providers.dart';
+import 'package:languagelearner/features/settings/settings_screen.dart';
 
+import '../../../helpers/fake_email_sender.dart';
 import '../../../helpers/photo_quiz_fakes.dart';
 
 const _student = Account(name: 'Kiss Anna', email: 'kiss.anna@example.com');
@@ -41,9 +47,12 @@ void main() {
 
   String path() => router.routerDelegate.currentConfiguration.uri.path;
 
+  late FakeEmailSender sender;
+
   Future<void> openFill(
     WidgetTester tester, {
     Locale locale = const Locale('en'),
+    String teacherEmail = '',
   }) async {
     tester.view.physicalSize = const Size(390, 1800);
     tester.view.devicePixelRatio = 1;
@@ -56,6 +65,11 @@ void main() {
           routerProvider.overrideWithValue(router),
           accountProvider.overrideWithValue(_student),
           appLocaleProvider.overrideWithValue(locale),
+          initialSettingsProvider.overrideWithValue(
+            AppSettings(teacherEmail: teacherEmail),
+          ),
+          emailSenderProvider.overrideWithValue(sender),
+          clockProvider.overrideWithValue(() => DateTime(2026, 10, 24, 18)),
           photoQuizRepositoryProvider.overrideWithValue(
             _FixedRepository(samplePhotoQuiz()),
           ),
@@ -103,6 +117,7 @@ void main() {
   }
 
   setUp(() {
+    sender = FakeEmailSender();
     dir = Directory.systemTemp.createTempSync('photo_fill_');
     addTearDown(() => dir.deleteSync(recursive: true));
   });
@@ -316,16 +331,167 @@ void main() {
       expect(find.text('c) going'), findsOneWidget);
     });
 
-    testWidgets('the send button is there, and off until the sending exists', (
-      tester,
-    ) async {
+    testWidgets('without a teacher address it asks for one', (tester) async {
       await openFill(tester);
       await toLast(tester);
       await tapNext(tester);
 
-      expect(find.text('Send to teacher'), findsOneWidget);
-      final button = tester.widget<PrimaryButton>(find.byKey(photoSubmitKey));
-      expect(button.onPressed, isNull);
+      expect(find.byKey(photoNoRecipientKey), findsOneWidget);
+      expect(find.byKey(photoOpenSettingsKey), findsOneWidget);
+      expect(find.byKey(photoSubmitKey), findsNothing);
+      expect(sender.sent, isEmpty);
+    });
+
+    testWidgets('the settings button opens the settings', (tester) async {
+      await openFill(tester);
+      await toLast(tester);
+      await tapNext(tester);
+
+      await tester.tap(find.byKey(photoOpenSettingsKey));
+      await tester.pumpAndSettle();
+
+      // Pushed on top of the fill-in screen, so the location stays the same.
+      expect(find.byType(SettingsScreen), findsOneWidget);
+    });
+  });
+
+  group('sending', () {
+    Future<void> toSummary(WidgetTester tester) async {
+      await openFill(tester, teacherEmail: 'tanar@example.com');
+      await tapOption(tester, 1);
+      await toLast(tester);
+      await tapNext(tester);
+    }
+
+    testWidgets('hands the e-mail to the mail app and says so', (tester) async {
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(sender.sent, hasLength(1));
+      final email = sender.sent.single;
+      expect(email.recipient, 'tanar@example.com');
+      expect(email.subject, 'Grammar – Worksheet 3 – Kiss Anna');
+      expect(email.body, contains('Date: 2026-10-24'));
+      expect(email.body, contains('   [x] b) goes'));
+      expect(find.text('Passed to your mail app'), findsOneWidget);
+      expect(
+        find.textContaining('cannot tell whether it went out'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('does not say it arrived', (tester) async {
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('arrived'), findsNothing);
+      expect(find.textContaining('Sent!'), findsNothing);
+    });
+
+    testWidgets('Done goes home and forgets the quiz', (tester) async {
+      await toSummary(tester);
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+
+      expect(path(), AppRoutes.home);
+    });
+
+    testWidgets('shows a spinner and sends once while the editor is open', (
+      tester,
+    ) async {
+      sender.gate = Completer<void>();
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pump();
+      await tester.tap(find.byKey(photoSubmitKey), warnIfMissed: false);
+      await tester.pump();
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(sender.sent, hasLength(1));
+
+      sender.gate!.complete();
+      await tester.pumpAndSettle();
+      expect(find.text('Passed to your mail app'), findsOneWidget);
+    });
+
+    testWidgets('a closed editor leaves the summary as it was', (tester) async {
+      sender.outcome = EmailSendOutcome.cancelled;
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Passed to your mail app'), findsNothing);
+      expect(find.byKey(photoSubmitKey), findsOneWidget);
+      expect(find.byKey(photoSubmitErrorKey), findsNothing);
+      expect(find.text('1 / 4 answered'), findsOneWidget);
+    });
+
+    testWidgets('without a mail app it explains and keeps the answers', (
+      tester,
+    ) async {
+      sender.error = const EmailSendException(EmailFailure.noMailApp);
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(photoSubmitErrorKey), findsOneWidget);
+      expect(find.textContaining('No mail app is set up'), findsOneWidget);
+      expect(find.text('1 / 4 answered'), findsOneWidget);
+      expect(find.text('b) goes'), findsOneWidget);
+    });
+
+    testWidgets('another failure can be tried again', (tester) async {
+      sender.error = const EmailSendException(EmailFailure.failed);
+      await toSummary(tester);
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('could not be opened'), findsOneWidget);
+
+      sender.error = null;
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(sender.sent, hasLength(2));
+      expect(find.text('Passed to your mail app'), findsOneWidget);
+    });
+
+    testWidgets('sends the quiz with questions left unanswered', (
+      tester,
+    ) async {
+      await toSummary(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect('no answer'.allMatches(sender.sent.single.body), hasLength(3));
+    });
+
+    testWidgets('writes the e-mail in Hungarian when the app is', (
+      tester,
+    ) async {
+      await openFill(
+        tester,
+        locale: const Locale('hu'),
+        teacherEmail: 'tanar@example.com',
+      );
+      await toLast(tester);
+      await tapNext(tester);
+
+      await tester.tap(find.byKey(photoSubmitKey));
+      await tester.pumpAndSettle();
+
+      expect(sender.sent.single.body, contains('Diák: Kiss Anna'));
+      expect(find.text('Elküldve a levelezőnek'), findsOneWidget);
     });
   });
 
@@ -427,6 +593,10 @@ void main() {
 
     expect(find.text('0 / 4 megválaszolva'), findsOneWidget);
     expect(find.text('nincs válasz'), findsNWidgets(4));
-    expect(find.text('Beküldés a tanárnak'), findsOneWidget);
+    expect(
+      find.text('Előbb add meg a tanárod e-mail-címét a Beállításokban.'),
+      findsOneWidget,
+    );
+    expect(find.text('Megnyitás a Beállításokban'), findsOneWidget);
   });
 }

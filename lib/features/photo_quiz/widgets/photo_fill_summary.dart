@@ -12,6 +12,22 @@ Key photoSummaryRowKey(int index) => Key('photo-summary-row-$index');
 /// The key of the "Send to teacher" button, for tests.
 const Key photoSubmitKey = Key('photo-submit');
 
+/// The key of the "add the teacher's address" message, for tests.
+const Key photoNoRecipientKey = Key('photo-no-recipient');
+
+/// The key of the "Open Settings" button, for tests.
+const Key photoOpenSettingsKey = Key('photo-open-settings');
+
+/// The key of the message under a failed sending, for tests.
+const Key photoSubmitErrorKey = Key('photo-submit-error');
+
+TextStyle _noteStyle(Color color) => TextStyle(
+  fontFamily: bodyFontFamily,
+  fontSize: 15,
+  fontWeight: FontWeight.w600,
+  color: color,
+);
+
 /// Every question with the chosen answer, before the quiz is sent.
 ///
 /// A question without an answer is marked, but the quiz can be sent with it
@@ -21,6 +37,10 @@ class PhotoFillSummary extends StatelessWidget {
     required this.fill,
     required this.onOpenQuestion,
     required this.onSubmit,
+    required this.onOpenSettings,
+    this.noRecipient = false,
+    this.sending = false,
+    this.errorText,
     super.key,
   });
 
@@ -29,8 +49,20 @@ class PhotoFillSummary extends StatelessWidget {
   /// Called with the position of the tapped question.
   final ValueChanged<int> onOpenQuestion;
 
-  /// `null` disables the send button.
-  final VoidCallback? onSubmit;
+  final VoidCallback onSubmit;
+
+  /// Opens the settings, where the teacher's address is set.
+  final VoidCallback onOpenSettings;
+
+  /// The teacher's address is not set: the send button gives way to a
+  /// message and a button to the settings.
+  final bool noRecipient;
+
+  /// The e-mail is being handed to the mail app.
+  final bool sending;
+
+  /// Why the last sending failed, if it did.
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +102,41 @@ class PhotoFillSummary extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        PrimaryButton(
-          key: photoSubmitKey,
-          label: i18n.photoQuizSubmit,
-          icon: Icons.send_outlined,
-          onPressed: onSubmit,
-        ),
+        if (noRecipient) ...[
+          Text(
+            i18n.photoQuizNoTeacherEmail,
+            key: photoNoRecipientKey,
+            textAlign: TextAlign.center,
+            style: _noteStyle(c.errorNumber),
+          ),
+          const SizedBox(height: 12),
+          SecondaryButton(
+            key: photoOpenSettingsKey,
+            label: i18n.photoQuizOpenSettings,
+            icon: Icons.settings_outlined,
+            onPressed: onOpenSettings,
+          ),
+        ] else ...[
+          if (errorText != null) ...[
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                errorText!,
+                key: photoSubmitErrorKey,
+                textAlign: TextAlign.center,
+                style: _noteStyle(c.errorNumber),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+          PrimaryButton(
+            key: photoSubmitKey,
+            label: i18n.photoQuizSubmit,
+            icon: Icons.send_outlined,
+            loading: sending,
+            onPressed: sending ? null : onSubmit,
+          ),
+        ],
         const SizedBox(height: 20),
       ],
     );

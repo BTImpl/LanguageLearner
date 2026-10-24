@@ -630,4 +630,39 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoQuizLeaveMessage => 'A válaszaid nem mentődnek.';
+
+  @override
+  String photoEmailStudent(String name, String email) {
+    return 'Diák: $name ($email)';
+  }
+
+  @override
+  String photoEmailDate(String date) {
+    return 'Dátum: $date';
+  }
+
+  @override
+  String get photoQuizNoTeacherEmail =>
+      'Előbb add meg a tanárod e-mail-címét a Beállításokban.';
+
+  @override
+  String get photoQuizOpenSettings => 'Megnyitás a Beállításokban';
+
+  @override
+  String get photoQuizSendNoMailApp =>
+      'Nincs beállított levelezőalkalmazás a telefonon. Állíts be egyet, és próbáld újra. A válaszaid megmaradtak.';
+
+  @override
+  String get photoQuizSendFailed =>
+      'Nem sikerült megnyitni a levelezőt. Próbáld újra. A válaszaid megmaradtak.';
+
+  @override
+  String get photoQuizSentTitle => 'Elküldve a levelezőnek';
+
+  @override
+  String get photoQuizSentMessage =>
+      'Ellenőrizd, hogy a levelezőben el is küldted-e a levelet. Az app nem tudja megerősíteni, hogy elment.';
+
+  @override
+  String get photoQuizSentDone => 'Kész';
 }

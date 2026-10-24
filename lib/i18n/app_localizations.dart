@@ -1189,6 +1189,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your answers are not saved.'**
   String get photoQuizLeaveMessage;
+
+  /// Line at the top of the e-mail to the teacher: who sends the answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Student: {name} ({email})'**
+  String photoEmailStudent(String name, String email);
+
+  /// Line at the top of the e-mail to the teacher: the day of sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Date: {date}'**
+  String photoEmailDate(String date);
+
+  /// Shown on the summary instead of the send button while the teacher's address is not set.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your teacher\'s e-mail address in the settings first.'**
+  String get photoQuizNoTeacherEmail;
+
+  /// Button that opens the settings to add the teacher's e-mail address.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get photoQuizOpenSettings;
+
+  /// Error under the send button when the phone has no mail app.
+  ///
+  /// In en, this message translates to:
+  /// **'No mail app is set up on this phone. Set one up and try again. Your answers are kept.'**
+  String get photoQuizSendNoMailApp;
+
+  /// Error under the send button when the mail app could not be opened.
+  ///
+  /// In en, this message translates to:
+  /// **'The mail app could not be opened. Try again. Your answers are kept.'**
+  String get photoQuizSendFailed;
+
+  /// Title of the closing screen after the e-mail was handed to the mail app.
+  ///
+  /// In en, this message translates to:
+  /// **'Passed to your mail app'**
+  String get photoQuizSentTitle;
+
+  /// Text of the closing screen: the app cannot confirm the sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure you send the e-mail in your mail app. This app cannot tell whether it went out.'**
+  String get photoQuizSentMessage;
+
+  /// Button of the closing screen that goes back to the home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get photoQuizSentDone;
 }
 
 class _AppLocalizationsDelegate

@@ -1,16 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
+import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/core/widgets/choice_tile.dart';
 import 'package:languagelearner/core/widgets/game_scaffold.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
+import 'package:languagelearner/core/widgets/state_message.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz.dart';
 import 'package:languagelearner/features/photo_quiz/state/photo_quiz_controller.dart';
 import 'package:languagelearner/features/photo_quiz/state/photo_quiz_fill.dart';
+import 'package:languagelearner/features/photo_quiz/submit/photo_quiz_submit.dart';
 import 'package:languagelearner/features/photo_quiz/widgets/photo_fill_summary.dart';
 import 'package:languagelearner/features/play/widgets/question_card.dart';
+import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The key of the tile of the option at [index] of the question on the
@@ -69,6 +75,16 @@ class _FillViewState extends ConsumerState<_FillView> {
 
     void leave() => context.go(AppRoutes.photoQuizReview);
 
+    final submit = ref.watch(photoQuizSubmitProvider);
+    if (submit is SubmitSent) {
+      return _SentView(
+        onDone: () {
+          ref.read(photoQuizControllerProvider.notifier).reset();
+          context.go(AppRoutes.home);
+        },
+      );
+    }
+
     if (_summary) {
       return GameScaffold(
         title: title,
@@ -84,8 +100,24 @@ class _FillViewState extends ConsumerState<_FillView> {
             notifier.goTo(index);
             setState(() => _summary = false);
           },
-          // The sending itself comes with card LL-56.
-          onSubmit: null,
+          noRecipient: ref.watch(
+            settingsProvider.select((s) => s.teacherEmail.isEmpty),
+          ),
+          sending: submit is SubmitSending,
+          errorText: switch (submit) {
+            SubmitFailed(failure: SubmitFailure.noMailApp) =>
+              i18n.photoQuizSendNoMailApp,
+            SubmitFailed(failure: SubmitFailure.failed) =>
+              i18n.photoQuizSendFailed,
+            _ => null,
+          },
+          onSubmit: () => unawaited(
+            ref
+                .read(photoQuizSubmitProvider.notifier)
+                .submit(answers: fill.answers, l10n: i18n),
+          ),
+          // Pushed, so the answers stay where they are.
+          onOpenSettings: () => unawaited(context.push(AppRoutes.settings)),
         ),
       );
     }
@@ -158,6 +190,48 @@ class _FillViewState extends ConsumerState<_FillView> {
           ),
           const SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+}
+
+/// The closing screen: the e-mail is in the mail app. The app cannot tell
+/// whether the student sent it, so it does not say it arrived.
+class _SentView extends StatelessWidget {
+  const _SentView({required this.onDone});
+
+  final VoidCallback onDone;
+
+  @override
+  Widget build(BuildContext context) {
+    final i18n = context.i18n;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          onDone();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: context.colors.background,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.screenMargin,
+            ),
+            child: Center(
+              child: SingleChildScrollView(
+                child: StateMessage(
+                  icon: Icons.mark_email_read_outlined,
+                  title: i18n.photoQuizSentTitle,
+                  message: i18n.photoQuizSentMessage,
+                  actionLabel: i18n.photoQuizSentDone,
+                  onAction: onDone,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
