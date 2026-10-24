@@ -521,16 +521,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoQuizCaptureHeadline => 'Photograph the worksheet';
 
   @override
-  String get photoQuizCaptureSubtitle => 'The app reads the questions and you fill in the quiz.';
+  String get photoQuizCaptureSubtitle =>
+      'The app reads the questions and you fill in the quiz.';
 
   @override
-  String get photoQuizTipStraight => 'Hold it straight, in good light, with the whole page.';
+  String get photoQuizTipStraight =>
+      'Hold it straight, in good light, with the whole page.';
 
   @override
   String get photoQuizTipOnePage => 'One photo, one page.';
 
   @override
-  String get photoQuizTipPrivacy => 'Preferably without a name or other personal data on it.';
+  String get photoQuizTipPrivacy =>
+      'Preferably without a name or other personal data on it.';
 
   @override
   String get photoQuizTakePhoto => 'Take a photo';
@@ -539,16 +542,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoQuizChooseFromGallery => 'Choose from the gallery';
 
   @override
-  String get photoQuizNoCamera => 'There is no camera to use on this device. Choose a photo from the gallery.';
+  String get photoQuizNoCamera =>
+      'There is no camera to use on this device. Choose a photo from the gallery.';
 
   @override
-  String get photoQuizUnusablePhoto => 'This photo cannot be read. Try another one.';
+  String get photoQuizUnusablePhoto =>
+      'This photo cannot be read. Try another one.';
 
   @override
   String get photoQuizProcessingTitle => 'Reading the worksheet…';
 
   @override
-  String get photoQuizProcessingHint => 'This can take 10-20 seconds. Stay in the app.';
+  String get photoQuizProcessingHint =>
+      'This can take 10-20 seconds. Stay in the app.';
 
   @override
   String get photoQuizCancel => 'Cancel';
@@ -560,22 +566,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoQuizErrorTitle => 'The quiz could not be made';
 
   @override
-  String get photoQuizErrorNoQuestions => 'No questions found in the photo. Try a sharper, better lit photo.';
+  String get photoQuizErrorNoQuestions =>
+      'No questions found in the photo. Try a sharper, better lit photo.';
 
   @override
-  String get photoQuizErrorTooLarge => 'The photo is too large. Try a smaller one.';
+  String get photoQuizErrorTooLarge =>
+      'The photo is too large. Try a smaller one.';
 
   @override
-  String get photoQuizErrorUnsupported => 'This image format cannot be read. Use a JPEG or PNG photo.';
+  String get photoQuizErrorUnsupported =>
+      'This image format cannot be read. Use a JPEG or PNG photo.';
 
   @override
-  String get photoQuizErrorDailyLimit => 'You have made all the quizzes allowed for today. Try again tomorrow.';
+  String get photoQuizErrorDailyLimit =>
+      'You have made all the quizzes allowed for today. Try again tomorrow.';
 
   @override
-  String get photoQuizErrorUnavailable => 'Reading photos is not available now. Try again later.';
+  String get photoQuizErrorUnavailable =>
+      'Reading photos is not available now. Try again later.';
 
   @override
-  String get photoQuizErrorNoNetwork => 'No internet connection. Check it and try again.';
+  String get photoQuizErrorNoNetwork =>
+      'No internet connection. Check it and try again.';
 
   @override
   String get photoQuizErrorTimeout => 'It took too long. Try again.';
@@ -587,7 +599,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoQuizReviewHeadline => 'Review the quiz';
 
   @override
-  String get photoQuizReviewSubtitle => 'Delete what was read wrongly, then you can start filling it in.';
+  String get photoQuizReviewSubtitle =>
+      'Delete what was read wrongly, then you can start filling it in.';
 
   @override
   String get photoQuizReviewEmpty => 'No questions left. Take the photo again.';
