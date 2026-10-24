@@ -24,6 +24,8 @@ class GameScaffold extends StatelessWidget {
     this.action,
     this.onBack,
     this.confirmLeave = false,
+    this.leaveTitle,
+    this.leaveMessage,
     super.key,
   });
 
@@ -44,6 +46,13 @@ class GameScaffold extends StatelessWidget {
   /// Whether leaving needs the student's confirmation: set it while a round
   /// has progress that would be lost.
   final bool confirmLeave;
+
+  /// The question of the confirmation. Defaults to the one of the practice
+  /// rounds.
+  final String? leaveTitle;
+
+  /// The explanation under it. Defaults to the one of the practice rounds.
+  final String? leaveMessage;
 
   Future<void> _leave(BuildContext context) async {
     if (confirmLeave) {
@@ -67,8 +76,8 @@ class GameScaffold extends StatelessWidget {
     final i18n = context.i18n;
     return showConfirmDialog(
       context,
-      title: i18n.leaveRoundTitle,
-      message: i18n.leaveRoundMessage,
+      title: leaveTitle ?? i18n.leaveRoundTitle,
+      message: leaveMessage ?? i18n.leaveRoundMessage,
       confirmLabel: i18n.leaveRoundConfirm,
       cancelLabel: i18n.leaveRoundCancel,
     );

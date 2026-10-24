@@ -594,4 +594,40 @@ class AppLocalizationsHu extends AppLocalizations {
   String photoQuizDeleteQuestion(int number) {
     return '$number. kérdés törlése';
   }
+
+  @override
+  String photoQuizFillQuestion(int number) {
+    return '$number. kérdés';
+  }
+
+  @override
+  String get photoQuizPrevious => 'Előző';
+
+  @override
+  String get photoQuizNext => 'Következő';
+
+  @override
+  String get photoQuizToSummary => 'Összegzés';
+
+  @override
+  String photoQuizSummaryProgress(int answered, int total) {
+    return '$answered / $total megválaszolva';
+  }
+
+  @override
+  String get photoQuizNoAnswer => 'nincs válasz';
+
+  @override
+  String get photoQuizSubmit => 'Beküldés a tanárnak';
+
+  @override
+  String photoQuizOpenQuestion(int number) {
+    return '$number. kérdés megnyitása';
+  }
+
+  @override
+  String get photoQuizLeaveTitle => 'Kilépsz a kvízből?';
+
+  @override
+  String get photoQuizLeaveMessage => 'A válaszaid nem mentődnek.';
 }

@@ -810,5 +810,63 @@
         "type": "int"
       }
     }
+  },
+  "photoQuizFillQuestion": "Question {number}",
+  "@photoQuizFillQuestion": {
+    "description": "Label above the question while the quiz is filled in.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizPrevious": "Previous",
+  "@photoQuizPrevious": {
+    "description": "Button that goes to the previous question."
+  },
+  "photoQuizNext": "Next",
+  "@photoQuizNext": {
+    "description": "Button that goes to the next question."
+  },
+  "photoQuizToSummary": "Summary",
+  "@photoQuizToSummary": {
+    "description": "Button on the last question that opens the summary."
+  },
+  "photoQuizSummaryProgress": "{answered} / {total} answered",
+  "@photoQuizSummaryProgress": {
+    "description": "Line on top of the summary: how many questions have an answer.",
+    "placeholders": {
+      "answered": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizNoAnswer": "no answer",
+  "@photoQuizNoAnswer": {
+    "description": "Shown in the summary for a question without a chosen option."
+  },
+  "photoQuizSubmit": "Send to teacher",
+  "@photoQuizSubmit": {
+    "description": "Button on the summary that sends the answers."
+  },
+  "photoQuizOpenQuestion": "Open question {number}",
+  "@photoQuizOpenQuestion": {
+    "description": "Spoken label of a row of the summary, which opens that question.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizLeaveTitle": "Leave the quiz?",
+  "@photoQuizLeaveTitle": {
+    "description": "Question of the confirmation when leaving the quiz that is being filled in."
+  },
+  "photoQuizLeaveMessage": "Your answers are not saved.",
+  "@photoQuizLeaveMessage": {
+    "description": "Explanation under the question of the leave confirmation."
   }
 }

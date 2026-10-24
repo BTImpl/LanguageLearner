@@ -646,4 +646,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String photoQuizDeleteQuestion(int number) {
     return 'Delete question $number';
   }
+
+  @override
+  String photoQuizFillQuestion(int number) {
+    return 'Question $number';
+  }
+
+  @override
+  String get photoQuizPrevious => 'Previous';
+
+  @override
+  String get photoQuizNext => 'Next';
+
+  @override
+  String get photoQuizToSummary => 'Summary';
+
+  @override
+  String photoQuizSummaryProgress(int answered, int total) {
+    return '$answered / $total answered';
+  }
+
+  @override
+  String get photoQuizNoAnswer => 'no answer';
+
+  @override
+  String get photoQuizSubmit => 'Send to teacher';
+
+  @override
+  String photoQuizOpenQuestion(int number) {
+    return 'Open question $number';
+  }
+
+  @override
+  String get photoQuizLeaveTitle => 'Leave the quiz?';
+
+  @override
+  String get photoQuizLeaveMessage => 'Your answers are not saved.';
 }

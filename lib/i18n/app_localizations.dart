@@ -1129,6 +1129,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete question {number}'**
   String photoQuizDeleteQuestion(int number);
+
+  /// Label above the question while the quiz is filled in.
+  ///
+  /// In en, this message translates to:
+  /// **'Question {number}'**
+  String photoQuizFillQuestion(int number);
+
+  /// Button that goes to the previous question.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get photoQuizPrevious;
+
+  /// Button that goes to the next question.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get photoQuizNext;
+
+  /// Button on the last question that opens the summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get photoQuizToSummary;
+
+  /// Line on top of the summary: how many questions have an answer.
+  ///
+  /// In en, this message translates to:
+  /// **'{answered} / {total} answered'**
+  String photoQuizSummaryProgress(int answered, int total);
+
+  /// Shown in the summary for a question without a chosen option.
+  ///
+  /// In en, this message translates to:
+  /// **'no answer'**
+  String get photoQuizNoAnswer;
+
+  /// Button on the summary that sends the answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to teacher'**
+  String get photoQuizSubmit;
+
+  /// Spoken label of a row of the summary, which opens that question.
+  ///
+  /// In en, this message translates to:
+  /// **'Open question {number}'**
+  String photoQuizOpenQuestion(int number);
+
+  /// Question of the confirmation when leaving the quiz that is being filled in.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the quiz?'**
+  String get photoQuizLeaveTitle;
+
+  /// Explanation under the question of the leave confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answers are not saved.'**
+  String get photoQuizLeaveMessage;
 }
 
 class _AppLocalizationsDelegate
