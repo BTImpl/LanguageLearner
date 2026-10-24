@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -49,6 +51,10 @@ class _PhotoProcessingScreenState extends ConsumerState<PhotoProcessingScreen> {
     _goTo(AppRoutes.home);
   }
 
+  void _retry() {
+    unawaited(ref.read(photoQuizControllerProvider.notifier).retry());
+  }
+
   void _newPhoto() {
     ref.read(photoQuizControllerProvider.notifier).reset();
     _goTo(AppRoutes.photoQuiz);
@@ -84,17 +90,28 @@ class _PhotoProcessingScreenState extends ConsumerState<PhotoProcessingScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 12),
-                PhotoQuizHeader(title: i18n.photoQuizTitle, onBack: _cancel),
+                PhotoQuizHeader(
+                  title: i18n.photoQuizTitle,
+                  onBack: _cancel,
+                  closeIcon: state is PhotoQuizFailed,
+                ),
                 Expanded(
                   child: switch (state) {
-                    PhotoQuizFailed(:final failure) => Center(
-                      child: SingleChildScrollView(
-                        child: PhotoQuizFailureView(
-                          failure: failure,
-                          onNewPhoto: _newPhoto,
-                        ),
+                    PhotoQuizFailed(
+                      :final failure,
+                      :final canRetry,
+                      :final resetsAt,
+                      :final limit,
+                    ) =>
+                      PhotoQuizFailureView(
+                        failure: failure,
+                        canRetry: canRetry,
+                        resetsAt: resetsAt,
+                        limit: limit,
+                        onRetry: _retry,
+                        onNewPhoto: _newPhoto,
+                        onHome: _cancel,
                       ),
-                    ),
                     _ => const _Reading(),
                   },
                 ),

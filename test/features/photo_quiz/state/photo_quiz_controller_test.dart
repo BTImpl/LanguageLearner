@@ -77,14 +77,157 @@ void main() {
     expect(photo.existsSync(), isFalse);
   });
 
-  test('the photo is deleted after a failure', () async {
-    final photo = makePhoto(dir);
+  test('the photo is deleted after a failure that will not pass', () async {
+    for (final failure in [
+      PhotoQuizFailure.noQuestions,
+      PhotoQuizFailure.imageTooLarge,
+      PhotoQuizFailure.imageUnsupported,
+      PhotoQuizFailure.dailyLimit,
+      PhotoQuizFailure.serverError,
+    ]) {
+      final photo = makePhoto(dir, '${failure.name}.jpg');
 
-    final done = controller().start(photo);
-    repository.fail(const PhotoQuizException(PhotoQuizFailure.timeout));
+      final done = controller().start(photo);
+      repository.fail(PhotoQuizException(failure));
+      await done;
+
+      expect(photo.existsSync(), isFalse, reason: failure.name);
+      expect((state() as PhotoQuizFailed).canRetry, isFalse);
+    }
+  });
+
+  group('a failure that may pass', () {
+    const retryable = [
+      PhotoQuizFailure.noNetwork,
+      PhotoQuizFailure.timeout,
+      PhotoQuizFailure.serviceUnavailable,
+    ];
+
+    test('keeps the photo and can be retried', () async {
+      for (final failure in retryable) {
+        final photo = makePhoto(dir, '${failure.name}.jpg');
+
+        final done = controller().start(photo);
+        repository.fail(PhotoQuizException(failure));
+        await done;
+
+        expect(photo.existsSync(), isTrue, reason: failure.name);
+        expect((state() as PhotoQuizFailed).canRetry, isTrue);
+        controller().reset();
+      }
+    });
+
+    test('a retry sends the same photo again as a new request', () async {
+      final photo = makePhoto(dir);
+      var done = controller().start(photo);
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.noNetwork));
+      await done;
+
+      done = controller().retry();
+
+      expect(state(), isA<PhotoQuizLoading>());
+      expect(repository.requests, [photo, photo]);
+      repository.succeed();
+      await done;
+      expect(state(), isA<PhotoQuizReady>());
+      expect(photo.existsSync(), isFalse);
+    });
+
+    test('a retry can fail again and the photo is still kept', () async {
+      final photo = makePhoto(dir);
+      var done = controller().start(photo);
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.timeout));
+      await done;
+
+      done = controller().retry();
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.noNetwork));
+      await done;
+
+      expect((state() as PhotoQuizFailed).failure, PhotoQuizFailure.noNetwork);
+      expect(photo.existsSync(), isTrue);
+    });
+
+    test(
+      'a retry that meets a failure that will not pass deletes it',
+      () async {
+        final photo = makePhoto(dir);
+        var done = controller().start(photo);
+        repository.fail(const PhotoQuizException(PhotoQuizFailure.noNetwork));
+        await done;
+
+        done = controller().retry();
+        repository.fail(const PhotoQuizException(PhotoQuizFailure.noQuestions));
+        await done;
+
+        expect(photo.existsSync(), isFalse);
+        expect((state() as PhotoQuizFailed).canRetry, isFalse);
+      },
+    );
+
+    test('reset deletes the kept photo', () async {
+      final photo = makePhoto(dir);
+      final done = controller().start(photo);
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.timeout));
+      await done;
+
+      controller().reset();
+
+      expect(photo.existsSync(), isFalse);
+      expect(state(), isA<PhotoQuizIdle>());
+    });
+
+    test('a new photo deletes the kept one', () async {
+      final first = makePhoto(dir, 'first.jpg');
+      var done = controller().start(first);
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.timeout));
+      await done;
+
+      done = controller().start(makePhoto(dir, 'second.jpg'));
+
+      expect(first.existsSync(), isFalse);
+      repository.succeed();
+      await done;
+    });
+
+    test('a retry gives up when the container goes away', () async {
+      final photo = makePhoto(dir);
+      final done = controller().start(photo);
+      repository.fail(const PhotoQuizException(PhotoQuizFailure.timeout));
+      await done;
+
+      container.dispose();
+
+      expect(photo.existsSync(), isFalse);
+    });
+  });
+
+  test('retry does nothing without a failure that can be retried', () async {
+    await controller().retry();
+    expect(repository.requests, isEmpty);
+
+    final done = controller().start(makePhoto(dir));
+    repository.fail(const PhotoQuizException(PhotoQuizFailure.noQuestions));
+    await done;
+    await controller().retry();
+
+    expect(repository.requests, hasLength(1));
+  });
+
+  test('the daily limit keeps what the backend said', () async {
+    final done = controller().start(makePhoto(dir));
+    final resetsAt = DateTime.utc(2026, 10, 25, 0);
+    repository.fail(
+      PhotoQuizException(
+        PhotoQuizFailure.dailyLimit,
+        resetsAt: resetsAt,
+        limit: 20,
+      ),
+    );
     await done;
 
-    expect(photo.existsSync(), isFalse);
+    final failed = state() as PhotoQuizFailed;
+    expect(failed.limit, 20);
+    expect(failed.resetsAt, resetsAt);
   });
 
   test(

@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// Shown when no question could be read from the photo.
   ///
   /// In en, this message translates to:
-  /// **'No questions found in the photo. Try a sharper, better lit photo.'**
+  /// **'I couldn't find any questions in the photo. Try again in better light, showing the whole page.'**
   String get photoQuizErrorNoQuestions;
 
   /// Shown when the photo is larger than the server accepts.
@@ -1037,25 +1037,25 @@ abstract class AppLocalizations {
   /// Shown when the student has made all the quizzes allowed for today.
   ///
   /// In en, this message translates to:
-  /// **'You have made all the quizzes allowed for today. Try again tomorrow.'**
+  /// **'You've used up today's quizzes. Try again tomorrow.'**
   String get photoQuizErrorDailyLimit;
 
   /// Shown when the service that reads the photo is not available.
   ///
   /// In en, this message translates to:
-  /// **'Reading photos is not available now. Try again later.'**
+  /// **'Reading photos is not available right now. Try again later. Your photo is kept.'**
   String get photoQuizErrorUnavailable;
 
   /// Shown when there is no internet connection while reading the photo.
   ///
   /// In en, this message translates to:
-  /// **'No internet connection. Check it and try again.'**
+  /// **'Check your connection. Your photo is kept; try again once you are back online.'**
   String get photoQuizErrorNoNetwork;
 
   /// Shown when reading the photo took too long.
   ///
   /// In en, this message translates to:
-  /// **'It took too long. Try again.'**
+  /// **'The server did not answer in time. Your photo is kept; try again.'**
   String get photoQuizErrorTimeout;
 
   /// Shown for any other problem while reading the photo.
@@ -1243,6 +1243,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get photoQuizSentDone;
+
+  /// Title of the error when no question could be read from the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found'**
+  String get photoQuizErrorNoQuestionsTitle;
+
+  /// Title of the error when the photo is too large or of an unsupported type.
+  ///
+  /// In en, this message translates to:
+  /// **'I can't process this photo'**
+  String get photoQuizErrorImageTitle;
+
+  /// Title of the error when the phone is offline.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get photoQuizErrorNoNetworkTitle;
+
+  /// Title of the error when the server did not answer in time.
+  ///
+  /// In en, this message translates to:
+  /// **'It took too long'**
+  String get photoQuizErrorTimeoutTitle;
+
+  /// Title of the error when the daily limit of quizzes is reached.
+  ///
+  /// In en, this message translates to:
+  /// **'No quizzes left for today'**
+  String get photoQuizErrorDailyLimitTitle;
+
+  /// Text of the daily limit error when the limit is known.
+  ///
+  /// In en, this message translates to:
+  /// **'You can make up to {limit} quizzes a day from photos. Try again tomorrow.'**
+  String photoQuizErrorDailyLimitMessage(int limit);
+
+  /// Line of the daily limit error: when the count starts again, in local time.
+  ///
+  /// In en, this message translates to:
+  /// **'Available again: {time}'**
+  String photoQuizErrorDailyLimitResets(String time);
+
+  /// Under the daily limit error: how many of the daily quizzes are used.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} / {total} used today'**
+  String photoQuizDailyUsage(int used, int total);
+
+  /// Button of the errors that may pass: sends the same photo again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get photoQuizRetry;
 }
 
 class _AppLocalizationsDelegate

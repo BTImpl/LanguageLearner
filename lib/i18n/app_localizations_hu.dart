@@ -528,7 +528,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoQuizErrorNoQuestions =>
-      'Nem találtam kérdést a képen. Próbálj élesebb, jobban megvilágított fotót.';
+      'Nem találtam kérdéseket a képen. Próbáld újra jobb fényben, a lap egészét mutatva.';
 
   @override
   String get photoQuizErrorTooLarge => 'A kép túl nagy. Próbálj egy kisebbet.';
@@ -539,18 +539,18 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoQuizErrorDailyLimit =>
-      'Mára elfogyott a keret. Holnap újra készíthetsz kvízt.';
+      'Mára elfogyott a kvízkeret. Holnap újra próbálhatod.';
 
   @override
   String get photoQuizErrorUnavailable =>
-      'A beolvasás most nem érhető el. Próbáld újra később.';
+      'A beolvasás most nem elérhető. Próbáld később. A fotód megmaradt.';
 
   @override
   String get photoQuizErrorNoNetwork =>
-      'Nincs internetkapcsolat. Ellenőrizd, és próbáld újra.';
+      'Ellenőrizd a hálózatot. A fotód megmaradt, próbáld újra, ha újra van kapcsolat.';
 
   @override
-  String get photoQuizErrorTimeout => 'Túl sokáig tartott. Próbáld újra.';
+  String get photoQuizErrorTimeout => 'A szerver nem válaszolt időben. A fotód megmaradt, próbáld újra.';
 
   @override
   String get photoQuizErrorGeneral => 'Valami hiba történt. Próbáld újra.';
@@ -665,4 +665,37 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoQuizSentDone => 'Kész';
+
+  @override
+  String get photoQuizErrorNoQuestionsTitle => 'Nem találtam kérdést';
+
+  @override
+  String get photoQuizErrorImageTitle => 'Ezt a képet nem tudom feldolgozni';
+
+  @override
+  String get photoQuizErrorNoNetworkTitle => 'Nincs internetkapcsolat';
+
+  @override
+  String get photoQuizErrorTimeoutTitle => 'Túl sokáig tartott';
+
+  @override
+  String get photoQuizErrorDailyLimitTitle => 'Mára elfogytak a kvízek';
+
+  @override
+  String photoQuizErrorDailyLimitMessage(int limit) {
+    return 'Naponta legfeljebb $limit kvízt készíthetsz fotóból. Holnap újra próbálhatod.';
+  }
+
+  @override
+  String photoQuizErrorDailyLimitResets(String time) {
+    return 'Újra használhatod: $time';
+  }
+
+  @override
+  String photoQuizDailyUsage(int used, int total) {
+    return '$used / $total felhasználva ma';
+  }
+
+  @override
+  String get photoQuizRetry => 'Újrapróbálom';
 }

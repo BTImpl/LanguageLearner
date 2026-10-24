@@ -567,7 +567,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoQuizErrorNoQuestions =>
-      'No questions found in the photo. Try a sharper, better lit photo.';
+      'I couldn\'t find any questions in the photo. Try again in better light, showing the whole page.';
 
   @override
   String get photoQuizErrorTooLarge =>
@@ -579,18 +579,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoQuizErrorDailyLimit =>
-      'You have made all the quizzes allowed for today. Try again tomorrow.';
+      'You\'ve used up today\'s quizzes. Try again tomorrow.';
 
   @override
   String get photoQuizErrorUnavailable =>
-      'Reading photos is not available now. Try again later.';
+      'Reading photos is not available right now. Try again later. Your photo is kept.';
 
   @override
   String get photoQuizErrorNoNetwork =>
-      'No internet connection. Check it and try again.';
+      'Check your connection. Your photo is kept; try again once you are back online.';
 
   @override
-  String get photoQuizErrorTimeout => 'It took too long. Try again.';
+  String get photoQuizErrorTimeout => 'The server did not answer in time. Your photo is kept; try again.';
 
   @override
   String get photoQuizErrorGeneral => 'Something went wrong. Try again.';
@@ -717,4 +717,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoQuizSentDone => 'Done';
+
+  @override
+  String get photoQuizErrorNoQuestionsTitle => 'No questions found';
+
+  @override
+  String get photoQuizErrorImageTitle => 'I can\'t process this photo';
+
+  @override
+  String get photoQuizErrorNoNetworkTitle => 'No internet connection';
+
+  @override
+  String get photoQuizErrorTimeoutTitle => 'It took too long';
+
+  @override
+  String get photoQuizErrorDailyLimitTitle => 'No quizzes left for today';
+
+  @override
+  String photoQuizErrorDailyLimitMessage(int limit) {
+    return 'You can make up to $limit quizzes a day from photos. Try again tomorrow.';
+  }
+
+  @override
+  String photoQuizErrorDailyLimitResets(String time) {
+    return 'Available again: $time';
+  }
+
+  @override
+  String photoQuizDailyUsage(int used, int total) {
+    return '$used / $total used today';
+  }
+
+  @override
+  String get photoQuizRetry => 'Try again';
 }
