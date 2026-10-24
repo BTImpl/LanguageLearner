@@ -590,7 +590,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Check your connection. Your photo is kept; try again once you are back online.';
 
   @override
-  String get photoQuizErrorTimeout => 'The server did not answer in time. Your photo is kept; try again.';
+  String get photoQuizErrorTimeout =>
+      'The server did not answer in time. Your photo is kept; try again.';
 
   @override
   String get photoQuizErrorGeneral => 'Something went wrong. Try again.';

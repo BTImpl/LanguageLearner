@@ -550,7 +550,8 @@ class AppLocalizationsHu extends AppLocalizations {
       'Ellenőrizd a hálózatot. A fotód megmaradt, próbáld újra, ha újra van kapcsolat.';
 
   @override
-  String get photoQuizErrorTimeout => 'A szerver nem válaszolt időben. A fotód megmaradt, próbáld újra.';
+  String get photoQuizErrorTimeout =>
+      'A szerver nem válaszolt időben. A fotód megmaradt, próbáld újra.';
 
   @override
   String get photoQuizErrorGeneral => 'Valami hiba történt. Próbáld újra.';
