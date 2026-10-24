@@ -1,5 +1,6 @@
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// An e-mail the student reviews and sends from the mail app.
 class OutgoingEmail {
@@ -53,32 +54,38 @@ abstract interface class EmailSender {
   Future<EmailSendOutcome> send(OutgoingEmail email);
 }
 
-/// The phone's own mail editor (`flutter_email_sender`).
-class DeviceEmailSender implements EmailSender {
-  const DeviceEmailSender();
+/// The `mailto:` link of [email]: the subject and the body are percent-encoded
+/// as they are (a space is `%20`, a line break `%0A`), because many mail apps
+/// show a `+` or glue the lines together when they get anything else.
+Uri buildMailtoUri(OutgoingEmail email) {
+  final subject = Uri.encodeComponent(email.subject);
+  final body = Uri.encodeComponent(email.body);
+  // The address is checked in the settings, so it is left as it is.
+  return Uri.parse('mailto:${email.recipient}?subject=$subject&body=$body');
+}
+
+/// Opens the default mail app with the e-mail written, through a `mailto:`
+/// link. The mail app does not tell whether the student sent it, so the
+/// outcome is always "handed over".
+class MailtoEmailSender implements EmailSender {
+  const MailtoEmailSender();
 
   @override
   Future<EmailSendOutcome> send(OutgoingEmail email) async {
+    final bool opened;
     try {
-      final result = await FlutterEmailSender.send(
-        Email(
-          recipients: [email.recipient],
-          subject: email.subject,
-          body: email.body,
-        ),
-      );
-      return result == EmailSendResult.cancelled
-          ? EmailSendOutcome.cancelled
-          : EmailSendOutcome.handedOver;
-    } on FlutterEmailSenderNotAvailableException {
-      throw const EmailSendException(EmailFailure.noMailApp);
-    } on FlutterEmailSenderException {
+      opened = await launchUrl(buildMailtoUri(email));
+    } on PlatformException {
       throw const EmailSendException(EmailFailure.failed);
     }
+    if (!opened) {
+      throw const EmailSendException(EmailFailure.noMailApp);
+    }
+    return EmailSendOutcome.handedOver;
   }
 }
 
 /// Sends e-mails through the mail app. Override it in tests with a fake.
 final emailSenderProvider = Provider<EmailSender>(
-  (ref) => const DeviceEmailSender(),
+  (ref) => const MailtoEmailSender(),
 );

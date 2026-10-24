@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// Shown when no question could be read from the photo.
   ///
   /// In en, this message translates to:
-  /// **'I couldn't find any questions in the photo. Try again in better light, showing the whole page.'**
+  /// **'I couldn\'t find any questions in the photo. Try again in better light, showing the whole page.'**
   String get photoQuizErrorNoQuestions;
 
   /// Shown when the photo is larger than the server accepts.
@@ -1037,7 +1037,7 @@ abstract class AppLocalizations {
   /// Shown when the student has made all the quizzes allowed for today.
   ///
   /// In en, this message translates to:
-  /// **'You've used up today's quizzes. Try again tomorrow.'**
+  /// **'You\'ve used up today\'s quizzes. Try again tomorrow.'**
   String get photoQuizErrorDailyLimit;
 
   /// Shown when the service that reads the photo is not available.
@@ -1253,7 +1253,7 @@ abstract class AppLocalizations {
   /// Title of the error when the photo is too large or of an unsupported type.
   ///
   /// In en, this message translates to:
-  /// **'I can't process this photo'**
+  /// **'I can\'t process this photo'**
   String get photoQuizErrorImageTitle;
 
   /// Title of the error when the phone is offline.
