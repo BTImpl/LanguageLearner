@@ -16,6 +16,7 @@ import 'package:languagelearner/features/photo_quiz/data/photo_quiz_providers.da
 import 'package:languagelearner/features/photo_quiz/photo/photo_engine.dart';
 import 'package:languagelearner/features/photo_quiz/photo/photo_providers.dart';
 import 'package:languagelearner/features/photo_quiz/photo/photo_source.dart';
+import 'package:languagelearner/features/photo_quiz/widgets/photo_quiz_failure_view.dart';
 
 import '../../../helpers/fake_system_settings_opener.dart';
 import '../../../helpers/photo_quiz_fakes.dart';
@@ -216,13 +217,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(path(), AppRoutes.photoQuizProcessing);
-    expect(find.text('The quiz could not be made'), findsOneWidget);
-    expect(
-      find.text(
-        'No questions found in the photo. Try a sharper, better lit photo.',
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('No questions found'), findsOneWidget);
+    expect(find.textContaining('Try again in better light'), findsOneWidget);
     expect(photo.existsSync(), isFalse);
 
     await tester.tap(find.text('New photo'));
@@ -242,10 +238,55 @@ void main() {
       repository.fail(PhotoQuizException(failure));
       await tester.pumpAndSettle();
 
-      expect(find.text('The quiz could not be made'), findsOneWidget);
-      expect(find.text('New photo'), findsOneWidget);
+      expect(find.byKey(photoFailurePrimaryKey), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
     });
   }
+
+  testWidgets('no network: try again sends the same photo once more', (
+    tester,
+  ) async {
+    final photo = makePhoto(dir);
+    await open(tester, [PhotoPicked(photo)], location: AppRoutes.photoQuiz);
+    await tester.tap(find.text('Take a photo'));
+    await tester.pump();
+    await tester.pump();
+    repository.fail(const PhotoQuizException(PhotoQuizFailure.noNetwork));
+    await tester.pumpAndSettle();
+
+    expect(find.text('No internet connection'), findsOneWidget);
+    expect(photo.existsSync(), isTrue);
+
+    await tester.tap(find.text('Try again'));
+    await tester.pump();
+
+    expect(repository.requests, [photo, photo]);
+    expect(find.text('Reading the worksheet…'), findsOneWidget);
+
+    repository.succeed();
+    await tester.pumpAndSettle();
+
+    expect(path(), AppRoutes.photoQuizReview);
+    expect(photo.existsSync(), isFalse);
+  });
+
+  testWidgets('no network: cancel goes home and drops the photo', (
+    tester,
+  ) async {
+    final photo = makePhoto(dir);
+    await open(tester, [PhotoPicked(photo)], location: AppRoutes.photoQuiz);
+    await tester.tap(find.text('Take a photo'));
+    await tester.pump();
+    await tester.pump();
+    repository.fail(const PhotoQuizException(PhotoQuizFailure.noNetwork));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(path(), AppRoutes.home);
+    expect(photo.existsSync(), isFalse);
+  });
 
   testWidgets('the processing screen without a request goes home', (
     tester,

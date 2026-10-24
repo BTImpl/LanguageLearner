@@ -720,7 +720,7 @@
   "@photoQuizErrorTitle": {
     "description": "Title shown when no quiz could be made from the photo."
   },
-  "photoQuizErrorNoQuestions": "No questions found in the photo. Try a sharper, better lit photo.",
+  "photoQuizErrorNoQuestions": "I couldn't find any questions in the photo. Try again in better light, showing the whole page.",
   "@photoQuizErrorNoQuestions": {
     "description": "Shown when no question could be read from the photo."
   },
@@ -732,19 +732,19 @@
   "@photoQuizErrorUnsupported": {
     "description": "Shown when the photo is neither a JPEG nor a PNG."
   },
-  "photoQuizErrorDailyLimit": "You have made all the quizzes allowed for today. Try again tomorrow.",
+  "photoQuizErrorDailyLimit": "You've used up today's quizzes. Try again tomorrow.",
   "@photoQuizErrorDailyLimit": {
     "description": "Shown when the student has made all the quizzes allowed for today."
   },
-  "photoQuizErrorUnavailable": "Reading photos is not available now. Try again later.",
+  "photoQuizErrorUnavailable": "Reading photos is not available right now. Try again later. Your photo is kept.",
   "@photoQuizErrorUnavailable": {
     "description": "Shown when the service that reads the photo is not available."
   },
-  "photoQuizErrorNoNetwork": "No internet connection. Check it and try again.",
+  "photoQuizErrorNoNetwork": "Check your connection. Your photo is kept; try again once you are back online.",
   "@photoQuizErrorNoNetwork": {
     "description": "Shown when there is no internet connection while reading the photo."
   },
-  "photoQuizErrorTimeout": "It took too long. Try again.",
+  "photoQuizErrorTimeout": "The server did not answer in time. Your photo is kept; try again.",
   "@photoQuizErrorTimeout": {
     "description": "Shown when reading the photo took too long."
   },
@@ -917,5 +917,59 @@
   "photoQuizSentDone": "Done",
   "@photoQuizSentDone": {
     "description": "Button of the closing screen that goes back to the home screen."
+  },
+  "photoQuizErrorNoQuestionsTitle": "No questions found",
+  "@photoQuizErrorNoQuestionsTitle": {
+    "description": "Title of the error when no question could be read from the photo."
+  },
+  "photoQuizErrorImageTitle": "I can't process this photo",
+  "@photoQuizErrorImageTitle": {
+    "description": "Title of the error when the photo is too large or of an unsupported type."
+  },
+  "photoQuizErrorNoNetworkTitle": "No internet connection",
+  "@photoQuizErrorNoNetworkTitle": {
+    "description": "Title of the error when the phone is offline."
+  },
+  "photoQuizErrorTimeoutTitle": "It took too long",
+  "@photoQuizErrorTimeoutTitle": {
+    "description": "Title of the error when the server did not answer in time."
+  },
+  "photoQuizErrorDailyLimitTitle": "No quizzes left for today",
+  "@photoQuizErrorDailyLimitTitle": {
+    "description": "Title of the error when the daily limit of quizzes is reached."
+  },
+  "photoQuizErrorDailyLimitMessage": "You can make up to {limit} quizzes a day from photos. Try again tomorrow.",
+  "@photoQuizErrorDailyLimitMessage": {
+    "description": "Text of the daily limit error when the limit is known.",
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizErrorDailyLimitResets": "Available again: {time}",
+  "@photoQuizErrorDailyLimitResets": {
+    "description": "Line of the daily limit error: when the count starts again, in local time.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "photoQuizDailyUsage": "{used} / {total} used today",
+  "@photoQuizDailyUsage": {
+    "description": "Under the daily limit error: how many of the daily quizzes are used.",
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizRetry": "Try again",
+  "@photoQuizRetry": {
+    "description": "Button of the errors that may pass: sends the same photo again."
   }
 }

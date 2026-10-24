@@ -30,10 +30,35 @@ final class PhotoQuizReady extends PhotoQuizState {
 
 /// The quiz could not be made.
 final class PhotoQuizFailed extends PhotoQuizState {
-  const PhotoQuizFailed(this.failure);
+  const PhotoQuizFailed(
+    this.failure, {
+    this.resetsAt,
+    this.limit,
+    this.canRetry = false,
+  });
 
   final PhotoQuizFailure failure;
+
+  /// For [PhotoQuizFailure.dailyLimit]: when the count starts again (UTC), if
+  /// the backend said.
+  final DateTime? resetsAt;
+
+  /// For [PhotoQuizFailure.dailyLimit]: how many quizzes a day are allowed, if
+  /// the backend said.
+  final int? limit;
+
+  /// Whether the same photo can be sent again with [PhotoQuizController.retry].
+  final bool canRetry;
 }
+
+/// The failures that can go away by themselves, so the photo is kept for
+/// another try.
+bool _isRetryable(PhotoQuizFailure failure) => switch (failure) {
+  PhotoQuizFailure.noNetwork ||
+  PhotoQuizFailure.timeout ||
+  PhotoQuizFailure.serviceUnavailable => true,
+  _ => false,
+};
 
 /// The state of the photo quiz: `idle`, `loading`, `ready` (`success`) or
 /// `failed` (`error`).
@@ -45,39 +70,74 @@ final photoQuizControllerProvider =
 /// Makes a quiz from a photo and holds the result for the screens after it.
 ///
 /// The photo file is only needed while the request runs: it is deleted when
-/// the request ends, whether it succeeded, failed or was given up.
+/// the request ends, whether it succeeded, failed or was given up. The one
+/// exception is a failure that may pass (no network, no answer in time, a
+/// service that is not available): the photo stays so that [retry] can send
+/// it again, and goes with the next [start], [reset] or the end of the app.
 class PhotoQuizController extends Notifier<PhotoQuizState> {
   // Tells the answer of an earlier, given-up request from the current one.
   var _generation = 0;
   File? _photo;
 
   @override
-  PhotoQuizState build() => const PhotoQuizIdle();
+  PhotoQuizState build() {
+    ref.onDispose(_discardPhoto);
+    return const PhotoQuizIdle();
+  }
 
   /// Starts making a quiz from [photo]; the controller owns the file from now
   /// on and deletes it. A request that is still running is given up.
-  Future<void> start(File photo) async {
+  Future<void> start(File photo) {
     _discardPhoto();
+    return _run(photo);
+  }
+
+  /// Sends the kept photo again, a new request, after a failure that
+  /// [PhotoQuizFailed.canRetry]. Does nothing otherwise.
+  Future<void> retry() {
+    final photo = _photo;
+    final current = state;
+    if (photo == null || current is! PhotoQuizFailed || !current.canRetry) {
+      return Future.value();
+    }
+    return _run(photo);
+  }
+
+  Future<void> _run(File photo) async {
     final generation = ++_generation;
     _photo = photo;
     state = const PhotoQuizLoading();
     PhotoQuizState result;
+    var retryable = false;
     try {
       final quiz = await ref
           .read(photoQuizRepositoryProvider)
           .createFromImage(photo);
       result = PhotoQuizReady(quiz);
     } on PhotoQuizException catch (error) {
-      result = PhotoQuizFailed(error.failure);
+      retryable = _isRetryable(error.failure);
+      result = PhotoQuizFailed(
+        error.failure,
+        resetsAt: error.resetsAt,
+        limit: error.limit,
+        canRetry: retryable,
+      );
     } on Exception {
       result = const PhotoQuizFailed(PhotoQuizFailure.serverError);
     }
-    _delete(photo);
-    // A request that was given up (or replaced) must not show its answer.
-    if (generation == _generation && ref.mounted) {
-      _photo = null;
-      state = result;
+    // A request that was given up (or replaced) must not show its answer; its
+    // photo is already gone, taken by whoever gave it up.
+    if (generation != _generation || !ref.mounted) {
+      _delete(photo);
+      return;
     }
+    if (retryable) {
+      _photo = photo;
+    } else {
+      _photo = null;
+      _delete(photo);
+    }
+    state = result;
   }
 
   /// Drops the question at [index] from the ready quiz (a position in its
