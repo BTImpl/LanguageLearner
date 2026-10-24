@@ -241,7 +241,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(path(), AppRoutes.photoQuizFill);
-    expect(find.text('3 questions'), findsOneWidget);
+    expect(find.text('1 / 3'), findsOneWidget);
     expect((state() as PhotoQuizReady).quiz.questions, hasLength(3));
   });
 

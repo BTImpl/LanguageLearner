@@ -171,5 +171,15 @@
   "photoQuizStart": "Kezdés",
   "photoQuizQuestionCount": "{count} kérdés",
   "photoQuizSkipped": "{count} kérdést nem sikerült kiolvasni",
-  "photoQuizDeleteQuestion": "{number}. kérdés törlése"
+  "photoQuizDeleteQuestion": "{number}. kérdés törlése",
+  "photoQuizFillQuestion": "{number}. kérdés",
+  "photoQuizPrevious": "Előző",
+  "photoQuizNext": "Következő",
+  "photoQuizToSummary": "Összegzés",
+  "photoQuizSummaryProgress": "{answered} / {total} megválaszolva",
+  "photoQuizNoAnswer": "nincs válasz",
+  "photoQuizSubmit": "Beküldés a tanárnak",
+  "photoQuizOpenQuestion": "{number}. kérdés megnyitása",
+  "photoQuizLeaveTitle": "Kilépsz a kvízből?",
+  "photoQuizLeaveMessage": "A válaszaid nem mentődnek."
 }

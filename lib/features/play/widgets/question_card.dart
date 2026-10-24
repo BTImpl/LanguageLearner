@@ -12,6 +12,7 @@ class QuestionCard extends StatelessWidget {
     required this.label,
     required this.text,
     required this.onReadAloud,
+    this.fontSize,
     super.key,
   });
 
@@ -21,12 +22,18 @@ class QuestionCard extends StatelessWidget {
   /// `null` hides the read-aloud button (the question is not English).
   final VoidCallback? onReadAloud;
 
+  /// Replaces the size that follows from the length of the [text], for texts
+  /// that are sentences and not single words.
+  final double? fontSize;
+
   /// Long words get a smaller type so they do not break in the middle.
-  double get _fontSize => switch (text.length) {
-    <= 10 => 52,
-    <= 16 => 40,
-    _ => 30,
-  };
+  double get _fontSize =>
+      fontSize ??
+      switch (text.length) {
+        <= 10 => 52,
+        <= 16 => 40,
+        _ => 30,
+      };
 
   @override
   Widget build(BuildContext context) {
