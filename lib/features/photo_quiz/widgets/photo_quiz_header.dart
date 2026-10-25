@@ -11,6 +11,7 @@ class PhotoQuizHeader extends StatelessWidget {
     required this.title,
     required this.onBack,
     this.closeIcon = false,
+    this.action,
     super.key,
   });
 
@@ -19,6 +20,9 @@ class PhotoQuizHeader extends StatelessWidget {
 
   /// A cross instead of the back arrow, for the screens that end the flow.
   final bool closeIcon;
+
+  /// A 44 x 44 button on the right (e.g. an [IconSquareButton]).
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,7 @@ class PhotoQuizHeader extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 44),
+        action ?? const SizedBox(width: 44),
       ],
     );
   }

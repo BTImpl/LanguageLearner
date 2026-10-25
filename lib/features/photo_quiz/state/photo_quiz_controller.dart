@@ -23,9 +23,13 @@ final class PhotoQuizLoading extends PhotoQuizState {
 
 /// The quiz is made.
 final class PhotoQuizReady extends PhotoQuizState {
-  const PhotoQuizReady(this.quiz);
+  const PhotoQuizReady(this.quiz, {this.fromSaved = false});
 
   final PhotoQuiz quiz;
+
+  /// The quiz was taken from the saved quizzes, not read from a photo just
+  /// now: leaving the fill-in screen goes back to that list.
+  final bool fromSaved;
 }
 
 /// The quiz could not be made.
@@ -145,7 +149,10 @@ class PhotoQuizController extends Notifier<PhotoQuizState> {
   void removeQuestion(int index) {
     final current = state;
     if (current is PhotoQuizReady) {
-      state = PhotoQuizReady(current.quiz.withoutQuestionAt(index));
+      state = PhotoQuizReady(
+        current.quiz.withoutQuestionAt(index),
+        fromSaved: current.fromSaved,
+      );
     }
   }
 
@@ -156,8 +163,17 @@ class PhotoQuizController extends Notifier<PhotoQuizState> {
     if (current is PhotoQuizReady) {
       state = PhotoQuizReady(
         current.quiz.withQuestionInserted(index, question),
+        fromSaved: current.fromSaved,
       );
     }
+  }
+
+  /// Makes [quiz], one of the saved quizzes, the ready quiz, so that the
+  /// fill-in screen can start with it. A running request is given up.
+  void loadSaved(PhotoQuiz quiz) {
+    _generation++;
+    _discardPhoto();
+    state = PhotoQuizReady(quiz, fromSaved: true);
   }
 
   /// Back to [PhotoQuizIdle]: gives up a running request (its answer is

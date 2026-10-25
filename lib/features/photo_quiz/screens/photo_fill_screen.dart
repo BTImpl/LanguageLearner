@@ -49,14 +49,15 @@ class PhotoFillScreen extends ConsumerWidget {
       });
       return Scaffold(backgroundColor: context.colors.background);
     }
-    return _FillView(quiz: state.quiz);
+    return _FillView(quiz: state.quiz, fromSaved: state.fromSaved);
   }
 }
 
 class _FillView extends ConsumerStatefulWidget {
-  const _FillView({required this.quiz});
+  const _FillView({required this.quiz, required this.fromSaved});
 
   final PhotoQuiz quiz;
+  final bool fromSaved;
 
   @override
   ConsumerState<_FillView> createState() => _FillViewState();
@@ -73,7 +74,10 @@ class _FillViewState extends ConsumerState<_FillView> {
     final notifier = ref.read(photoQuizFillProvider(quiz).notifier);
     final title = quiz.title ?? i18n.photoQuizTitle;
 
-    void leave() => context.go(AppRoutes.photoQuizReview);
+    // A quiz from the saved list goes back to the list: it has no review.
+    void leave() => context.go(
+      widget.fromSaved ? AppRoutes.photoQuizSaved : AppRoutes.photoQuizReview,
+    );
 
     final submit = ref.watch(photoQuizSubmitProvider);
     if (submit is SubmitSent) {

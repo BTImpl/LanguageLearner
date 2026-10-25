@@ -11,6 +11,7 @@ import 'package:languagelearner/features/photo_quiz/screens/photo_capture_screen
 import 'package:languagelearner/features/photo_quiz/screens/photo_fill_screen.dart';
 import 'package:languagelearner/features/photo_quiz/screens/photo_processing_screen.dart';
 import 'package:languagelearner/features/photo_quiz/screens/photo_review_screen.dart';
+import 'package:languagelearner/features/photo_quiz/screens/saved_quizzes_screen.dart';
 import 'package:languagelearner/features/play/flashcards/flashcards_screen.dart';
 import 'package:languagelearner/features/play/matching/matching_screen.dart';
 import 'package:languagelearner/features/play/mix/mix_screen.dart';
@@ -128,6 +129,10 @@ GoRouter createAppRouter({
       GoRoute(
         path: AppRoutes.photoQuizFill,
         builder: (context, state) => const PhotoFillScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.photoQuizSaved,
+        builder: (context, state) => const SavedQuizzesScreen(),
       ),
       for (final mode in PlayMode.values) ...[
         GoRoute(

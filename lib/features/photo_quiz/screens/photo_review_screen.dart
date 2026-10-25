@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
+import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/widgets/app_card.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
+import 'package:languagelearner/features/auth/auth_providers.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz.dart';
 import 'package:languagelearner/features/photo_quiz/models/photo_quiz_question.dart';
+import 'package:languagelearner/features/photo_quiz/saved/saved_quiz_store.dart';
 import 'package:languagelearner/features/photo_quiz/state/photo_quiz_controller.dart';
 import 'package:languagelearner/features/photo_quiz/widgets/photo_quiz_header.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
@@ -77,6 +82,30 @@ class PhotoReviewScreen extends ConsumerWidget {
     context.go(location);
   }
 
+  /// Keeps the quiz on the phone and starts filling it in. A failing storage
+  /// never keeps the student from the quiz.
+  void _start(BuildContext context, WidgetRef ref, PhotoQuiz quiz) {
+    final messenger = ScaffoldMessenger.of(context);
+    final message = context.i18n.photoQuizSavedDuplicate;
+    final store = ref.read(savedQuizStoreProvider);
+    final student = ref.read(accountProvider)?.email;
+    final now = ref.read(clockProvider)();
+    _leave(context, ref, AppRoutes.photoQuizFill);
+    if (student == null) {
+      return;
+    }
+    unawaited(() async {
+      try {
+        final recorded = await store.record(student, quiz, now);
+        if (recorded.duplicate) {
+          messenger.showSnackBar(SnackBar(content: Text(message)));
+        }
+      } on Object {
+        // Not saved, but the quiz can still be filled in.
+      }
+    }());
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final i18n = context.i18n;
@@ -105,7 +134,7 @@ class PhotoReviewScreen extends ConsumerWidget {
       icon: Icons.chevron_right,
       onPressed: quiz.questions.isEmpty
           ? null
-          : () => _leave(context, ref, AppRoutes.photoQuizFill),
+          : () => _start(context, ref, quiz),
     );
     // Side by side, unless a large text size leaves no room for it.
     final stacked = _stacked(context);

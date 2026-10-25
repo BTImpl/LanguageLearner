@@ -199,5 +199,14 @@
   "photoQuizErrorDailyLimitMessage": "Naponta legfeljebb {limit} kvízt készíthetsz fotóból. Holnap újra próbálhatod.",
   "photoQuizErrorDailyLimitResets": "Újra használhatod: {time}",
   "photoQuizDailyUsage": "{used} / {total} felhasználva ma",
-  "photoQuizRetry": "Újrapróbálom"
+  "photoQuizRetry": "Újrapróbálom",
+  "photoQuizSavedTitle": "Mentett kvízek",
+  "photoQuizSavedUntitled": "Kvíz fotóból",
+  "photoQuizSavedEmptyTitle": "Még nincs mentett kvíz",
+  "photoQuizSavedEmptyMessage": "A beolvasott kvízek itt jelennek meg, és újra kitölthetők.",
+  "photoQuizSavedDeleted": "Kvíz törölve",
+  "photoQuizSavedDuplicate": "Ezt a kvízt már elmentetted, a meglévőt használom.",
+  "photoQuizSavedLoadFailed": "Nem sikerült betölteni a mentett kvízeket.",
+  "photoQuizSavedFillCount": "{count}× kitöltve",
+  "photoQuizSavedDeleteQuiz": "{title} törlése"
 }

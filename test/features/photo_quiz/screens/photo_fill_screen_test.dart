@@ -11,6 +11,7 @@ import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
 import 'package:languagelearner/core/services/clock.dart';
 import 'package:languagelearner/core/services/email_sender.dart';
+import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/core/widgets/choice_tile.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
 import 'package:languagelearner/features/auth/account.dart';
@@ -27,6 +28,7 @@ import 'package:languagelearner/features/settings/settings_providers.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 
 import '../../../helpers/fake_email_sender.dart';
+import '../../../helpers/in_memory_key_value_store.dart';
 import '../../../helpers/photo_quiz_fakes.dart';
 
 const _student = Account(name: 'Kiss Anna', email: 'kiss.anna@example.com');
@@ -63,6 +65,7 @@ void main() {
       ProviderScope(
         overrides: [
           routerProvider.overrideWithValue(router),
+          keyValueStoreProvider.overrideWithValue(InMemoryKeyValueStore()),
           accountProvider.overrideWithValue(_student),
           appLocaleProvider.overrideWithValue(locale),
           initialSettingsProvider.overrideWithValue(

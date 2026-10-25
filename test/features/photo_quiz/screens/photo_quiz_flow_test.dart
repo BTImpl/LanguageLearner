@@ -8,6 +8,7 @@ import 'package:languagelearner/app/app.dart';
 import 'package:languagelearner/app/locale.dart';
 import 'package:languagelearner/app/router.dart';
 import 'package:languagelearner/app/routes.dart';
+import 'package:languagelearner/core/services/key_value_store.dart';
 import 'package:languagelearner/core/services/system_settings_opener.dart';
 import 'package:languagelearner/features/auth/account.dart';
 import 'package:languagelearner/features/auth/auth_providers.dart';
@@ -19,6 +20,7 @@ import 'package:languagelearner/features/photo_quiz/photo/photo_source.dart';
 import 'package:languagelearner/features/photo_quiz/widgets/photo_quiz_failure_view.dart';
 
 import '../../../helpers/fake_system_settings_opener.dart';
+import '../../../helpers/in_memory_key_value_store.dart';
 import '../../../helpers/photo_quiz_fakes.dart';
 
 const _student = Account(name: 'Kiss Anna', email: 'kiss.anna@example.com');
@@ -48,6 +50,7 @@ void main() {
       ProviderScope(
         overrides: [
           routerProvider.overrideWithValue(router),
+          keyValueStoreProvider.overrideWithValue(InMemoryKeyValueStore()),
           accountProvider.overrideWithValue(_student),
           appLocaleProvider.overrideWithValue(locale),
           photoSourceProvider.overrideWithValue(source),

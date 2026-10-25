@@ -9,6 +9,7 @@ import 'package:languagelearner/app/theme/app_colors.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/widgets/app_card.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
+import 'package:languagelearner/core/widgets/icon_square_button.dart';
 import 'package:languagelearner/core/widgets/primary_button.dart';
 import 'package:languagelearner/features/photo_quiz/photo/photo_engine.dart';
 import 'package:languagelearner/features/photo_quiz/photo/photo_providers.dart';
@@ -84,6 +85,11 @@ class _PhotoCaptureScreenState extends ConsumerState<PhotoCaptureScreen> {
               PhotoQuizHeader(
                 title: i18n.photoQuizTitle,
                 onBack: () => context.go(AppRoutes.home),
+                action: IconSquareButton(
+                  icon: Icons.history,
+                  semanticLabel: i18n.photoQuizSavedTitle,
+                  onPressed: () => context.go(AppRoutes.photoQuizSaved),
+                ),
               ),
               const SizedBox(height: 20),
               Expanded(
