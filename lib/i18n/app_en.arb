@@ -971,5 +971,51 @@
   "photoQuizRetry": "Try again",
   "@photoQuizRetry": {
     "description": "Button of the errors that may pass: sends the same photo again."
+  },
+  "photoQuizSavedTitle": "Saved quizzes",
+  "@photoQuizSavedTitle": {
+    "description": "Title of the screen with the quizzes kept on the phone, and the label of the button that opens it."
+  },
+  "photoQuizSavedUntitled": "Quiz from a photo",
+  "@photoQuizSavedUntitled": {
+    "description": "Name of a saved quiz whose worksheet had no title."
+  },
+  "photoQuizSavedEmptyTitle": "No saved quizzes yet",
+  "@photoQuizSavedEmptyTitle": {
+    "description": "Title of the empty saved quizzes list."
+  },
+  "photoQuizSavedEmptyMessage": "Quizzes you read from a photo appear here, and you can fill them in again.",
+  "@photoQuizSavedEmptyMessage": {
+    "description": "Explanation of the empty saved quizzes list."
+  },
+  "photoQuizSavedDeleted": "Quiz deleted",
+  "@photoQuizSavedDeleted": {
+    "description": "Message shown after a saved quiz was deleted."
+  },
+  "photoQuizSavedDuplicate": "You have already saved this quiz, so I am using the saved one.",
+  "@photoQuizSavedDuplicate": {
+    "description": "Message shown when the quiz that was just read is already among the saved ones."
+  },
+  "photoQuizSavedLoadFailed": "The saved quizzes could not be loaded.",
+  "@photoQuizSavedLoadFailed": {
+    "description": "Message shown when the saved quizzes cannot be read."
+  },
+  "photoQuizSavedFillCount": "{count, plural, =1{Filled once} other{Filled {count} times}}",
+  "@photoQuizSavedFillCount": {
+    "description": "How many times a saved quiz was filled in.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoQuizSavedDeleteQuiz": "Delete {title}",
+  "@photoQuizSavedDeleteQuiz": {
+    "description": "Spoken label of the delete button of a saved quiz.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }

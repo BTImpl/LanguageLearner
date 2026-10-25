@@ -53,6 +53,13 @@ class PhotoQuiz {
   /// How many questions could not be read completely and were left out.
   final int skippedQuestions;
 
+  /// The JSON that [PhotoQuiz.fromJson] reads back.
+  Map<String, Object?> toJson() => {
+    'title': title,
+    'questions': [for (final question in questions) question.toJson()],
+    'skippedQuestions': skippedQuestions,
+  };
+
   /// A quiz without the question at [index] (a position in [questions]).
   /// Title and [skippedQuestions] stay. Throws a [RangeError] for a position
   /// that is not a question.

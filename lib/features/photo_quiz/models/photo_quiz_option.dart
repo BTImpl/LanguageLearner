@@ -27,6 +27,9 @@ class PhotoQuizOption {
   /// The option as printed.
   final String text;
 
+  /// The JSON that [PhotoQuizOption.fromJson] reads back.
+  Map<String, Object?> toJson() => {'label': label, 'text': text};
+
   @override
   bool operator ==(Object other) =>
       other is PhotoQuizOption && other.label == label && other.text == text;

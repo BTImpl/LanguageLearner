@@ -53,6 +53,13 @@ class PhotoQuizQuestion {
   /// The answer options in the order of the worksheet.
   final List<PhotoQuizOption> options;
 
+  /// The JSON that [PhotoQuizQuestion.fromJson] reads back.
+  Map<String, Object?> toJson() => {
+    'number': number,
+    'text': text,
+    'options': [for (final option in options) option.toJson()],
+  };
+
   @override
   bool operator ==(Object other) =>
       other is PhotoQuizQuestion &&
