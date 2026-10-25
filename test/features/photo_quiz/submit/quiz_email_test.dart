@@ -162,4 +162,87 @@ void main() {
       expect(early.body, contains('Date: 2026-03-05'));
     });
   });
+
+  group('the HTML', () {
+    test('has the header, every question and the chosen option marked', () {
+      final html = build(answer: (a) => a.select(0, 1)).html;
+
+      expect(html, contains('Student: Kiss Anna (kiss.anna@example.com)'));
+      expect(html, contains('Date: 2026-10-04'));
+      expect(html, contains('1 / 4 answered'));
+      expect(html, contains('1. She ___ to school every day.'));
+      expect(html, contains('\u2714 b) goes'));
+      expect(html, contains('\u25CB a) go'));
+      expect('\u2714'.allMatches(html), hasLength(1));
+    });
+
+    test('lists every option of every question', () {
+      final html = build().html;
+
+      for (final text in ['a) go', 'd) gone', 'a) True', 'b) False']) {
+        expect(html, contains(text));
+      }
+      expect(html, contains('e) have done'));
+    });
+
+    test('marks the questions without an answer', () {
+      final html = build(answer: (a) => a.select(0, 1)).html;
+
+      expect('no answer'.allMatches(html), hasLength(3));
+    });
+
+    test('puts each question in its own block, not in one line', () {
+      final html = build().html;
+
+      expect('<div style="margin:0 0 20px">'.allMatches(html), hasLength(4));
+      expect(html, startsWith('<div style="font-family'));
+      expect(html, endsWith('</div>'));
+    });
+
+    test('escapes what would be taken for markup', () {
+      final tricky = PhotoQuiz(
+        title: 'A <b> & B',
+        questions: [
+          PhotoQuizQuestion(
+            number: 1,
+            text: 'Is 1 < 2 & 3 > 2?',
+            options: const [
+              PhotoQuizOption(label: 'a', text: '<script>x</script>'),
+              PhotoQuizOption(label: 'b', text: 'a "quote"'),
+            ],
+          ),
+        ],
+      );
+
+      final html = build(withQuiz: tricky, name: 'A <i>nna').html;
+
+      expect(html, isNot(contains('<script>')));
+      expect(html, isNot(contains('<i>')));
+      expect(html, contains('Is 1 &lt; 2 &amp; 3 &gt; 2?'));
+      expect(html, contains('&lt;script&gt;x&lt;/script&gt;'));
+      expect(html, contains('&lt;i&gt;nna'));
+    });
+
+    test('is in Hungarian when the app is', () {
+      final html = build(l10n: hu, answer: (a) => a.select(1, 1)).html;
+
+      expect(html, contains('Diák: Kiss Anna'));
+      expect(html, contains('1 / 4 megválaszolva'));
+      expect(html, contains('nincs válasz'));
+    });
+
+    test('says the same as the plain text', () {
+      final email = build(answer: (a) => a.select(0, 2).select(3, 4));
+
+      for (final text in [
+        'She ___ to school every day.',
+        'c) going',
+        'e) have done',
+        'I ___ my homework right now.',
+      ]) {
+        expect(email.body, contains(text));
+        expect(email.html, contains(text));
+      }
+    });
+  });
 }
