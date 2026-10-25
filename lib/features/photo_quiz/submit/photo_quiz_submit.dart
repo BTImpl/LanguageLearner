@@ -91,6 +91,7 @@ class PhotoQuizSubmit extends Notifier<PhotoQuizSubmitState> {
               recipient: recipient,
               subject: email.subject,
               body: email.body,
+              htmlBody: email.html,
             ),
           );
       if (!ref.mounted) {
