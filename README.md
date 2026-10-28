@@ -37,7 +37,7 @@ lib/
   core/                shared widgets and services
     widgets/
     services/
-  features/<feature>/  home, flashcards, matching, quiz, typing, mix,
+  features/<feature>/  home, flashcards, matching, quiz, typing, speaking, mix,
                        stats, settings, auth
 test/                  widget and unit tests, mirroring the lib/ structure
 ios/                   iOS platform project
@@ -205,23 +205,38 @@ If it fails, run `tool/format.sh fix`, stage the changes and commit again.
 The hook is skipped (with a warning) when `dart` is not in the PATH, for
 example when committing from a GUI; the CI still catches it.
 
-## Speaking trial (experiment, card LL-71)
+## Speaking mode (card LL-72)
 
-Settings → "Speaking trial" shows a Hungarian word; the student says the
-English one and the screen shows what the phone recognised and whether the
-rule accepts it (`lib/features/voice_trial/answer_matcher.dart`). It measures
-whether iPhone speech recognition is accurate enough with a Hungarian accent;
-it is not a pronunciation test.
+"Speaking" is a mode on the home screen like the others: a Hungarian word is
+shown and the student says the English one. It follows the rules of the
+exact-match game: the number of wrong answers is the "Wrong attempts when
+typing" setting; **Help** shows the answer for about 3 seconds and counts as
+help; **Next word** skips the word and counts it as wrong at the first
+attempt (skipped and missed words end up in the review list of the summary).
+Silence, a denied permission and recognition errors are not attempts. After
+the right answer the English word is shown and can be read aloud.
 
+- The word is always asked in Hungarian, because the recogniser is English
+  only; the "which language to ask in" setting does not apply.
+- The judgement is `decideSpokenAnswer` in
+  `lib/features/play/speaking/spoken_answer_matcher.dart` (exact, homophones,
+  a small edit distance for longer words, the alternative readings of the
+  recogniser). The game rules are in `speaking_game.dart`, the body of the
+  screen in `speaking_content.dart` (used by the Mix too).
 - The recogniser is Apple's `SFSpeechRecognizer`, reached through the small
   `SpeechBridge` in `ios/Runner/AppDelegate.swift` (a plugin would not give
   `contextualStrings` and the alternative readings). The locale is `en-GB`.
-- The switch "Give the word list to the recogniser" sends the English words of
-  the open deck as `contextualStrings`; compare it on and off.
-- Nothing is sent over the network by the app. **Privacy:** if the English
-  recognition is not downloaded on the phone, iOS may send the audio to Apple's
-  servers for recognition. Mention this in the privacy statement before the
-  mode reaches other students.
-- The trial is reachable from the settings only, marked as an experiment.
-  Measure at least 30 words with both users, with and without the word list,
-  and write the result in the card.
+- **Mix:** a speaking step is drawn only if the setting "Speaking tasks in the
+  Mix" is on (default) and the device status is usable (`speechStatusProvider`,
+  read when the Mix starts; the home screen keeps it warm). A speaking step
+  always asks in Hungarian.
+- **Settings:** "Give the word list to the recogniser" (default on) sends the
+  English words of the open deck as `contextualStrings`. Its effect on the
+  accuracy is not measured yet; the switch makes a comparison possible.
+- **Privacy:** if the English recognition is not downloaded on the phone, iOS
+  may send the audio to Apple's servers. The screen says so until the
+  recogniser reports on-device recognition; mention it in the privacy
+  statement too.
+- **Backend:** the attempts table does not know a SPEAKING mode yet (card
+  BE-20), so the app uploads speaking answers as `TYPING` (see `_mode` in
+  `api_attempt_uploader.dart`). Switch it to `SPEAKING` when BE-20 is live.

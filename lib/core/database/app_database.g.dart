@@ -233,7 +233,7 @@ class AttemptRow extends DataClass implements Insertable<AttemptRow> {
   final String deckId;
   final String wordId;
 
-  /// The name of a `PlayMode`: matching, quiz, typing or mix.
+  /// The name of a `PlayMode`: matching, quiz, typing, speaking or mix.
   final String mode;
 
   /// The name of a `WordOutcome`: firstTry, withHelp or wrongFirst.

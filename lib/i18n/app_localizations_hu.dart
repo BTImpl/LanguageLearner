@@ -735,102 +735,81 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get voiceTrialSettingsTitle => 'Kimondós próba';
+  String get modeSpeaking => 'Kimondós';
 
   @override
-  String get voiceTrialSettingsHint => 'Kísérlet: mondd ki az angol szót, és nézd meg, mit ismer fel a telefon.';
+  String get modeSpeakingHint => 'Mondd ki az angol szót';
 
   @override
-  String get voiceTrialOpen => 'Megnyitás';
+  String get restartSpeaking => 'Kimondós újrakezdése';
 
   @override
-  String get voiceTrialTitle => 'Kimondós próba';
+  String get speakingPrompt => 'Mondd ki angolul';
 
   @override
-  String get voiceTrialBadge => 'Kísérlet';
+  String get speakingStart => 'Koppints és mondd ki';
 
   @override
-  String get voiceTrialPrompt => 'Mondd ki angolul';
+  String get speakingListening => 'Hallgatlak…';
 
   @override
-  String get voiceTrialHintsTitle => 'Szólista a felismerőnek';
+  String get speakingStop => 'Leállítás';
 
   @override
-  String get voiceTrialHintsHint => 'Megmondja a felismerőnek, milyen szavakra számítson. Hasonlítsd össze bekapcsolva és kikapcsolva.';
+  String get speakingHeard => 'Ezt hallottam';
 
   @override
-  String get voiceTrialStart => 'Koppints és mondd ki';
+  String get speakingNothing => 'Nem hallottam semmit. Próbáld újra.';
 
   @override
-  String get voiceTrialListening => 'Hallgatlak…';
+  String get speakingMismatch => 'Ez nem az volt. Próbáld újra!';
 
   @override
-  String get voiceTrialStop => 'Leállítás';
+  String get speakingMismatchLast => 'Ez nem az volt. Utolsó próba!';
 
   @override
-  String get voiceTrialHeard => 'Ezt hallottam';
+  String get speakingGaveUp => 'Elfogytak a próbák. Itt a megoldás.';
 
   @override
-  String get voiceTrialNothing => 'Nem hallottam semmit';
+  String get speakingCorrect => 'Jó!';
 
   @override
-  String get voiceTrialAlternatives => 'További olvasatok';
+  String get speakingHelp => 'Segítség';
 
   @override
-  String get voiceTrialAccepted => 'Elfogadva';
+  String get speakingSkip => 'Következő szó';
 
   @override
-  String get voiceTrialRejected => 'Elutasítva';
+  String get speakingListen => 'Meghallgatom';
 
   @override
-  String get voiceTrialKindExact => 'Pontos egyezés';
+  String get speakingDeniedTitle => 'Nincs mikrofon-hozzáférés';
 
   @override
-  String get voiceTrialKindClose => 'Kis eltérés';
+  String get speakingDeniedMessage =>
+      'Engedélyezd a mikrofont és a beszédfelismerést a Beállításokban a beszédhez.';
 
   @override
-  String get voiceTrialKindAlternative => 'Alternatív olvasat';
+  String get speakingUnavailable =>
+      'A beszédfelismerés nem érhető el ezen az eszközön.';
 
   @override
-  String get voiceTrialKindHomophone => 'Ugyanúgy hangzik';
+  String get speakingFailed => 'A felismerés nem sikerült. Próbáld újra.';
 
   @override
-  String voiceTrialExpected(String word) {
-    return 'Várt szó: $word';
-  }
+  String get speakingPrivacy =>
+      'Ha a telefonra nincs letöltve az angol nyelvű felismerés, a hang az Apple szervereire kerülhet felismerésre.';
 
   @override
-  String get voiceTrialNext => 'Következő szó';
+  String get speakingHintsTitle => 'Szólista a felismerőnek';
 
   @override
-  String get voiceTrialLogTitle => 'Napló';
+  String get speakingHintsHint =>
+      'Megmondja a felismerőnek, milyen szavakra számítson.';
 
   @override
-  String voiceTrialScore(int accepted, int total) {
-    return '$accepted / $total elfogadva';
-  }
+  String get mixSpeakingTitle => 'Kimondós feladatok a Mixben';
 
   @override
-  String get voiceTrialLogWithHints => 'szólistával';
-
-  @override
-  String get voiceTrialLogWithoutHints => 'szólista nélkül';
-
-  @override
-  String get voiceTrialDeniedTitle => 'Nincs mikrofon-hozzáférés';
-
-  @override
-  String get voiceTrialDeniedMessage => 'Engedélyezd a mikrofont és a beszédfelismerést a Beállításokban a kipróbáláshoz.';
-
-  @override
-  String get voiceTrialUnavailable => 'A beszédfelismerés nem érhető el ezen az eszközön.';
-
-  @override
-  String get voiceTrialFailed => 'A felismerés nem sikerült. Próbáld újra.';
-
-  @override
-  String get voiceTrialNoWords => 'Nincs gyakorolható szó. Előbb nyiss meg egy szólistát.';
-
-  @override
-  String get voiceTrialPrivacy => 'Ha a telefonra nincs letöltve az angol nyelvű felismerés, a hang az Apple szervereire kerülhet felismerésre.';
+  String get mixSpeakingHint => 'Kapcsold ki, ha most nem tudsz beszélni.';
 }

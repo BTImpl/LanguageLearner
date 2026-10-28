@@ -10,6 +10,7 @@ import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/round/word_outcome.dart';
 import 'package:languagelearner/features/play/typing/typing_game.dart';
 
+import '../../../helpers/fake_speech_engine.dart';
 import '../../../helpers/manual_scheduler.dart';
 
 List<WordPair> _words(int count) => [
@@ -29,6 +30,7 @@ class _Setup {
     int pairsPerPage = 5,
     List<WordPair>? words,
     PromptLanguage promptLanguage = PromptLanguage.english,
+    this.engine,
   }) {
     session = RoundSession(
       words: words ?? _words(count),
@@ -38,11 +40,13 @@ class _Setup {
     mix = MixGame(
       session: session,
       pairsPerPage: pairsPerPage,
+      speechEngine: engine,
       random: Random(seed),
       schedule: scheduler.call,
     );
   }
 
+  final FakeSpeechEngine? engine;
   final scheduler = ManualScheduler();
   late final RoundSession session;
   late final MixGame mix;
@@ -50,6 +54,7 @@ class _Setup {
   /// The words the current step is about.
   List<String> get stepIds => switch (mix.stepType!) {
     MixStepType.typing => [mix.typing!.current!.id],
+    MixStepType.speaking => [mix.speaking!.current!.id],
     MixStepType.quiz => [mix.quiz!.current!.id],
     MixStepType.matching => [
       for (final tile in mix.matching!.englishTiles) tile.word.id,
@@ -64,6 +69,10 @@ class _Setup {
         game
           ..submit(session.answerText(game.current!))
           ..next();
+      case MixStepType.speaking:
+        // Saying the word is asynchronous; the tests that need it do it
+        // themselves. A synchronous test just goes on.
+        mix.speaking!.skip();
       case MixStepType.quiz:
         final game = mix.quiz!;
         game.choose(game.options.firstWhere((o) => o.isCorrect).word);
@@ -114,13 +123,13 @@ void main() {
       expect(types(7), types(7));
     });
 
-    test('all three kinds of step come up', () {
+    test('the three kinds of step come up without a speech engine', () {
       final seen = <MixStepType>{};
       for (var seed = 1; seed <= 30; seed++) {
         seen.addAll(_Setup(seed: seed).solveAll().map((step) => step.type));
       }
 
-      expect(seen, MixStepType.values.toSet());
+      expect(seen, MixStepType.values.toSet()..remove(MixStepType.speaking));
     });
 
     test('there are never two matching steps in a row', () {
@@ -152,7 +161,7 @@ void main() {
                 hasLength(min(5, 12 - step.start)),
                 reason: 'seed $seed',
               );
-            case MixStepType.typing || MixStepType.quiz:
+            case MixStepType.typing || MixStepType.quiz || MixStepType.speaking:
               expect(step.ids, hasLength(1));
           }
         }
@@ -548,6 +557,7 @@ void main() {
       final current = switch (s.mix.stepType!) {
         MixStepType.typing => s.mix.typing!.current,
         MixStepType.quiz => s.mix.quiz!.current,
+        MixStepType.speaking => s.mix.speaking!.current,
         MixStepType.matching => null,
       };
       if (current != null) {
@@ -626,6 +636,60 @@ void main() {
 
       expect(s.mix.isFinished, isTrue);
       expect(s.mix.stepType, isNull);
+    });
+  });
+
+  group('speaking steps', () {
+    test('come up only with a speech engine', () {
+      final withoutEngine = <MixStepType>{};
+      final withEngine = <MixStepType>{};
+      for (var seed = 1; seed <= 30; seed++) {
+        withoutEngine.addAll(_Setup(seed: seed).solveAll().map((s) => s.type));
+        withEngine.addAll(
+          _Setup(
+            seed: seed,
+            engine: FakeSpeechEngine(),
+          ).solveAll().map((s) => s.type),
+        );
+      }
+
+      expect(withoutEngine, isNot(contains(MixStepType.speaking)));
+      expect(withEngine, contains(MixStepType.speaking));
+    });
+
+    test('always ask in Hungarian and use up one word', () {
+      for (var seed = 1; seed <= 50; seed++) {
+        final s = _Setup(seed: seed, engine: FakeSpeechEngine());
+        while (!s.mix.isFinished) {
+          if (s.mix.stepType == MixStepType.speaking) {
+            final word = s.mix.speaking!.current!;
+            expect(s.session.promptIsEnglishFor(word), isFalse);
+            expect(s.mix.stepPromptLanguage, PromptLanguage.hungarian);
+            expect(s.stepIds, hasLength(1));
+          }
+          s.solveStep();
+        }
+      }
+    });
+
+    test('a spoken answer ends the step and counts in the result', () async {
+      final seed = [for (var seed = 1; seed <= 200; seed++) seed].firstWhere(
+        (seed) =>
+            _Setup(seed: seed, engine: FakeSpeechEngine()).mix.stepType ==
+            MixStepType.speaking,
+      );
+      final engine = FakeSpeechEngine();
+      final s = _Setup(seed: seed, engine: engine);
+      final game = s.mix.speaking!;
+      engine.heard = [s.session.answerText(game.current!)];
+
+      await game.listen();
+      expect(game.isSolved, isTrue);
+      game.next();
+
+      expect(s.mix.index, 1);
+      expect(s.mix.result.firstTry, 1);
+      expect(s.mix.completedSteps.first.type, MixStepType.speaking);
     });
   });
 }

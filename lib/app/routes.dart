@@ -7,9 +7,6 @@ abstract final class AppRoutes {
   static const String stats = '/stats';
   static const String settings = '/settings';
 
-  /// The experimental speaking trial (card LL-71), opened from the settings.
-  static const String voiceTrial = '/voice-trial';
-
   /// The quiz made from a photo, outside the tabs: where a photo is taken or
   /// chosen, the screen while it is read, and the review of the quiz.
   static const String photoQuiz = '/photo-quiz';

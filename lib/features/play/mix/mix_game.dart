@@ -6,10 +6,12 @@ import 'package:languagelearner/features/play/quiz/quiz_game.dart';
 import 'package:languagelearner/features/play/round/round_result.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
 import 'package:languagelearner/features/play/round/schedule.dart';
+import 'package:languagelearner/features/play/speaking/speaking_game.dart';
+import 'package:languagelearner/features/play/speaking/speech_engine.dart';
 import 'package:languagelearner/features/play/typing/typing_game.dart';
 
 /// The kinds of task the Mix mode draws from.
-enum MixStepType { typing, quiz, matching }
+enum MixStepType { typing, quiz, matching, speaking }
 
 /// A finished step: its kind and how many words it used up.
 typedef MixStepRecord = ({MixStepType type, int words});
@@ -19,7 +21,8 @@ typedef MixStepRecord = ({MixStepType type, int words});
 /// The student does not pick a format. Going through the words of the
 /// [session] in their random order, every step draws a task at random:
 ///
-/// - typing ([TypingGame]) and quiz ([QuizGame]) use up one word;
+/// - typing ([TypingGame]), speaking ([SpeakingGame]) and quiz ([QuizGame])
+///   use up one word;
 /// - matching ([MatchingGame], one page) uses up as many words as it shows
 ///   pairs: [pairsPerPage], or all that are left if there are fewer.
 ///
@@ -29,9 +32,12 @@ typedef MixStepRecord = ({MixStepType type, int words});
 /// - quiz only if the deck can give every word three wrong answers in both
 ///   directions (see [QuizGame.isPlayableIn]); the wrong answers come from
 ///   the whole deck, not only from the words that are left;
+/// - speaking only if the game was given a [speechEngine] (the screen does so
+///   when the setting allows it and the device can recognise speech);
 /// - never two matching steps in a row.
 ///
-/// A typing or quiz step also draws its own direction, English to Hungarian
+/// A speaking step always asks in Hungarian (the recogniser knows English
+/// only). A typing or quiz step draws its own direction, English to Hungarian
 /// or the other way round with equal chance, and gives it to the word with
 /// [RoundSession.setPromptLanguage]. The direction belongs to the step, not
 /// to the round, and the [RoundSession.promptLanguage] of the session (the
@@ -46,6 +52,8 @@ class MixGame {
     required this.session,
     required this.pairsPerPage,
     this.typingAttempts = TypingGame.defaultMaxAttempts,
+    this.speechEngine,
+    this.speakingHints = const [],
     Random? random,
     Schedule? schedule,
   }) : assert(pairsPerPage >= 2, 'A matching step needs at least two pairs.'),
@@ -61,6 +69,12 @@ class MixGame {
   /// How many wrong answers a typing step accepts before it moves on.
   final int typingAttempts;
 
+  /// The recogniser of the speaking steps; `null` means no speaking steps.
+  final SpeechEngine? speechEngine;
+
+  /// The words the recogniser is told to expect in a speaking step.
+  final List<String> speakingHints;
+
   final Random _random;
   final Schedule _schedule;
   final _listeners = <void Function()>[];
@@ -69,6 +83,7 @@ class MixGame {
   MixStepType? _type;
   MixStepType? _lastType;
   TypingGame? _typing;
+  SpeakingGame? _speaking;
   QuizGame? _quiz;
   MatchingGame? _matching;
   var _stepStart = 0;
@@ -81,6 +96,9 @@ class MixGame {
   /// The game of the current step when it is typing, otherwise `null`.
   TypingGame? get typing => _typing;
 
+  /// The game of the current step when it is speaking, otherwise `null`.
+  SpeakingGame? get speaking => _speaking;
+
   /// The game of the current step when it is a quiz, otherwise `null`.
   QuizGame? get quiz => _quiz;
 
@@ -91,7 +109,9 @@ class MixGame {
   /// matching and when the round is finished.
   PromptLanguage? get stepPromptLanguage {
     final word = switch (_type) {
-      MixStepType.typing || MixStepType.quiz => session.current,
+      MixStepType.typing ||
+      MixStepType.quiz ||
+      MixStepType.speaking => session.current,
       MixStepType.matching || null => null,
     };
     return word == null ? null : session.promptLanguageOf(word);
@@ -149,6 +169,7 @@ class MixGame {
     final remaining = session.total - session.index;
     final allowed = [
       MixStepType.typing,
+      if (speechEngine != null) MixStepType.speaking,
       if (_quizAllowed) MixStepType.quiz,
       if (remaining >= 2 && _lastType != MixStepType.matching)
         MixStepType.matching,
@@ -157,7 +178,9 @@ class MixGame {
     _type = type;
     _stepStart = session.index;
     _stepNumber++;
-    if (type != MixStepType.matching) {
+    if (type == MixStepType.speaking) {
+      session.setPromptLanguage(session.current!, PromptLanguage.hungarian);
+    } else if (type != MixStepType.matching) {
       final direction = _random.nextBool()
           ? PromptLanguage.english
           : PromptLanguage.hungarian;
@@ -167,6 +190,14 @@ class MixGame {
       case MixStepType.typing:
         _typing = TypingGame(
           session: session,
+          schedule: _schedule,
+          maxAttempts: typingAttempts,
+        )..addListener(_onStepChanged);
+      case MixStepType.speaking:
+        _speaking = SpeakingGame(
+          session: session,
+          engine: speechEngine!,
+          hints: speakingHints,
           schedule: _schedule,
           maxAttempts: typingAttempts,
         )..addListener(_onStepChanged);
@@ -200,9 +231,11 @@ class MixGame {
 
   void _disposeStep() {
     _typing?.dispose();
+    _speaking?.dispose();
     _quiz?.dispose();
     _matching?.dispose();
     _typing = null;
+    _speaking = null;
     _quiz = null;
     _matching = null;
     _type = null;

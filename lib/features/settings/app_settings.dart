@@ -38,6 +38,8 @@ class AppSettings {
     this.appLanguage = AppLanguage.system,
     this.typingAttempts = defaultTypingAttempts,
     this.teacherEmail = '',
+    this.speakingHints = true,
+    this.mixSpeaking = true,
   }) : assert(
          pairsPerPage >= minPairsPerPage && pairsPerPage <= maxPairsPerPage,
          'pairsPerPage must be between $minPairsPerPage and $maxPairsPerPage',
@@ -80,6 +82,14 @@ class AppSettings {
   /// `isValidEmail`). Default: empty.
   final String teacherEmail;
 
+  /// Whether the speaking game gives the English words of the deck to the
+  /// speech recogniser as hints. Default: on.
+  final bool speakingHints;
+
+  /// Whether the Mix mode may draw speaking tasks (when the device can
+  /// recognise speech). Default: on.
+  final bool mixSpeaking;
+
   AppSettings copyWith({
     PromptLanguage? promptLanguage,
     int? pairsPerPage,
@@ -87,6 +97,8 @@ class AppSettings {
     AppLanguage? appLanguage,
     int? typingAttempts,
     String? teacherEmail,
+    bool? speakingHints,
+    bool? mixSpeaking,
   }) {
     return AppSettings(
       promptLanguage: promptLanguage ?? this.promptLanguage,
@@ -95,6 +107,8 @@ class AppSettings {
       appLanguage: appLanguage ?? this.appLanguage,
       typingAttempts: typingAttempts ?? this.typingAttempts,
       teacherEmail: teacherEmail ?? this.teacherEmail,
+      speakingHints: speakingHints ?? this.speakingHints,
+      mixSpeaking: mixSpeaking ?? this.mixSpeaking,
     );
   }
 
@@ -106,7 +120,9 @@ class AppSettings {
       other.themeChoice == themeChoice &&
       other.appLanguage == appLanguage &&
       other.typingAttempts == typingAttempts &&
-      other.teacherEmail == teacherEmail;
+      other.teacherEmail == teacherEmail &&
+      other.speakingHints == speakingHints &&
+      other.mixSpeaking == mixSpeaking;
 
   @override
   int get hashCode => Object.hash(
@@ -116,11 +132,14 @@ class AppSettings {
     appLanguage,
     typingAttempts,
     teacherEmail,
+    speakingHints,
+    mixSpeaking,
   );
 
   @override
   String toString() =>
       'AppSettings($promptLanguage, $pairsPerPage pairs, $themeChoice, '
       '$appLanguage, $typingAttempts attempts, teacher e-mail: '
-      '${teacherEmail.isEmpty ? 'none' : teacherEmail})';
+      '${teacherEmail.isEmpty ? 'none' : teacherEmail}, '
+      'speaking hints: $speakingHints, speaking in Mix: $mixSpeaking)';
 }

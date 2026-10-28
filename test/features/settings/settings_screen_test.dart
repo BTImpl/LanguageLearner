@@ -402,4 +402,32 @@ void main() {
       expect(find.text('E-mail-cím'), findsOneWidget);
     });
   });
+
+  testWidgets('the speaking switches are on and turned off at once', (
+    tester,
+  ) async {
+    final (store, container) = await _openSettings(tester);
+    expect(find.text('Give the word list to the recogniser'), findsOneWidget);
+    expect(find.text('Speaking tasks in the Mix'), findsOneWidget);
+    expect(container.read(settingsProvider).speakingHints, isTrue);
+    expect(container.read(settingsProvider).mixSpeaking, isTrue);
+
+    await tester.tap(find.byType(Switch).at(0));
+    await tester.pumpAndSettle();
+    expect(container.read(settingsProvider).speakingHints, isFalse);
+    expect(container.read(settingsProvider).mixSpeaking, isTrue);
+
+    await tester.tap(find.byType(Switch).at(1));
+    await tester.pumpAndSettle();
+    expect(container.read(settingsProvider).mixSpeaking, isFalse);
+    final saved = await StoreSettingsRepository(store).load();
+    expect(saved.speakingHints, isFalse);
+    expect(saved.mixSpeaking, isFalse);
+  });
+
+  testWidgets('the speaking trial is gone from the settings', (tester) async {
+    await _openSettings(tester);
+
+    expect(find.text('Speaking trial'), findsNothing);
+  });
 }

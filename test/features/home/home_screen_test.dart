@@ -190,6 +190,7 @@ void main() {
     ('Matching', '/play/matching'),
     ('Quiz', '/play/quiz'),
     ('Exact match', '/play/typing'),
+    ('Speaking', '/play/speaking'),
   ];
   for (final (title, path) in tiles) {
     testWidgets('tapping $title opens $path', (tester) async {

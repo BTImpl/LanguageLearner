@@ -209,11 +209,17 @@ void main() {
       );
 
       expect(find.text('This deck has no words'), findsOneWidget);
-      expect(find.text('At least 1 word needed'), findsNWidgets(3));
+      expect(find.text('At least 1 word needed'), findsNWidgets(4));
       expect(find.text('At least 2 words needed'), findsOneWidget);
       expect(find.text('At least 4 words needed'), findsOneWidget);
 
-      for (final title in ['Mix', 'Flashcards', 'Matching', 'Quiz']) {
+      for (final title in [
+        'Mix',
+        'Flashcards',
+        'Matching',
+        'Quiz',
+        'Speaking',
+      ]) {
         await tester.tap(find.text(title).first);
         await tester.pumpAndSettle();
         expect(home.path, AppRoutes.home, reason: '$title is disabled');

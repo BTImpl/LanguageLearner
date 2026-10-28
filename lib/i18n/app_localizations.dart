@@ -1352,197 +1352,155 @@ abstract class AppLocalizations {
   /// **'Delete {title}'**
   String photoQuizSavedDeleteQuiz(String title);
 
-  /// Title of the settings card that opens the experimental speaking trial.
+  /// Name of the speaking practice mode (the English word must be said aloud).
   ///
   /// In en, this message translates to:
-  /// **'Speaking trial'**
-  String get voiceTrialSettingsTitle;
+  /// **'Speaking'**
+  String get modeSpeaking;
 
-  /// Hint of the settings card of the speaking trial.
+  /// Short description of the speaking mode.
   ///
   /// In en, this message translates to:
-  /// **'Experiment: say the English word and see what the phone recognises.'**
-  String get voiceTrialSettingsHint;
+  /// **'Say the English word'**
+  String get modeSpeakingHint;
 
-  /// Button that opens the speaking trial.
+  /// Button on the round-end screen of the speaking game.
   ///
   /// In en, this message translates to:
-  /// **'Open'**
-  String get voiceTrialOpen;
+  /// **'Restart Speaking'**
+  String get restartSpeaking;
 
-  /// Title of the speaking trial screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Speaking trial'**
-  String get voiceTrialTitle;
-
-  /// Small badge that marks the speaking trial as an experiment.
-  ///
-  /// In en, this message translates to:
-  /// **'Experiment'**
-  String get voiceTrialBadge;
-
-  /// Label above the Hungarian word of the speaking trial.
+  /// Label above the Hungarian word of the speaking game.
   ///
   /// In en, this message translates to:
   /// **'Say it in English'**
-  String get voiceTrialPrompt;
-
-  /// Title of the switch that primes the speech recogniser with the expected words.
-  ///
-  /// In en, this message translates to:
-  /// **'Give the word list to the recogniser'**
-  String get voiceTrialHintsTitle;
-
-  /// Hint of the switch that primes the speech recogniser.
-  ///
-  /// In en, this message translates to:
-  /// **'Tells the recogniser which words to expect. Compare it on and off.'**
-  String get voiceTrialHintsHint;
+  String get speakingPrompt;
 
   /// Label of the microphone button.
   ///
   /// In en, this message translates to:
   /// **'Tap and say it'**
-  String get voiceTrialStart;
+  String get speakingStart;
 
   /// Label while the phone listens.
   ///
   /// In en, this message translates to:
   /// **'Listening…'**
-  String get voiceTrialListening;
+  String get speakingListening;
 
   /// Button that stops listening.
   ///
   /// In en, this message translates to:
   /// **'Stop'**
-  String get voiceTrialStop;
+  String get speakingStop;
 
-  /// Label above the best recognised text.
+  /// Label above the recognised text.
   ///
   /// In en, this message translates to:
   /// **'I heard'**
-  String get voiceTrialHeard;
+  String get speakingHeard;
 
   /// Shown when nothing was recognised.
   ///
   /// In en, this message translates to:
-  /// **'I heard nothing'**
-  String get voiceTrialNothing;
+  /// **'I heard nothing. Try again.'**
+  String get speakingNothing;
 
-  /// Label above the alternative recognised texts.
+  /// Shown after a wrong spoken answer.
   ///
   /// In en, this message translates to:
-  /// **'Other readings'**
-  String get voiceTrialAlternatives;
+  /// **'That wasn\'t it. Try again!'**
+  String get speakingMismatch;
 
-  /// Verdict: the answer is accepted.
+  /// Shown after a wrong spoken answer when only one more attempt is allowed.
   ///
   /// In en, this message translates to:
-  /// **'Accepted'**
-  String get voiceTrialAccepted;
+  /// **'That wasn\'t it. Last try!'**
+  String get speakingMismatchLast;
 
-  /// Verdict: the answer is rejected.
+  /// Shown when the attempts ran out, while the right answer is shown.
   ///
   /// In en, this message translates to:
-  /// **'Rejected'**
-  String get voiceTrialRejected;
+  /// **'Out of tries. Here is the answer.'**
+  String get speakingGaveUp;
 
-  /// Why the answer was accepted: exact match.
+  /// Shown after a right spoken answer.
   ///
   /// In en, this message translates to:
-  /// **'Exact match'**
-  String get voiceTrialKindExact;
+  /// **'Correct!'**
+  String get speakingCorrect;
 
-  /// Why the answer was accepted: a small difference.
+  /// Button that shows the right answer for a few seconds.
   ///
   /// In en, this message translates to:
-  /// **'Small difference'**
-  String get voiceTrialKindClose;
+  /// **'Help'**
+  String get speakingHelp;
 
-  /// Why the answer was accepted: another reading of the recogniser.
-  ///
-  /// In en, this message translates to:
-  /// **'Alternative reading'**
-  String get voiceTrialKindAlternative;
-
-  /// Why the answer was accepted: a word that sounds the same.
-  ///
-  /// In en, this message translates to:
-  /// **'Sounds the same'**
-  String get voiceTrialKindHomophone;
-
-  /// The expected English word.
-  ///
-  /// In en, this message translates to:
-  /// **'Expected: {word}'**
-  String voiceTrialExpected(String word);
-
-  /// Button that shows the next word.
+  /// Button that skips the word.
   ///
   /// In en, this message translates to:
   /// **'Next word'**
-  String get voiceTrialNext;
+  String get speakingSkip;
 
-  /// Title of the list of the recent attempts.
+  /// Button that reads the right answer aloud.
   ///
   /// In en, this message translates to:
-  /// **'Log'**
-  String get voiceTrialLogTitle;
-
-  /// Summary line of the attempts.
-  ///
-  /// In en, this message translates to:
-  /// **'{accepted} of {total} accepted'**
-  String voiceTrialScore(int accepted, int total);
-
-  /// Marks a logged attempt that used the word list.
-  ///
-  /// In en, this message translates to:
-  /// **'with word list'**
-  String get voiceTrialLogWithHints;
-
-  /// Marks a logged attempt without the word list.
-  ///
-  /// In en, this message translates to:
-  /// **'without word list'**
-  String get voiceTrialLogWithoutHints;
+  /// **'Listen'**
+  String get speakingListen;
 
   /// Title when the microphone or speech recognition is refused.
   ///
   /// In en, this message translates to:
   /// **'No access to the microphone'**
-  String get voiceTrialDeniedTitle;
+  String get speakingDeniedTitle;
 
   /// Message when the microphone or speech recognition is refused.
   ///
   /// In en, this message translates to:
-  /// **'Allow the microphone and speech recognition in Settings to try this.'**
-  String get voiceTrialDeniedMessage;
+  /// **'Allow the microphone and speech recognition in Settings to speak.'**
+  String get speakingDeniedMessage;
 
   /// Message when the device cannot recognise speech.
   ///
   /// In en, this message translates to:
   /// **'Speech recognition is not available on this device.'**
-  String get voiceTrialUnavailable;
+  String get speakingUnavailable;
 
   /// Message when a recognition fails.
   ///
   /// In en, this message translates to:
   /// **'Recognition failed. Try again.'**
-  String get voiceTrialFailed;
+  String get speakingFailed;
 
-  /// Message when the deck has no words.
-  ///
-  /// In en, this message translates to:
-  /// **'There are no words to practise. Open a word list first.'**
-  String get voiceTrialNoWords;
-
-  /// Privacy note of the speaking trial.
+  /// Privacy note under the microphone button.
   ///
   /// In en, this message translates to:
   /// **'If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.'**
-  String get voiceTrialPrivacy;
+  String get speakingPrivacy;
+
+  /// Title of the setting that primes the speech recogniser with the words of the deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the word list to the recogniser'**
+  String get speakingHintsTitle;
+
+  /// Hint of the setting that primes the speech recogniser.
+  ///
+  /// In en, this message translates to:
+  /// **'Tells the recogniser which words to expect.'**
+  String get speakingHintsHint;
+
+  /// Title of the setting that allows speaking tasks in the Mix mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking tasks in the Mix'**
+  String get mixSpeakingTitle;
+
+  /// Hint of the setting that allows speaking tasks in the Mix mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off if you can\'t talk right now.'**
+  String get mixSpeakingHint;
 }
 
 class _AppLocalizationsDelegate

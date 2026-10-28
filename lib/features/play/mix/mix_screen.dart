@@ -14,6 +14,9 @@ import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/quiz/quiz_content.dart';
 import 'package:languagelearner/features/play/round/round_providers.dart';
 import 'package:languagelearner/features/play/round/round_session.dart';
+import 'package:languagelearner/features/play/speaking/speaking_content.dart';
+import 'package:languagelearner/features/play/speaking/speaking_game.dart';
+import 'package:languagelearner/features/play/speaking/speech_engine.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/typing/typing_content.dart';
 import 'package:languagelearner/features/settings/settings_providers.dart';
@@ -53,10 +56,19 @@ class _MixScreenState extends ConsumerState<MixScreen> {
         random: random,
         now: ref.read(clockProvider),
       );
+      // Speaking steps only when the setting allows them and the device can
+      // recognise speech (a status that is not known yet counts as no).
+      final speaking =
+          settings.mixSpeaking &&
+          (ref.read(speechStatusProvider).value?.usable ?? false);
       _game = MixGame(
         session: session,
         pairsPerPage: settings.pairsPerPage,
         typingAttempts: settings.typingAttempts,
+        speechEngine: speaking ? ref.read(speechEngineProvider) : null,
+        speakingHints: speaking && settings.speakingHints
+            ? speakingHintsOf(deck)
+            : const [],
         random: random,
       )..addListener(_onChanged);
     }
@@ -124,6 +136,7 @@ class _MixScreenState extends ConsumerState<MixScreen> {
 
   Widget _stepContent(MixGame game) => switch (game.stepType) {
     MixStepType.typing => TypingContent(game: game.typing!),
+    MixStepType.speaking => SpeakingContent(game: game.speaking!),
     MixStepType.quiz => QuizContent(game: game.quiz!),
     MixStepType.matching => MatchingContent(game: game.matching!),
     null => const SizedBox.shrink(),

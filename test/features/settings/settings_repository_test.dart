@@ -20,6 +20,8 @@ void main() {
       appLanguage: AppLanguage.hu,
       typingAttempts: 6,
       teacherEmail: 'tanar@example.com',
+      speakingHints: false,
+      mixSpeaking: false,
     );
 
     await StoreSettingsRepository(store).save(settings);
@@ -36,6 +38,8 @@ void main() {
       AppSettings(typingAttempts: 1),
       AppSettings(typingAttempts: 10),
       AppSettings(teacherEmail: 'tanar@example.com'),
+      AppSettings(speakingHints: false),
+      AppSettings(mixSpeaking: false),
     ]) {
       final store = InMemoryKeyValueStore();
       await StoreSettingsRepository(store).save(settings);
@@ -118,4 +122,13 @@ void main() {
       expect(await load(''), '');
     },
   );
+
+  test('the speaking switches are on until they are turned off', () async {
+    final repository = StoreSettingsRepository(InMemoryKeyValueStore());
+
+    final settings = await repository.load();
+
+    expect(settings.speakingHints, isTrue);
+    expect(settings.mixSpeaking, isTrue);
+  });
 }

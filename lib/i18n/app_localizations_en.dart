@@ -793,102 +793,80 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get voiceTrialSettingsTitle => 'Speaking trial';
+  String get modeSpeaking => 'Speaking';
 
   @override
-  String get voiceTrialSettingsHint => 'Experiment: say the English word and see what the phone recognises.';
+  String get modeSpeakingHint => 'Say the English word';
 
   @override
-  String get voiceTrialOpen => 'Open';
+  String get restartSpeaking => 'Restart Speaking';
 
   @override
-  String get voiceTrialTitle => 'Speaking trial';
+  String get speakingPrompt => 'Say it in English';
 
   @override
-  String get voiceTrialBadge => 'Experiment';
+  String get speakingStart => 'Tap and say it';
 
   @override
-  String get voiceTrialPrompt => 'Say it in English';
+  String get speakingListening => 'Listening…';
 
   @override
-  String get voiceTrialHintsTitle => 'Give the word list to the recogniser';
+  String get speakingStop => 'Stop';
 
   @override
-  String get voiceTrialHintsHint => 'Tells the recogniser which words to expect. Compare it on and off.';
+  String get speakingHeard => 'I heard';
 
   @override
-  String get voiceTrialStart => 'Tap and say it';
+  String get speakingNothing => 'I heard nothing. Try again.';
 
   @override
-  String get voiceTrialListening => 'Listening…';
+  String get speakingMismatch => 'That wasn\'t it. Try again!';
 
   @override
-  String get voiceTrialStop => 'Stop';
+  String get speakingMismatchLast => 'That wasn\'t it. Last try!';
 
   @override
-  String get voiceTrialHeard => 'I heard';
+  String get speakingGaveUp => 'Out of tries. Here is the answer.';
 
   @override
-  String get voiceTrialNothing => 'I heard nothing';
+  String get speakingCorrect => 'Correct!';
 
   @override
-  String get voiceTrialAlternatives => 'Other readings';
+  String get speakingHelp => 'Help';
 
   @override
-  String get voiceTrialAccepted => 'Accepted';
+  String get speakingSkip => 'Next word';
 
   @override
-  String get voiceTrialRejected => 'Rejected';
+  String get speakingListen => 'Listen';
 
   @override
-  String get voiceTrialKindExact => 'Exact match';
+  String get speakingDeniedTitle => 'No access to the microphone';
 
   @override
-  String get voiceTrialKindClose => 'Small difference';
+  String get speakingDeniedMessage =>
+      'Allow the microphone and speech recognition in Settings to speak.';
 
   @override
-  String get voiceTrialKindAlternative => 'Alternative reading';
+  String get speakingUnavailable =>
+      'Speech recognition is not available on this device.';
 
   @override
-  String get voiceTrialKindHomophone => 'Sounds the same';
+  String get speakingFailed => 'Recognition failed. Try again.';
 
   @override
-  String voiceTrialExpected(String word) {
-    return 'Expected: $word';
-  }
+  String get speakingPrivacy =>
+      'If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.';
 
   @override
-  String get voiceTrialNext => 'Next word';
+  String get speakingHintsTitle => 'Give the word list to the recogniser';
 
   @override
-  String get voiceTrialLogTitle => 'Log';
+  String get speakingHintsHint => 'Tells the recogniser which words to expect.';
 
   @override
-  String voiceTrialScore(int accepted, int total) {
-    return '$accepted of $total accepted';
-  }
+  String get mixSpeakingTitle => 'Speaking tasks in the Mix';
 
   @override
-  String get voiceTrialLogWithHints => 'with word list';
-
-  @override
-  String get voiceTrialLogWithoutHints => 'without word list';
-
-  @override
-  String get voiceTrialDeniedTitle => 'No access to the microphone';
-
-  @override
-  String get voiceTrialDeniedMessage => 'Allow the microphone and speech recognition in Settings to try this.';
-
-  @override
-  String get voiceTrialUnavailable => 'Speech recognition is not available on this device.';
-
-  @override
-  String get voiceTrialFailed => 'Recognition failed. Try again.';
-
-  @override
-  String get voiceTrialNoWords => 'There are no words to practise. Open a word list first.';
-
-  @override
-  String get voiceTrialPrivacy => 'If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.';
+  String get mixSpeakingHint => 'Turn off if you can\'t talk right now.';
 }

@@ -46,6 +46,12 @@ class SettingsNotifier extends Notifier<AppSettings> {
     ),
   );
 
+  Future<void> setSpeakingHints({required bool value}) =>
+      _update(state.copyWith(speakingHints: value));
+
+  Future<void> setMixSpeaking({required bool value}) =>
+      _update(state.copyWith(mixSpeaking: value));
+
   Future<void> setThemeChoice(ThemeChoice value) =>
       _update(state.copyWith(themeChoice: value));
 

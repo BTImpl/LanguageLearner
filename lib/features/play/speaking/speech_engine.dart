@@ -6,6 +6,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Whether the app may listen.
 enum SpeechAccess { granted, denied, unavailable }
 
+/// Whether speaking can be used right now, without asking anything.
+enum SpeechStatus {
+  /// Everything is allowed and the recogniser works.
+  ready,
+
+  /// The student has not been asked yet; asking happens at the first try.
+  notAsked,
+
+  /// The student said no to the microphone or the speech recognition.
+  denied,
+
+  /// The device cannot recognise English speech.
+  unavailable;
+
+  /// Whether a speaking task can be offered: it works or can be allowed.
+  bool get usable => this == ready || this == notAsked;
+}
+
 /// What the recogniser made of one utterance.
 class SpeechHearing {
   const SpeechHearing({required this.alternatives, this.onDevice = false});
@@ -31,6 +49,9 @@ class SpeechException implements Exception {
 
 /// Listens to the student and returns the readings of the speech recogniser.
 abstract interface class SpeechEngine {
+  /// What is allowed now; never asks the student anything.
+  Future<SpeechStatus> status();
+
   /// Asks for the microphone and the speech recognition, if not asked yet.
   Future<SpeechAccess> requestAccess();
 
@@ -66,6 +87,23 @@ class MethodChannelSpeechEngine implements SpeechEngine {
       _onPartial?.call(call.arguments as String? ?? '');
     }
     return null;
+  }
+
+  @override
+  Future<SpeechStatus> status() async {
+    try {
+      final answer = await _channel.invokeMethod<String>('status');
+      return switch (answer) {
+        'ready' => SpeechStatus.ready,
+        'notAsked' => SpeechStatus.notAsked,
+        'denied' => SpeechStatus.denied,
+        _ => SpeechStatus.unavailable,
+      };
+    } on PlatformException {
+      return SpeechStatus.unavailable;
+    } on MissingPluginException {
+      return SpeechStatus.unavailable;
+    }
   }
 
   @override
@@ -126,4 +164,10 @@ class MethodChannelSpeechEngine implements SpeechEngine {
 /// The speech engine. Override it in tests with a fake.
 final speechEngineProvider = Provider<SpeechEngine>(
   (ref) => MethodChannelSpeechEngine(),
+);
+
+/// What the device allows now. The Mix mode reads it to decide whether it may
+/// draw speaking tasks, so the home screen keeps it warm.
+final speechStatusProvider = FutureProvider<SpeechStatus>(
+  (ref) => ref.watch(speechEngineProvider).status(),
 );

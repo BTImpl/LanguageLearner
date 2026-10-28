@@ -85,7 +85,14 @@ void main() {
           ),
         )['mode'],
     };
-    expect(modes.values, ['FLASHCARDS', 'MATCHING', 'QUIZ', 'TYPING', 'MIX']);
+    expect(modes.values, [
+      'FLASHCARDS',
+      'MATCHING',
+      'QUIZ',
+      'TYPING',
+      'TYPING',
+      'MIX',
+    ]);
     expect(
       [
         for (final outcome in WordOutcome.values)

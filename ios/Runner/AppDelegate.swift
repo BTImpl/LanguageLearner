@@ -22,13 +22,14 @@ import UIKit
   }
 }
 
-/// Speech recognition for the speaking trial (card LL-71).
+/// Speech recognition for the speaking mode (cards LL-71, LL-72).
 ///
 /// A small bridge over `SFSpeechRecognizer` instead of a plugin, because the
 /// trial needs `contextualStrings` (the words the recogniser should expect)
 /// and the alternative readings, which the plugins do not hand over.
 ///
 /// Methods (channel `eu.btimpl.languagelearner/speech`):
+/// - `status` -> "ready" | "notAsked" | "denied" | "unavailable" (asks nothing)
 /// - `authorize` -> "granted" | "denied" | "unavailable"
 /// - `listen` {locale, hints, maxSeconds} -> {alternatives: [String], onDevice: Bool}
 ///   Listens until the speaker pauses, `stop` is called or `maxSeconds` pass.
@@ -58,6 +59,8 @@ final class SpeechBridge {
 
   private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
+    case "status":
+      status(result)
     case "authorize":
       authorize(result)
     case "listen":
@@ -73,6 +76,30 @@ final class SpeechBridge {
       result(nil)
     default:
       result(FlutterMethodNotImplemented)
+    }
+  }
+
+  private func status(_ result: @escaping FlutterResult) {
+    guard let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-GB")),
+      recognizer.isAvailable
+    else {
+      result("unavailable")
+      return
+    }
+    let microphone = AVAudioSession.sharedInstance().recordPermission
+    switch SFSpeechRecognizer.authorizationStatus() {
+    case .denied, .restricted:
+      result("denied")
+    case .notDetermined:
+      result(microphone == .denied ? "denied" : "notAsked")
+    case .authorized:
+      switch microphone {
+      case .granted: result("ready")
+      case .undetermined: result("notAsked")
+      default: result("denied")
+      }
+    @unknown default:
+      result("unavailable")
     }
   }
 

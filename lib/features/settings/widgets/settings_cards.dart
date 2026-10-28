@@ -337,3 +337,51 @@ class _TeacherEmailCardState extends ConsumerState<TeacherEmailCard> {
     );
   }
 }
+
+/// Whether the speaking game gives the words of the deck to the recogniser.
+class SpeakingHintsCard extends ConsumerWidget {
+  const SpeakingHintsCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final i18n = context.i18n;
+    final on = ref.watch(settingsProvider.select((s) => s.speakingHints));
+    return SettingsSection(
+      title: i18n.speakingHintsTitle,
+      hint: i18n.speakingHintsHint,
+      trailing: Semantics(
+        label: i18n.speakingHintsTitle,
+        child: Switch(
+          value: on,
+          onChanged: (value) => unawaited(
+            ref.read(settingsProvider.notifier).setSpeakingHints(value: value),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Whether the Mix mode may draw speaking tasks.
+class MixSpeakingCard extends ConsumerWidget {
+  const MixSpeakingCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final i18n = context.i18n;
+    final on = ref.watch(settingsProvider.select((s) => s.mixSpeaking));
+    return SettingsSection(
+      title: i18n.mixSpeakingTitle,
+      hint: i18n.mixSpeakingHint,
+      trailing: Semantics(
+        label: i18n.mixSpeakingTitle,
+        child: Switch(
+          value: on,
+          onChanged: (value) => unawaited(
+            ref.read(settingsProvider.notifier).setMixSpeaking(value: value),
+          ),
+        ),
+      ),
+    );
+  }
+}

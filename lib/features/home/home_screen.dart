@@ -12,6 +12,7 @@ import 'package:languagelearner/features/home/widgets/home_header.dart';
 import 'package:languagelearner/features/home/widgets/mode_tiles.dart';
 import 'package:languagelearner/features/home/widgets/photo_quiz_tile.dart';
 import 'package:languagelearner/features/home/widgets/word_list_message.dart';
+import 'package:languagelearner/features/play/speaking/speech_engine.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The start screen: the selected deck and the practice modes.
@@ -26,6 +27,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final decks = ref.watch(decksProvider);
     final deck = ref.watch(selectedDeckProvider).value;
+    // Asked here, so the Mix mode already knows whether it may draw speaking
+    // tasks when it starts.
+    ref.watch(speechStatusProvider);
     return Scaffold(
       backgroundColor: context.colors.background,
       body: SafeArea(

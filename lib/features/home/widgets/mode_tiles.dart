@@ -13,10 +13,12 @@ const _modeIcons = <PlayMode, IconData>{
   PlayMode.matching: Icons.account_tree_outlined,
   PlayMode.quiz: Icons.grid_view_outlined,
   PlayMode.typing: Icons.edit_outlined,
+  PlayMode.speaking: Icons.mic_none_outlined,
   PlayMode.mix: Icons.shuffle,
 };
 
-/// The wide Mix tile on top of the 2 x 2 grid of the other modes.
+/// The wide Mix tile on top of the 2 x 2 grid of the other modes, with the
+/// speaking mode in a wide tile under them.
 ///
 /// A mode the deck is too small for ([wordCount] words) is disabled and its
 /// tile says how many words it needs.
@@ -36,6 +38,11 @@ class ModeTiles extends StatelessWidget {
         _row(PlayMode.flashcards, PlayMode.matching),
         const SizedBox(height: _gap),
         _row(PlayMode.quiz, PlayMode.typing),
+        const SizedBox(height: _gap),
+        SizedBox(
+          width: double.infinity,
+          child: _ModeTile(mode: PlayMode.speaking, wordCount: wordCount),
+        ),
       ],
     );
   }

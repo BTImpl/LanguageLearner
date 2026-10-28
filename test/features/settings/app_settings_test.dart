@@ -17,6 +17,8 @@ void main() {
     expect(settings.appLanguage, AppLanguage.system);
     expect(settings.typingAttempts, 3);
     expect(settings.teacherEmail, '');
+    expect(settings.speakingHints, isTrue);
+    expect(settings.mixSpeaking, isTrue);
   });
 
   test('copyWith changes only the given setting', () {
@@ -30,6 +32,10 @@ void main() {
     expect(changed.appLanguage, settings.appLanguage);
     expect(changed.typingAttempts, settings.typingAttempts);
     expect(changed.teacherEmail, settings.teacherEmail);
+    expect(changed.speakingHints, settings.speakingHints);
+    expect(changed.mixSpeaking, settings.mixSpeaking);
+    expect(settings.copyWith(speakingHints: false).speakingHints, isFalse);
+    expect(settings.copyWith(mixSpeaking: false).mixSpeaking, isFalse);
     expect(settings.copyWith(typingAttempts: 5).typingAttempts, 5);
     expect(
       settings.copyWith(teacherEmail: 'tanar@example.com').teacherEmail,
