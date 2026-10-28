@@ -204,3 +204,24 @@ git config core.hooksPath .githooks
 If it fails, run `tool/format.sh fix`, stage the changes and commit again.
 The hook is skipped (with a warning) when `dart` is not in the PATH, for
 example when committing from a GUI; the CI still catches it.
+
+## Speaking trial (experiment, card LL-71)
+
+Settings → "Speaking trial" shows a Hungarian word; the student says the
+English one and the screen shows what the phone recognised and whether the
+rule accepts it (`lib/features/voice_trial/answer_matcher.dart`). It measures
+whether iPhone speech recognition is accurate enough with a Hungarian accent;
+it is not a pronunciation test.
+
+- The recogniser is Apple's `SFSpeechRecognizer`, reached through the small
+  `SpeechBridge` in `ios/Runner/AppDelegate.swift` (a plugin would not give
+  `contextualStrings` and the alternative readings). The locale is `en-GB`.
+- The switch "Give the word list to the recogniser" sends the English words of
+  the open deck as `contextualStrings`; compare it on and off.
+- Nothing is sent over the network by the app. **Privacy:** if the English
+  recognition is not downloaded on the phone, iOS may send the audio to Apple's
+  servers for recognition. Mention this in the privacy statement before the
+  mode reaches other students.
+- The trial is reachable from the settings only, marked as an experiment.
+  Measure at least 30 words with both users, with and without the word list,
+  and write the result in the card.

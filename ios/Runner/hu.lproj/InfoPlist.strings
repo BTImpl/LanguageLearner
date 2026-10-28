@@ -1,2 +1,4 @@
 "NSCameraUsageDescription" = "A kamerával lefényképezheted a feladatlapot, hogy az app kvízt készítsen belőle.";
 "NSPhotoLibraryUsageDescription" = "Kiválaszthatod a feladatlap fotóját, hogy az app kvízt készítsen belőle.";
+"NSMicrophoneUsageDescription" = "A mikrofon azt hallja, ahogy kimondasz egy angol szót a kimondós próbában.";
+"NSSpeechRecognitionUsageDescription" = "A beszédfelismerés ellenőrzi, hogy kimondtad-e az angol szót a kimondós próbában.";

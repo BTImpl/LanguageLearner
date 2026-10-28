@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/i18n/app_localizations.dart';
@@ -16,20 +18,20 @@ Future<void> pumpThemed(
   ThemeMode mode = ThemeMode.dark,
   Locale locale = const Locale('en'),
   bool asScreen = false,
+  List<Override> overrides = const [],
 }) {
-  return tester.pumpWidget(
-    MaterialApp(
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: mode,
-      locale: locale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: asScreen
-          ? widget
-          : Scaffold(
-              body: Padding(padding: const EdgeInsets.all(20), child: widget),
-            ),
-    ),
+  final app = MaterialApp(
+    theme: AppTheme.light,
+    darkTheme: AppTheme.dark,
+    themeMode: mode,
+    locale: locale,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: asScreen
+        ? widget
+        : Scaffold(
+            body: Padding(padding: const EdgeInsets.all(20), child: widget),
+          ),
   );
+  return tester.pumpWidget(ProviderScope(overrides: overrides, child: app));
 }

@@ -1017,5 +1017,146 @@
         "type": "String"
       }
     }
+  },
+  "voiceTrialSettingsTitle": "Speaking trial",
+  "@voiceTrialSettingsTitle": {
+    "description": "Title of the settings card that opens the experimental speaking trial."
+  },
+  "voiceTrialSettingsHint": "Experiment: say the English word and see what the phone recognises.",
+  "@voiceTrialSettingsHint": {
+    "description": "Hint of the settings card of the speaking trial."
+  },
+  "voiceTrialOpen": "Open",
+  "@voiceTrialOpen": {
+    "description": "Button that opens the speaking trial."
+  },
+  "voiceTrialTitle": "Speaking trial",
+  "@voiceTrialTitle": {
+    "description": "Title of the speaking trial screen."
+  },
+  "voiceTrialBadge": "Experiment",
+  "@voiceTrialBadge": {
+    "description": "Small badge that marks the speaking trial as an experiment."
+  },
+  "voiceTrialPrompt": "Say it in English",
+  "@voiceTrialPrompt": {
+    "description": "Label above the Hungarian word of the speaking trial."
+  },
+  "voiceTrialHintsTitle": "Give the word list to the recogniser",
+  "@voiceTrialHintsTitle": {
+    "description": "Title of the switch that primes the speech recogniser with the expected words."
+  },
+  "voiceTrialHintsHint": "Tells the recogniser which words to expect. Compare it on and off.",
+  "@voiceTrialHintsHint": {
+    "description": "Hint of the switch that primes the speech recogniser."
+  },
+  "voiceTrialStart": "Tap and say it",
+  "@voiceTrialStart": {
+    "description": "Label of the microphone button."
+  },
+  "voiceTrialListening": "Listening…",
+  "@voiceTrialListening": {
+    "description": "Label while the phone listens."
+  },
+  "voiceTrialStop": "Stop",
+  "@voiceTrialStop": {
+    "description": "Button that stops listening."
+  },
+  "voiceTrialHeard": "I heard",
+  "@voiceTrialHeard": {
+    "description": "Label above the best recognised text."
+  },
+  "voiceTrialNothing": "I heard nothing",
+  "@voiceTrialNothing": {
+    "description": "Shown when nothing was recognised."
+  },
+  "voiceTrialAlternatives": "Other readings",
+  "@voiceTrialAlternatives": {
+    "description": "Label above the alternative recognised texts."
+  },
+  "voiceTrialAccepted": "Accepted",
+  "@voiceTrialAccepted": {
+    "description": "Verdict: the answer is accepted."
+  },
+  "voiceTrialRejected": "Rejected",
+  "@voiceTrialRejected": {
+    "description": "Verdict: the answer is rejected."
+  },
+  "voiceTrialKindExact": "Exact match",
+  "@voiceTrialKindExact": {
+    "description": "Why the answer was accepted: exact match."
+  },
+  "voiceTrialKindClose": "Small difference",
+  "@voiceTrialKindClose": {
+    "description": "Why the answer was accepted: a small difference."
+  },
+  "voiceTrialKindAlternative": "Alternative reading",
+  "@voiceTrialKindAlternative": {
+    "description": "Why the answer was accepted: another reading of the recogniser."
+  },
+  "voiceTrialKindHomophone": "Sounds the same",
+  "@voiceTrialKindHomophone": {
+    "description": "Why the answer was accepted: a word that sounds the same."
+  },
+  "voiceTrialExpected": "Expected: {word}",
+  "@voiceTrialExpected": {
+    "description": "The expected English word.",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceTrialNext": "Next word",
+  "@voiceTrialNext": {
+    "description": "Button that shows the next word."
+  },
+  "voiceTrialLogTitle": "Log",
+  "@voiceTrialLogTitle": {
+    "description": "Title of the list of the recent attempts."
+  },
+  "voiceTrialScore": "{accepted} of {total} accepted",
+  "@voiceTrialScore": {
+    "description": "Summary line of the attempts.",
+    "placeholders": {
+      "accepted": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceTrialLogWithHints": "with word list",
+  "@voiceTrialLogWithHints": {
+    "description": "Marks a logged attempt that used the word list."
+  },
+  "voiceTrialLogWithoutHints": "without word list",
+  "@voiceTrialLogWithoutHints": {
+    "description": "Marks a logged attempt without the word list."
+  },
+  "voiceTrialDeniedTitle": "No access to the microphone",
+  "@voiceTrialDeniedTitle": {
+    "description": "Title when the microphone or speech recognition is refused."
+  },
+  "voiceTrialDeniedMessage": "Allow the microphone and speech recognition in Settings to try this.",
+  "@voiceTrialDeniedMessage": {
+    "description": "Message when the microphone or speech recognition is refused."
+  },
+  "voiceTrialUnavailable": "Speech recognition is not available on this device.",
+  "@voiceTrialUnavailable": {
+    "description": "Message when the device cannot recognise speech."
+  },
+  "voiceTrialFailed": "Recognition failed. Try again.",
+  "@voiceTrialFailed": {
+    "description": "Message when a recognition fails."
+  },
+  "voiceTrialNoWords": "There are no words to practise. Open a word list first.",
+  "@voiceTrialNoWords": {
+    "description": "Message when the deck has no words."
+  },
+  "voiceTrialPrivacy": "If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.",
+  "@voiceTrialPrivacy": {
+    "description": "Privacy note of the speaking trial."
   }
 }

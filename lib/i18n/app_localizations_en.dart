@@ -791,4 +791,104 @@ class AppLocalizationsEn extends AppLocalizations {
   String photoQuizSavedDeleteQuiz(String title) {
     return 'Delete $title';
   }
+
+  @override
+  String get voiceTrialSettingsTitle => 'Speaking trial';
+
+  @override
+  String get voiceTrialSettingsHint => 'Experiment: say the English word and see what the phone recognises.';
+
+  @override
+  String get voiceTrialOpen => 'Open';
+
+  @override
+  String get voiceTrialTitle => 'Speaking trial';
+
+  @override
+  String get voiceTrialBadge => 'Experiment';
+
+  @override
+  String get voiceTrialPrompt => 'Say it in English';
+
+  @override
+  String get voiceTrialHintsTitle => 'Give the word list to the recogniser';
+
+  @override
+  String get voiceTrialHintsHint => 'Tells the recogniser which words to expect. Compare it on and off.';
+
+  @override
+  String get voiceTrialStart => 'Tap and say it';
+
+  @override
+  String get voiceTrialListening => 'Listening…';
+
+  @override
+  String get voiceTrialStop => 'Stop';
+
+  @override
+  String get voiceTrialHeard => 'I heard';
+
+  @override
+  String get voiceTrialNothing => 'I heard nothing';
+
+  @override
+  String get voiceTrialAlternatives => 'Other readings';
+
+  @override
+  String get voiceTrialAccepted => 'Accepted';
+
+  @override
+  String get voiceTrialRejected => 'Rejected';
+
+  @override
+  String get voiceTrialKindExact => 'Exact match';
+
+  @override
+  String get voiceTrialKindClose => 'Small difference';
+
+  @override
+  String get voiceTrialKindAlternative => 'Alternative reading';
+
+  @override
+  String get voiceTrialKindHomophone => 'Sounds the same';
+
+  @override
+  String voiceTrialExpected(String word) {
+    return 'Expected: $word';
+  }
+
+  @override
+  String get voiceTrialNext => 'Next word';
+
+  @override
+  String get voiceTrialLogTitle => 'Log';
+
+  @override
+  String voiceTrialScore(int accepted, int total) {
+    return '$accepted of $total accepted';
+  }
+
+  @override
+  String get voiceTrialLogWithHints => 'with word list';
+
+  @override
+  String get voiceTrialLogWithoutHints => 'without word list';
+
+  @override
+  String get voiceTrialDeniedTitle => 'No access to the microphone';
+
+  @override
+  String get voiceTrialDeniedMessage => 'Allow the microphone and speech recognition in Settings to try this.';
+
+  @override
+  String get voiceTrialUnavailable => 'Speech recognition is not available on this device.';
+
+  @override
+  String get voiceTrialFailed => 'Recognition failed. Try again.';
+
+  @override
+  String get voiceTrialNoWords => 'There are no words to practise. Open a word list first.';
+
+  @override
+  String get voiceTrialPrivacy => 'If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.';
 }

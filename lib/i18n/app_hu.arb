@@ -208,5 +208,146 @@
   "photoQuizSavedDuplicate": "Ezt a kvízt már elmentetted, a meglévőt használom.",
   "photoQuizSavedLoadFailed": "Nem sikerült betölteni a mentett kvízeket.",
   "photoQuizSavedFillCount": "{count}× kitöltve",
-  "photoQuizSavedDeleteQuiz": "{title} törlése"
+  "photoQuizSavedDeleteQuiz": "{title} törlése",
+  "voiceTrialSettingsTitle": "Kimondós próba",
+  "@voiceTrialSettingsTitle": {
+    "description": "Title of the settings card that opens the experimental speaking trial."
+  },
+  "voiceTrialSettingsHint": "Kísérlet: mondd ki az angol szót, és nézd meg, mit ismer fel a telefon.",
+  "@voiceTrialSettingsHint": {
+    "description": "Hint of the settings card of the speaking trial."
+  },
+  "voiceTrialOpen": "Megnyitás",
+  "@voiceTrialOpen": {
+    "description": "Button that opens the speaking trial."
+  },
+  "voiceTrialTitle": "Kimondós próba",
+  "@voiceTrialTitle": {
+    "description": "Title of the speaking trial screen."
+  },
+  "voiceTrialBadge": "Kísérlet",
+  "@voiceTrialBadge": {
+    "description": "Small badge that marks the speaking trial as an experiment."
+  },
+  "voiceTrialPrompt": "Mondd ki angolul",
+  "@voiceTrialPrompt": {
+    "description": "Label above the Hungarian word of the speaking trial."
+  },
+  "voiceTrialHintsTitle": "Szólista a felismerőnek",
+  "@voiceTrialHintsTitle": {
+    "description": "Title of the switch that primes the speech recogniser with the expected words."
+  },
+  "voiceTrialHintsHint": "Megmondja a felismerőnek, milyen szavakra számítson. Hasonlítsd össze bekapcsolva és kikapcsolva.",
+  "@voiceTrialHintsHint": {
+    "description": "Hint of the switch that primes the speech recogniser."
+  },
+  "voiceTrialStart": "Koppints és mondd ki",
+  "@voiceTrialStart": {
+    "description": "Label of the microphone button."
+  },
+  "voiceTrialListening": "Hallgatlak…",
+  "@voiceTrialListening": {
+    "description": "Label while the phone listens."
+  },
+  "voiceTrialStop": "Leállítás",
+  "@voiceTrialStop": {
+    "description": "Button that stops listening."
+  },
+  "voiceTrialHeard": "Ezt hallottam",
+  "@voiceTrialHeard": {
+    "description": "Label above the best recognised text."
+  },
+  "voiceTrialNothing": "Nem hallottam semmit",
+  "@voiceTrialNothing": {
+    "description": "Shown when nothing was recognised."
+  },
+  "voiceTrialAlternatives": "További olvasatok",
+  "@voiceTrialAlternatives": {
+    "description": "Label above the alternative recognised texts."
+  },
+  "voiceTrialAccepted": "Elfogadva",
+  "@voiceTrialAccepted": {
+    "description": "Verdict: the answer is accepted."
+  },
+  "voiceTrialRejected": "Elutasítva",
+  "@voiceTrialRejected": {
+    "description": "Verdict: the answer is rejected."
+  },
+  "voiceTrialKindExact": "Pontos egyezés",
+  "@voiceTrialKindExact": {
+    "description": "Why the answer was accepted: exact match."
+  },
+  "voiceTrialKindClose": "Kis eltérés",
+  "@voiceTrialKindClose": {
+    "description": "Why the answer was accepted: a small difference."
+  },
+  "voiceTrialKindAlternative": "Alternatív olvasat",
+  "@voiceTrialKindAlternative": {
+    "description": "Why the answer was accepted: another reading of the recogniser."
+  },
+  "voiceTrialKindHomophone": "Ugyanúgy hangzik",
+  "@voiceTrialKindHomophone": {
+    "description": "Why the answer was accepted: a word that sounds the same."
+  },
+  "voiceTrialExpected": "Várt szó: {word}",
+  "@voiceTrialExpected": {
+    "description": "The expected English word.",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceTrialNext": "Következő szó",
+  "@voiceTrialNext": {
+    "description": "Button that shows the next word."
+  },
+  "voiceTrialLogTitle": "Napló",
+  "@voiceTrialLogTitle": {
+    "description": "Title of the list of the recent attempts."
+  },
+  "voiceTrialScore": "{accepted} / {total} elfogadva",
+  "@voiceTrialScore": {
+    "description": "Summary line of the attempts.",
+    "placeholders": {
+      "accepted": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceTrialLogWithHints": "szólistával",
+  "@voiceTrialLogWithHints": {
+    "description": "Marks a logged attempt that used the word list."
+  },
+  "voiceTrialLogWithoutHints": "szólista nélkül",
+  "@voiceTrialLogWithoutHints": {
+    "description": "Marks a logged attempt without the word list."
+  },
+  "voiceTrialDeniedTitle": "Nincs mikrofon-hozzáférés",
+  "@voiceTrialDeniedTitle": {
+    "description": "Title when the microphone or speech recognition is refused."
+  },
+  "voiceTrialDeniedMessage": "Engedélyezd a mikrofont és a beszédfelismerést a Beállításokban a kipróbáláshoz.",
+  "@voiceTrialDeniedMessage": {
+    "description": "Message when the microphone or speech recognition is refused."
+  },
+  "voiceTrialUnavailable": "A beszédfelismerés nem érhető el ezen az eszközön.",
+  "@voiceTrialUnavailable": {
+    "description": "Message when the device cannot recognise speech."
+  },
+  "voiceTrialFailed": "A felismerés nem sikerült. Próbáld újra.",
+  "@voiceTrialFailed": {
+    "description": "Message when a recognition fails."
+  },
+  "voiceTrialNoWords": "Nincs gyakorolható szó. Előbb nyiss meg egy szólistát.",
+  "@voiceTrialNoWords": {
+    "description": "Message when the deck has no words."
+  },
+  "voiceTrialPrivacy": "Ha a telefonra nincs letöltve az angol nyelvű felismerés, a hang az Apple szervereire kerülhet felismerésre.",
+  "@voiceTrialPrivacy": {
+    "description": "Privacy note of the speaking trial."
+  }
 }
