@@ -633,43 +633,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get photoQuizSavedTitle => 'Saved quizzes';
-
-  @override
-  String get photoQuizSavedUntitled => 'Quiz from a photo';
-
-  @override
-  String get photoQuizSavedEmptyTitle => 'No saved quizzes yet';
-
-  @override
-  String get photoQuizSavedEmptyMessage => 'Quizzes you read from a photo appear here, and you can fill them in again.';
-
-  @override
-  String get photoQuizSavedDeleted => 'Quiz deleted';
-
-  @override
-  String get photoQuizSavedDuplicate => 'You have already saved this quiz, so I am using the saved one.';
-
-  @override
-  String get photoQuizSavedLoadFailed => 'The saved quizzes could not be loaded.';
-
-  @override
-  String photoQuizSavedFillCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Filled $count times',
-      one: 'Filled once',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String photoQuizSavedDeleteQuiz(String title) {
-    return 'Delete $title';
-  }
-
-  @override
   String photoQuizSkipped(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -788,4 +751,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoQuizRetry => 'Try again';
+
+  @override
+  String get photoQuizSavedTitle => 'Saved quizzes';
+
+  @override
+  String get photoQuizSavedUntitled => 'Quiz from a photo';
+
+  @override
+  String get photoQuizSavedEmptyTitle => 'No saved quizzes yet';
+
+  @override
+  String get photoQuizSavedEmptyMessage =>
+      'Quizzes you read from a photo appear here, and you can fill them in again.';
+
+  @override
+  String get photoQuizSavedDeleted => 'Quiz deleted';
+
+  @override
+  String get photoQuizSavedDuplicate =>
+      'You have already saved this quiz, so I am using the saved one.';
+
+  @override
+  String get photoQuizSavedLoadFailed =>
+      'The saved quizzes could not be loaded.';
+
+  @override
+  String photoQuizSavedFillCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filled $count times',
+      one: 'Filled once',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String photoQuizSavedDeleteQuiz(String title) {
+    return 'Delete $title';
+  }
 }

@@ -61,11 +61,14 @@ abstract interface class EmailSender {
 }
 
 /// The `mailto:` link of [email]: the subject and the body are percent-encoded
-/// as they are (a space is `%20`, a line break `%0A`), because many mail apps
-/// show a `+` or glue the lines together when they get anything else.
+/// (a space is `%20`), because many mail apps show a `+` when they get
+/// anything else. A line break is `%0D%0A`, as RFC 6068 says: some mail apps
+/// glue the lines together when they get a lone `%0A`.
 Uri buildMailtoUri(OutgoingEmail email) {
   final subject = Uri.encodeComponent(email.subject);
-  final body = Uri.encodeComponent(email.body);
+  final body = Uri.encodeComponent(
+    email.body.replaceAll('\r\n', '\n').replaceAll('\n', '\r\n'),
+  );
   // The address is checked in the settings, so it is left as it is.
   return Uri.parse('mailto:${email.recipient}?subject=$subject&body=$body');
 }

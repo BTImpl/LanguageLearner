@@ -28,7 +28,7 @@ class QuizEmail {
 /// The subject is "title – student" (the generic quiz title when the
 /// worksheet has none). The body is plain text: who sends it and when, then
 /// every question by position with all its options, the chosen one marked
-/// `[x]`; a question without a choice says "no answer".
+/// `[x]`, each question after a divider line; a question without a choice says "no answer".
 QuizEmail buildQuizEmail({
   required AppLocalizations l10n,
   required PhotoQuiz quiz,
@@ -48,7 +48,11 @@ QuizEmail buildQuizEmail({
   final lines = [...header];
   for (final (index, question) in quiz.questions.indexed) {
     final chosen = answers.selectedIndex(index);
+    // The divider keeps the questions apart even when a mail app drops the
+    // line breaks and runs the text together.
     lines
+      ..add('')
+      ..add(_divider)
       ..add('')
       ..add('${index + 1}. ${question.text}');
     for (final (optionIndex, option) in question.options.indexed) {
@@ -65,6 +69,9 @@ QuizEmail buildQuizEmail({
     html: _html(l10n, quiz, answers, header),
   );
 }
+
+/// Between the questions of the plain text e-mail.
+const _divider = '----------';
 
 const _escape = HtmlEscape(HtmlEscapeMode.element);
 
