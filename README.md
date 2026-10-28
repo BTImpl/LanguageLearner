@@ -147,6 +147,51 @@ phone generated, so sending a row twice is harmless):
   (`claimAttempts`), so an automatic sign-out loses nothing and no row is ever
   uploaded under another account.
 
+## Installing on an iPhone without the App Store
+
+Until the paid Apple Developer membership is worth it (card LL-34, TestFlight),
+the app is installed with AltStore, which signs it with a free Apple ID. A free
+signature is valid for 7 days; AltServer on the Mac renews it in the
+background.
+
+1. Build the IPA on the Mac (the backend is the default of `AppConfig`; set
+   `API_BASE_URL` to use another one):
+
+   ```
+   tool/build_ipa.sh
+   ```
+
+   The result is `build/ipa/LanguageLearner.ipa`, unsigned.
+
+2. Once per Mac: install AltServer from altstore.io and let it start at login.
+3. Once per iPhone:
+   - Settings > Privacy & Security > Developer Mode: on (the phone restarts).
+   - Connect the phone with a cable and install AltStore from the AltServer
+     menu (Install AltStore) with the Apple ID of the owner of the phone.
+   - Settings > General > VPN & Device Management: trust the profile.
+4. Install the IPA from the Mac: hold Option and click the AltServer menu bar
+   icon, then choose Sideload .ipa and the phone (the phone connected or on
+   the same wifi, unlocked). Installing from the phone itself (AltStore >
+   My Apps > +) asked for the Apple ID there and failed with an HTTP 503 once;
+   the Mac route did not.
+5. A new version: build a new IPA and install it over the old one; the data
+   stays.
+
+Renewal: the Mac must be on, AltServer running, and the phone on the same wifi
+(unlocked or charging) at least once every 7 days, or the app stops starting.
+A free Apple ID allows 3 active apps at once, and AltStore itself is one of
+them. Apps installed earlier from Xcode with the same Apple ID count too
+(error `ServerError 2009`); use a separate Apple ID for the phone of each
+person, or free a slot.
+
+If the Google sign-in fails after the install: AltStore may have changed the
+bundle identifier (it adds the team id), and the iOS OAuth client is tied to
+`eu.btimpl.languagelearner`. Then install with Xcode instead (keeps the
+identifier, but needs a reinstall every 7 days), or check the iOS client setup.
+
+The photo quiz runs on the free Gemini key of the backend, which is fine for
+the two known users; see the backend README before anyone else uses the app.
+
 ## Git hook
 
 A pre-commit hook runs the formatting check before every commit, the same
