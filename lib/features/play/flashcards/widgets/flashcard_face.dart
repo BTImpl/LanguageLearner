@@ -4,6 +4,7 @@ import 'package:languagelearner/app/theme/app_theme.dart';
 import 'package:languagelearner/core/models/prompt_language.dart';
 import 'package:languagelearner/core/widgets/app_card.dart';
 import 'package:languagelearner/core/widgets/app_shapes.dart';
+import 'package:languagelearner/core/widgets/word_fit_text.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// One side of a flashcard. The English side has the brand gradient and a
@@ -53,9 +54,8 @@ class FlashcardFace extends StatelessWidget {
                 ),
                 Expanded(
                   child: Center(
-                    child: Text(
+                    child: WordFitText(
                       text,
-                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: headingFontFamily,
                         fontSize: 46,
