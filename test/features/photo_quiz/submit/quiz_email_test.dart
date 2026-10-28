@@ -76,13 +76,22 @@ void main() {
       expect(body, contains('2 / 4 answered'));
     });
 
+    test('puts a divider before every question', () {
+      final body = build().body;
+
+      expect('\n----------\n'.allMatches(body), hasLength(4));
+      expect(body, contains('----------\n\n1. She ___ to school every day.'));
+    });
+
     test('says "no answer" for a question without a choice', () {
       final body = build(answer: (a) => a.select(0, 1)).body;
 
       expect('no answer'.allMatches(body), hasLength(3));
       expect(
         body,
-        contains('   [ ] d) gone\n\n2. London is the capital of England.'),
+        contains(
+          '   [ ] d) gone\n\n----------\n\n2. London is the capital of England.',
+        ),
       );
     });
 

@@ -1118,60 +1118,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 question} other{{count} questions}}'**
   String photoQuizQuestionCount(int count);
 
-  /// Title of the screen with the quizzes kept on the phone, and the label of the button that opens it.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved quizzes'**
-  String get photoQuizSavedTitle;
-
-  /// Name of a saved quiz whose worksheet had no title.
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz from a photo'**
-  String get photoQuizSavedUntitled;
-
-  /// Title of the empty saved quizzes list.
-  ///
-  /// In en, this message translates to:
-  /// **'No saved quizzes yet'**
-  String get photoQuizSavedEmptyTitle;
-
-  /// Explanation of the empty saved quizzes list.
-  ///
-  /// In en, this message translates to:
-  /// **'Quizzes you read from a photo appear here, and you can fill them in again.'**
-  String get photoQuizSavedEmptyMessage;
-
-  /// Message shown after a saved quiz was deleted.
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz deleted'**
-  String get photoQuizSavedDeleted;
-
-  /// Message shown when the quiz that was just read is already among the saved ones.
-  ///
-  /// In en, this message translates to:
-  /// **'You have already saved this quiz, so I am using the saved one.'**
-  String get photoQuizSavedDuplicate;
-
-  /// Message shown when the saved quizzes cannot be read.
-  ///
-  /// In en, this message translates to:
-  /// **'The saved quizzes could not be loaded.'**
-  String get photoQuizSavedLoadFailed;
-
-  /// How many times a saved quiz was filled in.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Filled once} other{Filled {count} times}}'**
-  String photoQuizSavedFillCount(int count);
-
-  /// Spoken label of the delete button of a saved quiz.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete {title}'**
-  String photoQuizSavedDeleteQuiz(String title);
-
   /// Note on the review screen: how many questions could not be read and were left out.
   ///
   /// In en, this message translates to:
@@ -1351,6 +1297,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try again'**
   String get photoQuizRetry;
+
+  /// Title of the screen with the quizzes kept on the phone, and the label of the button that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved quizzes'**
+  String get photoQuizSavedTitle;
+
+  /// Name of a saved quiz whose worksheet had no title.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz from a photo'**
+  String get photoQuizSavedUntitled;
+
+  /// Title of the empty saved quizzes list.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved quizzes yet'**
+  String get photoQuizSavedEmptyTitle;
+
+  /// Explanation of the empty saved quizzes list.
+  ///
+  /// In en, this message translates to:
+  /// **'Quizzes you read from a photo appear here, and you can fill them in again.'**
+  String get photoQuizSavedEmptyMessage;
+
+  /// Message shown after a saved quiz was deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz deleted'**
+  String get photoQuizSavedDeleted;
+
+  /// Message shown when the quiz that was just read is already among the saved ones.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already saved this quiz, so I am using the saved one.'**
+  String get photoQuizSavedDuplicate;
+
+  /// Message shown when the saved quizzes cannot be read.
+  ///
+  /// In en, this message translates to:
+  /// **'The saved quizzes could not be loaded.'**
+  String get photoQuizSavedLoadFailed;
+
+  /// How many times a saved quiz was filled in.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Filled once} other{Filled {count} times}}'**
+  String photoQuizSavedFillCount(int count);
+
+  /// Spoken label of the delete button of a saved quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {title}'**
+  String photoQuizSavedDeleteQuiz(String title);
 }
 
 class _AppLocalizationsDelegate

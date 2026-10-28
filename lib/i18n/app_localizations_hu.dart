@@ -587,37 +587,6 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get photoQuizSavedTitle => 'Mentett kvízek';
-
-  @override
-  String get photoQuizSavedUntitled => 'Kvíz fotóból';
-
-  @override
-  String get photoQuizSavedEmptyTitle => 'Még nincs mentett kvíz';
-
-  @override
-  String get photoQuizSavedEmptyMessage => 'A beolvasott kvízek itt jelennek meg, és újra kitölthetők.';
-
-  @override
-  String get photoQuizSavedDeleted => 'Kvíz törölve';
-
-  @override
-  String get photoQuizSavedDuplicate => 'Ezt a kvízt már elmentetted, a meglévőt használom.';
-
-  @override
-  String get photoQuizSavedLoadFailed => 'Nem sikerült betölteni a mentett kvízeket.';
-
-  @override
-  String photoQuizSavedFillCount(int count) {
-    return '$count× kitöltve';
-  }
-
-  @override
-  String photoQuizSavedDeleteQuiz(String title) {
-    return '$title törlése';
-  }
-
-  @override
   String photoQuizSkipped(int count) {
     return '$count kérdést nem sikerült kiolvasni';
   }
@@ -730,4 +699,38 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get photoQuizRetry => 'Újrapróbálom';
+
+  @override
+  String get photoQuizSavedTitle => 'Mentett kvízek';
+
+  @override
+  String get photoQuizSavedUntitled => 'Kvíz fotóból';
+
+  @override
+  String get photoQuizSavedEmptyTitle => 'Még nincs mentett kvíz';
+
+  @override
+  String get photoQuizSavedEmptyMessage =>
+      'A beolvasott kvízek itt jelennek meg, és újra kitölthetők.';
+
+  @override
+  String get photoQuizSavedDeleted => 'Kvíz törölve';
+
+  @override
+  String get photoQuizSavedDuplicate =>
+      'Ezt a kvízt már elmentetted, a meglévőt használom.';
+
+  @override
+  String get photoQuizSavedLoadFailed =>
+      'Nem sikerült betölteni a mentett kvízeket.';
+
+  @override
+  String photoQuizSavedFillCount(int count) {
+    return '$count× kitöltve';
+  }
+
+  @override
+  String photoQuizSavedDeleteQuiz(String title) {
+    return '$title törlése';
+  }
 }

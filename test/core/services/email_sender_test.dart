@@ -19,11 +19,11 @@ void main() {
       expect(uri.queryParameters['body'], 'Hi');
     });
 
-    test('keeps every line break as %0A', () {
+    test('writes every line break as %0D%0A', () {
       final uri = buildMailtoUri(email(body: 'one\ntwo\n\nthree'));
 
-      expect(uri.toString(), contains('body=one%0Atwo%0A%0Athree'));
-      expect(uri.queryParameters['body'], 'one\ntwo\n\nthree');
+      expect(uri.toString(), contains('body=one%0D%0Atwo%0D%0A%0D%0Athree'));
+      expect(uri.queryParameters['body'], 'one\r\ntwo\r\n\r\nthree');
     });
 
     test('writes a space as %20 and never as +', () {
@@ -46,7 +46,7 @@ void main() {
       const body = 'Diák: Árvíztűrő\n   [x] a) go\n   [ ] b) goes';
       final uri = buildMailtoUri(email(body: body));
 
-      expect(uri.queryParameters['body'], body);
+      expect(uri.queryParameters['body'], body.replaceAll('\n', '\r\n'));
     });
   });
 }
