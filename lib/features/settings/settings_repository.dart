@@ -21,6 +21,8 @@ class StoreSettingsRepository implements SettingsRepository {
   static const appLanguageKey = 'settings.appLanguage';
   static const typingAttemptsKey = 'settings.typingAttempts';
   static const teacherEmailKey = 'settings.teacherEmail';
+  static const speakingHintsKey = 'settings.speakingHints';
+  static const mixSpeakingKey = 'settings.mixSpeaking';
 
   final KeyValueStore _store;
 
@@ -59,6 +61,14 @@ class StoreSettingsRepository implements SettingsRepository {
       teacherEmail: teacherEmail != null && isValidEmail(teacherEmail)
           ? teacherEmail
           : defaults.teacherEmail,
+      speakingHints: _flag(
+        await _store.getInt(speakingHintsKey),
+        defaults.speakingHints,
+      ),
+      mixSpeaking: _flag(
+        await _store.getInt(mixSpeakingKey),
+        defaults.mixSpeaking,
+      ),
     );
   }
 
@@ -70,7 +80,13 @@ class StoreSettingsRepository implements SettingsRepository {
     await _store.setString(appLanguageKey, settings.appLanguage.name);
     await _store.setInt(typingAttemptsKey, settings.typingAttempts);
     await _store.setString(teacherEmailKey, settings.teacherEmail);
+    await _store.setInt(speakingHintsKey, settings.speakingHints ? 1 : 0);
+    await _store.setInt(mixSpeakingKey, settings.mixSpeaking ? 1 : 0);
   }
+
+  /// A switch is kept as 1 or 0; a missing value is the default.
+  static bool _flag(int? saved, bool fallback) =>
+      saved == null ? fallback : saved != 0;
 
   static T _byName<T extends Enum>(List<T> values, String? name, T fallback) {
     for (final value in values) {

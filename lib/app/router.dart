@@ -18,13 +18,13 @@ import 'package:languagelearner/features/play/mix/mix_screen.dart';
 import 'package:languagelearner/features/play/play_mode.dart';
 import 'package:languagelearner/features/play/play_placeholder_screen.dart';
 import 'package:languagelearner/features/play/quiz/quiz_screen.dart';
+import 'package:languagelearner/features/play/speaking/speaking_screen.dart';
 import 'package:languagelearner/features/play/summary/round_summary_data.dart';
 import 'package:languagelearner/features/play/summary/round_summary_screen.dart';
 import 'package:languagelearner/features/play/typing/typing_screen.dart';
 import 'package:languagelearner/features/play/widgets/game_gate.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
-import 'package:languagelearner/features/voice_trial/voice_trial_screen.dart';
 
 /// The app router. Tests override it to start on another route.
 ///
@@ -116,10 +116,6 @@ GoRouter createAppRouter({
         ],
       ),
       GoRoute(
-        path: AppRoutes.voiceTrial,
-        builder: (context, state) => const VoiceTrialScreen(),
-      ),
-      GoRoute(
         path: AppRoutes.photoQuiz,
         builder: (context, state) => const PhotoCaptureScreen(),
       ),
@@ -149,6 +145,7 @@ GoRouter createAppRouter({
               PlayMode.matching => const MatchingScreen(),
               PlayMode.quiz => const QuizScreen(),
               PlayMode.typing => const TypingScreen(),
+              PlayMode.speaking => const SpeakingScreen(),
               PlayMode.mix => const MixScreen(),
             },
           ),

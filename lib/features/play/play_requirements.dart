@@ -10,7 +10,10 @@ import 'package:languagelearner/features/play/play_mode.dart';
 int minWordsFor(PlayMode mode) => switch (mode) {
   PlayMode.matching => 2,
   PlayMode.quiz => 4,
-  PlayMode.flashcards || PlayMode.typing || PlayMode.mix => 1,
+  PlayMode.flashcards ||
+  PlayMode.typing ||
+  PlayMode.speaking ||
+  PlayMode.mix => 1,
 };
 
 /// Whether a deck with [wordCount] words can be practiced in [mode].

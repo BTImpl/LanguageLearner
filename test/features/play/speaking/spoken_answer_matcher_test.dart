@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:languagelearner/features/voice_trial/answer_matcher.dart';
+import 'package:languagelearner/features/play/speaking/spoken_answer_matcher.dart';
 
 MatchDecision _decide(List<String> expected, List<String> heard) =>
     decideSpokenAnswer(expected: expected, heard: heard);

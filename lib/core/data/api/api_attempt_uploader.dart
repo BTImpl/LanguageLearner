@@ -77,6 +77,10 @@ String _mode(PlayMode mode) => switch (mode) {
   PlayMode.matching => 'MATCHING',
   PlayMode.quiz => 'QUIZ',
   PlayMode.typing => 'TYPING',
+  // The backend does not know SPEAKING yet (card BE-20), so a speaking answer
+  // is sent as TYPING: it is the same kind of task (an exact written or
+  // spoken answer). Switch to 'SPEAKING' when BE-20 is deployed.
+  PlayMode.speaking => 'TYPING',
   PlayMode.mix => 'MIX',
 };
 

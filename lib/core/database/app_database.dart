@@ -17,7 +17,7 @@ class Attempts extends Table {
   TextColumn get deckId => text()();
   TextColumn get wordId => text()();
 
-  /// The name of a `PlayMode`: matching, quiz, typing or mix.
+  /// The name of a `PlayMode`: matching, quiz, typing, speaking or mix.
   TextColumn get mode => text()();
 
   /// The name of a `WordOutcome`: firstTry, withHelp or wrongFirst.

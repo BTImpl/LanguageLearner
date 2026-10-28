@@ -85,6 +85,7 @@ void main() {
     PlayMode.matching: 'Matching',
     PlayMode.quiz: 'Quiz',
     PlayMode.typing: 'Exact match',
+    PlayMode.speaking: 'Speaking',
     PlayMode.mix: 'Mix',
   };
 
