@@ -6,6 +6,7 @@ import 'package:languagelearner/features/settings/widgets/account_card.dart';
 import 'package:languagelearner/features/settings/widgets/brand_footer.dart';
 import 'package:languagelearner/features/settings/widgets/refresh_words_card.dart';
 import 'package:languagelearner/features/settings/widgets/settings_cards.dart';
+import 'package:languagelearner/features/settings/widgets/voice_trial_card.dart';
 import 'package:languagelearner/i18n/context_i18n.dart';
 
 /// The settings: account, languages, pairs per page, typing attempts,
@@ -49,6 +50,7 @@ class SettingsScreen extends StatelessWidget {
                   AppearanceCard(),
                   TeacherEmailCard(),
                   RefreshWordsCard(),
+                  VoiceTrialCard(),
                 ],
               ),
               const SizedBox(height: 32),

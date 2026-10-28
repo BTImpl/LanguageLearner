@@ -24,6 +24,7 @@ import 'package:languagelearner/features/play/typing/typing_screen.dart';
 import 'package:languagelearner/features/play/widgets/game_gate.dart';
 import 'package:languagelearner/features/settings/settings_screen.dart';
 import 'package:languagelearner/features/stats/stats_screen.dart';
+import 'package:languagelearner/features/voice_trial/voice_trial_screen.dart';
 
 /// The app router. Tests override it to start on another route.
 ///
@@ -113,6 +114,10 @@ GoRouter createAppRouter({
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.voiceTrial,
+        builder: (context, state) => const VoiceTrialScreen(),
       ),
       GoRoute(
         path: AppRoutes.photoQuiz,

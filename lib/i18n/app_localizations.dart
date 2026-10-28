@@ -1351,6 +1351,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete {title}'**
   String photoQuizSavedDeleteQuiz(String title);
+
+  /// Title of the settings card that opens the experimental speaking trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking trial'**
+  String get voiceTrialSettingsTitle;
+
+  /// Hint of the settings card of the speaking trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Experiment: say the English word and see what the phone recognises.'**
+  String get voiceTrialSettingsHint;
+
+  /// Button that opens the speaking trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get voiceTrialOpen;
+
+  /// Title of the speaking trial screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking trial'**
+  String get voiceTrialTitle;
+
+  /// Small badge that marks the speaking trial as an experiment.
+  ///
+  /// In en, this message translates to:
+  /// **'Experiment'**
+  String get voiceTrialBadge;
+
+  /// Label above the Hungarian word of the speaking trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Say it in English'**
+  String get voiceTrialPrompt;
+
+  /// Title of the switch that primes the speech recogniser with the expected words.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the word list to the recogniser'**
+  String get voiceTrialHintsTitle;
+
+  /// Hint of the switch that primes the speech recogniser.
+  ///
+  /// In en, this message translates to:
+  /// **'Tells the recogniser which words to expect. Compare it on and off.'**
+  String get voiceTrialHintsHint;
+
+  /// Label of the microphone button.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap and say it'**
+  String get voiceTrialStart;
+
+  /// Label while the phone listens.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening…'**
+  String get voiceTrialListening;
+
+  /// Button that stops listening.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get voiceTrialStop;
+
+  /// Label above the best recognised text.
+  ///
+  /// In en, this message translates to:
+  /// **'I heard'**
+  String get voiceTrialHeard;
+
+  /// Shown when nothing was recognised.
+  ///
+  /// In en, this message translates to:
+  /// **'I heard nothing'**
+  String get voiceTrialNothing;
+
+  /// Label above the alternative recognised texts.
+  ///
+  /// In en, this message translates to:
+  /// **'Other readings'**
+  String get voiceTrialAlternatives;
+
+  /// Verdict: the answer is accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get voiceTrialAccepted;
+
+  /// Verdict: the answer is rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get voiceTrialRejected;
+
+  /// Why the answer was accepted: exact match.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact match'**
+  String get voiceTrialKindExact;
+
+  /// Why the answer was accepted: a small difference.
+  ///
+  /// In en, this message translates to:
+  /// **'Small difference'**
+  String get voiceTrialKindClose;
+
+  /// Why the answer was accepted: another reading of the recogniser.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative reading'**
+  String get voiceTrialKindAlternative;
+
+  /// Why the answer was accepted: a word that sounds the same.
+  ///
+  /// In en, this message translates to:
+  /// **'Sounds the same'**
+  String get voiceTrialKindHomophone;
+
+  /// The expected English word.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected: {word}'**
+  String voiceTrialExpected(String word);
+
+  /// Button that shows the next word.
+  ///
+  /// In en, this message translates to:
+  /// **'Next word'**
+  String get voiceTrialNext;
+
+  /// Title of the list of the recent attempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Log'**
+  String get voiceTrialLogTitle;
+
+  /// Summary line of the attempts.
+  ///
+  /// In en, this message translates to:
+  /// **'{accepted} of {total} accepted'**
+  String voiceTrialScore(int accepted, int total);
+
+  /// Marks a logged attempt that used the word list.
+  ///
+  /// In en, this message translates to:
+  /// **'with word list'**
+  String get voiceTrialLogWithHints;
+
+  /// Marks a logged attempt without the word list.
+  ///
+  /// In en, this message translates to:
+  /// **'without word list'**
+  String get voiceTrialLogWithoutHints;
+
+  /// Title when the microphone or speech recognition is refused.
+  ///
+  /// In en, this message translates to:
+  /// **'No access to the microphone'**
+  String get voiceTrialDeniedTitle;
+
+  /// Message when the microphone or speech recognition is refused.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the microphone and speech recognition in Settings to try this.'**
+  String get voiceTrialDeniedMessage;
+
+  /// Message when the device cannot recognise speech.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition is not available on this device.'**
+  String get voiceTrialUnavailable;
+
+  /// Message when a recognition fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognition failed. Try again.'**
+  String get voiceTrialFailed;
+
+  /// Message when the deck has no words.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no words to practise. Open a word list first.'**
+  String get voiceTrialNoWords;
+
+  /// Privacy note of the speaking trial.
+  ///
+  /// In en, this message translates to:
+  /// **'If English recognition is not downloaded on the phone, the audio may be sent to Apple for recognition.'**
+  String get voiceTrialPrivacy;
 }
 
 class _AppLocalizationsDelegate

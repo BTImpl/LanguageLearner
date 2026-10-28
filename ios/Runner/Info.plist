@@ -79,6 +79,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The microphone is used to hear you say an English word in the speaking trial.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition checks whether you said the English word in the speaking trial.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to photograph a worksheet, so the app can make a quiz from it.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
