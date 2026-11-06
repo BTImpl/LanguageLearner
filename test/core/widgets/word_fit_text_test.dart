@@ -127,4 +127,107 @@ void main() {
       expect(size(tester), 46);
     });
   });
+
+  group('fitHeightFontSize', () {
+    const text = 'aa bb cc dd ee ff gg hh ii jj kk ll mm nn oo pp';
+
+    double fit({double height = 100, double min = 10}) => fitHeightFontSize(
+      text: text,
+      style: _style,
+      start: 46,
+      maxWidth: 300,
+      maxHeight: height,
+      minFontSize: min,
+      textScaler: TextScaler.noScaling,
+    );
+
+    test('keeps the size when the text is low enough', () {
+      expect(fit(height: 2000), 46);
+    });
+
+    test('shrinks until the wrapped text fits in the height', () {
+      final size = fit();
+
+      expect(size, lessThan(46));
+      expect(size, greaterThanOrEqualTo(10));
+      // One size larger would not fit.
+      final painter = TextPainter(
+        text: TextSpan(
+          text: text,
+          style: _style.copyWith(fontSize: size + 1),
+        ),
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center,
+      )..layout(maxWidth: 300);
+      expect(painter.height, greaterThan(100));
+      painter.dispose();
+    });
+
+    test('stops at the smallest size', () {
+      expect(fit(height: 5, min: 20), 20);
+    });
+
+    test('keeps the size without a limit', () {
+      expect(
+        fitHeightFontSize(
+          text: text,
+          style: _style,
+          start: 46,
+          maxWidth: 300,
+          maxHeight: double.infinity,
+          minFontSize: 10,
+          textScaler: TextScaler.noScaling,
+        ),
+        46,
+      );
+    });
+  });
+
+  group('WordFitText in a limited height', () {
+    Future<void> pump(
+      WidgetTester tester,
+      String text, {
+      required double height,
+      double minFontSize = 10,
+    }) {
+      return tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 300,
+                height: height,
+                child: WordFitText(
+                  text,
+                  style: _style,
+                  minFontSize: minFontSize,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    const longText =
+        'aa bb cc dd ee ff gg hh ii jj kk ll mm nn oo pp qq rr ss tt';
+
+    testWidgets('a long text gets a smaller size and fits', (tester) async {
+      await pump(tester, longText, height: 120);
+
+      final size = tester.widget<Text>(find.byType(Text)).style!.fontSize!;
+      expect(size, lessThan(46));
+      expect(tester.getSize(find.byType(Text)).height, lessThanOrEqualTo(120));
+      expect(find.byType(SingleChildScrollView), findsNothing);
+    });
+
+    testWidgets('scrolls when it does not fit even at the smallest size', (
+      tester,
+    ) async {
+      await pump(tester, longText * 3, height: 40, minFontSize: 24);
+
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  });
 }
