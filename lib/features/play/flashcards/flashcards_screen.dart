@@ -122,6 +122,7 @@ class _FlashcardsScreenState extends ConsumerState<FlashcardsScreen> {
     FlashcardFace face(PromptLanguage language, String text) => FlashcardFace(
       language: language,
       text: text,
+      example: word.example,
       onReadAloud: ref.canReadAloud ? () => _readAloud(session, word) : null,
     );
 

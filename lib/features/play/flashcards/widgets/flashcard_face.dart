@@ -14,6 +14,7 @@ class FlashcardFace extends StatelessWidget {
   const FlashcardFace({
     required this.language,
     required this.text,
+    this.example,
     this.onReadAloud,
     super.key,
   });
@@ -21,10 +22,15 @@ class FlashcardFace extends StatelessWidget {
   final PromptLanguage language;
   final String text;
 
+  /// An example sentence, shown under the word on the English side.
+  final String? example;
+
   /// Only used on the English side.
   final VoidCallback? onReadAloud;
 
   bool get _isEnglish => language == PromptLanguage.english;
+
+  bool get _hasExample => _isEnglish && (example?.isNotEmpty ?? false);
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +59,45 @@ class FlashcardFace extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Center(
-                    child: WordFitText(
-                      text,
-                      style: TextStyle(
-                        fontFamily: headingFontFamily,
-                        fontSize: 46,
-                        fontWeight: FontWeight.w700,
-                        height: 1.1,
-                        color: textColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: Center(
+                          child: WordFitText(
+                            text,
+                            style: TextStyle(
+                              fontFamily: headingFontFamily,
+                              fontSize: 46,
+                              fontWeight: FontWeight.w700,
+                              height: 1.1,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      if (_hasExample) ...[
+                        const SizedBox(height: 12),
+                        Flexible(
+                          flex: 2,
+                          child: Center(
+                            child: WordFitText(
+                              example!,
+                              minFontSize: 13,
+                              style: TextStyle(
+                                fontFamily: bodyFontFamily,
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                                height: 1.3,
+                                color: mutedColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
                 Text(
